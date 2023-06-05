@@ -2,9 +2,9 @@
 
 
 (defun create-environment ()
-  (let ((environment (make-instance 'clb:run-time-environment)))
+  (let ((environment (make-instance 'clb:run-time-environment))
+        (cl-package (find-package '#:common-lisp)))
     (loop with cmd = (find-package '#:common-macro-definitions)
-          with cl-package = (find-package '#:common-lisp)
           for symbol being each external-symbol in cmd
           for symbol-name = (symbol-name symbol)
           for cl-symbol = (find-symbol symbol-name cl-package)
