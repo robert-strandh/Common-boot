@@ -4,4 +4,5 @@
   (:use #:common-lisp)
   (:local-nicknames (#:clb #:clostrum-basic)
                     (#:clo #:clostrum)
-                    (#:cmd #:common-macro-definitions)))
+                    (#:cmd #:common-macro-definitions))
+  (:export #:create-environment))
