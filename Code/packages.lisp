@@ -2,5 +2,6 @@
 
 (defpackage #:common-boot
   (:use #:common-lisp)
-  (:local-nicknames (#:clo #:clostrum)
-                    (#:cmd #:common-macros)))
+  (:local-nicknames (#:clb #:clostrum-basic)
+                    (#:clo #:clostrum)
+                    (#:cmd #:common-macro-definitions)))
