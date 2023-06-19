@@ -1,8 +1,10 @@
 (cl:in-package #:common-boot)
 
+(defclass environment (clb:run-time-environment)
+  ())
 
 (defun create-environment ()
-  (let ((environment (make-instance 'clb:run-time-environment))
+  (let ((environment (make-instance 'environment))
         (cl-package (find-package '#:common-lisp)))
     (loop with cmd = (find-package '#:common-macro-definitions)
           for symbol being each external-symbol in cmd
