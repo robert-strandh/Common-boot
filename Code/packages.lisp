@@ -6,5 +6,6 @@
                     (#:clo #:clostrum)
                     (#:ico #:iconoclast)
                     (#:bld #:iconoclast-builder)
-                    (#:cmd #:common-macro-definitions))
+                    (#:cmd #:common-macro-definitions)
+                    (#:cst #:concrete-syntax-tree))
   (:export #:create-environment))
