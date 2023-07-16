@@ -11,5 +11,6 @@
   :components
   ((:file "packages")
    (:file "variables")
+   (:file "generic-functions")
    (:file "environment")
    (:file "cst-to-ast")))
