@@ -10,5 +10,6 @@
   :serial t
   :components
   ((:file "packages")
+   (:file "variables")
    (:file "environment")
    (:file "cst-to-ast")))
