@@ -13,4 +13,5 @@
    (:file "variables")
    (:file "generic-functions")
    (:file "environment")
+   (:file "convert-ast")
    (:file "cst-to-ast")))
