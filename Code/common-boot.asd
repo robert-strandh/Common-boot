@@ -1,7 +1,8 @@
 (cl:in-package #:asdf-user)
 
 (defsystem #:common-boot
-  :depends-on (#:common-macros
+  :depends-on (#:concrete-syntax-tree
+               #:common-macros
                #:clostrum
                #:clostrum-basic
                #:trucler-reference
@@ -14,5 +15,6 @@
    (:file "generic-functions")
    (:file "builder")
    (:file "environment")
+   (:file "convert")
    (:file "convert-ast")
    (:file "cst-to-ast")))
