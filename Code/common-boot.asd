@@ -3,8 +3,12 @@
 (defsystem #:common-boot
   :depends-on (#:common-macros
                #:clostrum
-               #:clostrum-basic)
+               #:clostrum-basic
+               #:trucler-reference
+               #:iconoclast-builder
+               #:common-macros)
   :serial t
   :components
   ((:file "packages")
-   (:file "environment")))
+   (:file "environment")
+   (:file "cst-to-ast")))
