@@ -6,14 +6,14 @@
 ;;; tree.
 
 (defmethod convert (client cst environment)
-  (let ((raw-form (cst:raw cst)))
-    (cond ((or (and (not (consp raw-form)) (not (symbolp raw-form)))
-               (keywordp raw-form)
-               (member raw-form '(t nil)))
+  (let ((form (cst:raw cst)))
+    (cond ((or (and (not (consp form)) (not (symbolp form)))
+               (keywordp form)
+               (member form '(t nil)))
            (convert-constant client cst environment))
-          ((symbolp raw-form)
+          ((symbolp form)
            (convert-variable client cst environment))
-          ((symbolp (car raw-form))
+          ((symbolp (car form))
            ;; Even if we are in COMPILE-TIME-TOO mode, at this point, we
            ;; do not know whether to evaluate the form at compile time,
            ;; simply because it might be a special form that is handled
