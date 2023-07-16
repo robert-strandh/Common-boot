@@ -12,6 +12,7 @@
   ((:file "packages")
    (:file "variables")
    (:file "generic-functions")
+   (:file "builder")
    (:file "environment")
    (:file "convert-ast")
    (:file "cst-to-ast")))
