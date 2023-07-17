@@ -19,6 +19,7 @@
    (:file "environment-augmentation")
    (:file "convert-variable")
    (:file "convert-constant")
+   (:file "convert-with-description")
    (:file "convert")
    (:file "convert-ast")
    (:file "cst-to-ast")))
