@@ -5,3 +5,5 @@
 (defgeneric convert-with-description (client cst info environment))
 
 (defgeneric convert-ast (builder ast))
+
+(defgeneric eval-cst (client cst environment))
