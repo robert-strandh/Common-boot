@@ -15,6 +15,7 @@
    (:file "generic-functions")
    (:file "builder")
    (:file "environment")
+   (:file "environment-augmentation")
    (:file "convert-variable")
    (:file "convert-constant")
    (:file "convert")
