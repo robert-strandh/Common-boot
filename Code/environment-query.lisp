@@ -1,6 +1,7 @@
 (cl:in-package #:common-boot)
 
 (defun describe-function (client environment function-name-cst)
+  #+sbcl(declare (sb-ext:muffle-conditions sb-ext:compiler-note))
   (let* ((function-name (cst:raw function-name-cst))
          (result (trucler:describe-function
                   client environment function-name)))
