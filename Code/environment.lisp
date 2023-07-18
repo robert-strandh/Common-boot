@@ -12,4 +12,5 @@
           for cl-symbol = (find-symbol symbol-name cl-package)
           do (setf (clo:macro-function nil environment cl-symbol)
                    (macro-function symbol)))
-    environment))
+    (make-instance 'trucler-reference:environment
+      :global-environment environment)))
