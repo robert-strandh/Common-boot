@@ -19,6 +19,7 @@
    (:file "environment")
    (:file "environment-query")
    (:file "environment-augmentation")
+   (:file "application")
    (:file "convert-variable")
    (:file "convert-constant")
    (:file "convert-with-description")
