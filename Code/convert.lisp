@@ -14,15 +14,19 @@
           ((symbolp form)
            (convert-variable client cst environment))
           ((symbolp (car form))
-           ;; Even if we are in COMPILE-TIME-TOO mode, at this point, we
-           ;; do not know whether to evaluate the form at compile time,
-           ;; simply because it might be a special form that is handled
-           ;; specially.  So we must wait until we have more
-           ;; information.
+           (when (and *current-form-is-top-level-p* *compile-time-too*)
+             (eval-cst client cst environment))
            (let* ((operator (cst:first cst))
-                  (info (describe-function client environment operator)))
-             (convert-with-description
-              client cst info environment)))
+                  (syntax (ses:find-syntax operator :if-does-not-exist nil)))
+             (if (null syntax)
+                 ;; There is no syntax available for this operator, so
+                 ;; we must see whethere there is a description for
+                 ;; it, and act according to that description.
+                 (let ((d (describe-function client environment operator)))
+                   (convert-with-description client cst d environment))
+                 ;; There is a syntax available for this operator, so
+                 ;; we parse the expression according to that syntax.
+                 (ses:parse client syntax cst))))
           (t
            ;; The form must be a compound form where the CAR is a lambda
            ;; expression.  Evaluating such a form might have some
