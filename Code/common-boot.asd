@@ -2,6 +2,7 @@
 
 (defsystem #:common-boot
   :depends-on (#:concrete-syntax-tree
+               #:s-expression-syntax.concrete-syntax-tree
                #:common-macros
                #:clostrum
                #:clostrum-basic
