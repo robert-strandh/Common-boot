@@ -1,20 +1,20 @@
 (cl:in-package #:common-boot)
 
-(defun describe-function (client environment cooked-function-name)
-  (let* ((raw-function-name (cst:raw cooked-function-name))
+(defun describe-function (client environment function-name-cst)
+  (let* ((function-name (cst:raw function-name-cst))
          (result (trucler:describe-function
-                  client environment raw-function-name)))
+                  client environment function-name)))
     (loop while (null result)
           do (restart-case (error "No function description for ~s"
-                                  raw-function-name)
+                                  function-name)
                (consider-global ()
                  :report (lambda (stream)
                            (format stream
                                    "Treat it as the name of a global function."))
                  (return-from describe-function
                    (make-instance 'trucler:global-function-description
-                     :origin (cst:source cooked-function-name)
-                     :name raw-function-name)))
+                     :origin (cst:source function-name-cst)
+                     :name function-name)))
                (substitute (new-function-name)
                  :report (lambda (stream)
                            (format stream "Substitute a different name."))
