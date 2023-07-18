@@ -125,14 +125,8 @@
        (convert-arguments client (cst:rest argument-csts) environment))))
 
 (defun make-application (client cst environment)
-  (make-instance 'ico:application-ast
-    :origin (cst:source cst)
-    :function-ast
-    (make-instance 'ico:function-name-ast
-      :origin (cst:source (cst:first cst))
-      :name (cst:first cst))
-    :argument-asts
-    (convert-arguments client (cst:rest cst) environment)))
+  (let ((builder (make-builder client environment)))
+    (ses:parse builder (ses:find-syntax 'ses:application) cst)))
 
 ;;; Convert a form representing a call to a named global function.
 (defmethod convert-with-description
