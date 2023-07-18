@@ -6,6 +6,7 @@
                #:common-macros
                #:clostrum
                #:clostrum-basic
+               #:clostrum-trucler
                #:trucler-reference
                #:iconoclast-builder
                #:common-macros)
