@@ -13,7 +13,7 @@
                                    "Treat it as the name of a global function."))
                  (return-from describe-function
                    (make-instance 'trucler:global-function-description
-                     :origin (cst:source function-name-cst)
+                     ;; :origin (cst:source function-name-cst)
                      :name function-name)))
                (substitute (new-function-name)
                  :report (lambda (stream)
