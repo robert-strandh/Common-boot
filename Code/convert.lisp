@@ -16,13 +16,14 @@
           ((symbolp (first form))
            (when (and *current-form-is-top-level-p* *compile-time-too*)
              (eval-cst client cst environment))
-           (let* ((operator (first form))
+           (let* ((operator-cst (cst:first cst))
+                  (operator (first form))
                   (syntax (ses:find-syntax operator :if-does-not-exist nil)))
              (if (null syntax)
                  ;; There is no syntax available for this operator, so
                  ;; we must see whethere there is a description for
                  ;; it, and act according to that description.
-                 (let ((d (describe-function client environment operator)))
+                 (let ((d (describe-function client environment operator-cst)))
                    (convert-with-description client cst d environment))
                  ;; There is a syntax available for this operator, so
                  ;; we parse the expression according to that syntax.
