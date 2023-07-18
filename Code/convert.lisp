@@ -13,10 +13,10 @@
            (convert-constant client cst environment))
           ((symbolp form)
            (convert-variable client cst environment))
-          ((symbolp (car form))
+          ((symbolp (first form))
            (when (and *current-form-is-top-level-p* *compile-time-too*)
              (eval-cst client cst environment))
-           (let* ((operator (cst:first cst))
+           (let* ((operator (first form))
                   (syntax (ses:find-syntax operator :if-does-not-exist nil)))
              (if (null syntax)
                  ;; There is no syntax available for this operator, so
@@ -26,7 +26,8 @@
                    (convert-with-description client cst d environment))
                  ;; There is a syntax available for this operator, so
                  ;; we parse the expression according to that syntax.
-                 (ses:parse client syntax cst))))
+                 (let ((builder (make-builder client environment)))
+                   (ses:parse builder syntax cst)))))
           (t
            ;; The form must be a compound form where the CAR is a lambda
            ;; expression.  Evaluating such a form might have some
