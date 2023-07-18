@@ -14,7 +14,7 @@
          (expanded-form
            (expand-macro expander cst environment))
          (expanded-cst
-           (cst:reconstruct expanded-form cst)))
+           (cst:reconstruct client expanded-form cst)))
     (setf (cst:source expanded-cst) (cst:source cst))
     (with-preserved-toplevel-ness
       (convert client expanded-cst environment))))
@@ -64,7 +64,7 @@
          (expanded-form
            (expand-macro expander cst environment))
          (expanded-cst
-           (cst:reconstruct expanded-form cst)))
+           (cst:reconstruct client expanded-form cst)))
     (setf (cst:source expanded-cst) (cst:source cst))
     (with-preserved-toplevel-ness
       (convert client expanded-cst environment))))
@@ -87,7 +87,7 @@
           (let* ((expanded-form
                    (expand-macro expander cst environment))
                  (expanded-cst
-                   (cst:reconstruct expanded-form cst)))
+                   (cst:reconstruct client expanded-form cst)))
             (setf (cst:source expanded-cst) (cst:source cst))
             (convert client expanded-cst environment))
           ;; There is a compiler macro, so we must see whether it will
@@ -103,7 +103,7 @@
                 (let* ((expanded-form
                          (expand-macro expander cst environment))
                        (expanded-cst
-                         (cst:reconstruct expanded-form cst)))
+                         (cst:reconstruct client expanded-form cst)))
                   (setf (cst:source expanded-cst)
                         (cst:source cst))
                   (convert client expanded-cst environment))
@@ -112,7 +112,7 @@
                 ;; This new form must then again be converted without
                 ;; taking into account the real macro expander.
                 (let ((expanded-cst
-                        (cst:reconstruct expanded-form cst)))
+                        (cst:reconstruct client expanded-form cst)))
                   (setf (cst:source expanded-cst)
                         (cst:source cst))
                   (convert client expanded-cst environment))))))))
@@ -159,7 +159,7 @@
               ;; macro replaced the original form with a new form.
               ;; This new form must then be converted.
               (let ((expanded-cst
-                      (cst:reconstruct expanded-form cst)))
+                      (cst:reconstruct client expanded-form cst)))
                 (setf (cst:source expanded-cst) (cst:source cst))
                 (convert client expanded-cst environment)))))))
 
