@@ -22,6 +22,7 @@
    (:file "application")
    (:file "let")
    (:file "letstar")
+   (:file "progn")
    (:file "convert-variable")
    (:file "convert-constant")
    (:file "convert-with-description")
