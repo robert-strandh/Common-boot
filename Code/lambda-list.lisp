@@ -74,7 +74,8 @@
     (loop for parameter-ast in (ico:parameter-asts section-ast)
           do (setf new-environment
                    (finalize-parameter
-                    client parameter-ast new-environment)))))
+                    client parameter-ast new-environment)))
+    new-environment))
 
 ;;; FIXME: handle declarations. 
 
@@ -84,18 +85,18 @@
   (let ((new-environment environment))
     (setf new-environment
           (finalize-section
-           client (ico:required-section-ast ast) environment))
+           client (ico:required-section-ast ast) new-environment))
     (setf new-environment
           (finalize-section
-           client (ico:optional-section-ast ast) environment))
+           client (ico:optional-section-ast ast) new-environment))
     (setf new-environment
           (finalize-section
-           client (ico:rest-section-ast ast) environment))
+           client (ico:rest-section-ast ast) new-environment))
     (setf new-environment
           (finalize-section
-           client (ico:key-section-ast ast) environment))
+           client (ico:key-section-ast ast) new-environment))
     (setf new-environment
           (finalize-section
-           client (ico:aux-section-ast ast) environment))
+           client (ico:aux-section-ast ast) new-environment))
     new-environment))
     
