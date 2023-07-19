@@ -18,5 +18,6 @@
         :form-asts
         (loop for form-ast in (ico:form-asts ast)
               collect
-              (convert-ast-in-environment client form-ast new-environment)))
-      new-environment)))
+              (convert-ast-in-environment
+               client form-ast new-environment)))))
+  ast)
