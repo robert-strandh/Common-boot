@@ -195,9 +195,7 @@
 ;;; variable to be bound is special.  Return a second value indicating
 ;;; whether the variable is globally special.
 (defun variable-is-special-p
-    (client environment
-     variable-name-ast
-     declaration-specifier-asts)
+    (client variable-name-ast declaration-specifier-asts environment)
   (let* ((name (ico:name variable-name-ast))
          (existing-description
            (trucler:describe-variable client environment name))
@@ -241,7 +239,8 @@
         (name (ico:name variable-ast))
         (raw-declarations (mapcar #'cst:raw declarations)))
     (multiple-value-bind (special-p globally-p)
-        (variable-is-special-p client name declarations original-environment)
+        (variable-is-special-p
+         client variable-ast declarations original-environment)
       (if special-p
           (unless globally-p
             (setf new-env
