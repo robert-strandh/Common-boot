@@ -203,8 +203,8 @@
                    :origin (cst:source cst)
                    :name (trucler:name description)
                    :variable-definition-ast variable-definition-ast)))
-    (reinitialize-instance variable-definition-ast
-      :variable-reference-asts
-      (append (ico:variable-reference-asts variable-definition-ast)
-              (list result)))
+    ;; (reinitialize-instance variable-definition-ast
+    ;;   :variable-reference-asts
+    ;;   (append (ico:variable-reference-asts variable-definition-ast)
+    ;;           (list result)))
     result))
