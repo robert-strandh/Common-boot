@@ -20,6 +20,7 @@
    (:file "environment-query")
    (:file "environment-augmentation")
    (:file "application")
+   (:file "lambda-list")
    (:file "let")
    (:file "letstar")
    (:file "progn")
