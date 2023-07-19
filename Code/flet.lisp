@@ -10,9 +10,7 @@
       :form-asts
       (loop for form-ast in (ico:form-asts ast)
             collect
-            (convert-ast-in-environment client form-ast body-environment)))
-    (augment-environment-with-local-function-name
-     client (ico:name-ast ast) environment)))
+            (convert-ast-in-environment client form-ast body-environment)))))
 
 (defmethod abp:finish-node
     ((builder builder)
@@ -21,9 +19,12 @@
   (with-builder-components (builder client environment)
     (let ((new-environment environment))
       (loop for local-function-ast in (ico:binding-asts ast)
-            do (setf new-environment
-                     (finalize-local-function-ast
-                      client local-function-ast new-environment)))
+            for name-ast = (ico:name-ast local-function-ast)
+            do (finalize-local-function-ast
+                client local-function-ast new-environment)
+               (setf new-environment
+                     (augment-environment-with-local-function-name
+                      client name-ast environment)))
       (reinitialize-instance ast
         :form-asts
         (loop for form-ast in (ico:form-asts ast)
