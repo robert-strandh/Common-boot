@@ -23,6 +23,7 @@
    (:file "lambda-list")
    (:file "let")
    (:file "flet")
+   (:file "labels")
    (:file "letstar")
    (:file "progn")
    (:file "block")
