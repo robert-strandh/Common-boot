@@ -16,6 +16,4 @@
         (append (ico:block-name-reference-asts identity)
                 (list block-name-ast)))
       (reinitialize-instance ast
-        :form-asts
-        (loop for body-ast in (ico:form-asts ast)
-              collect (convert-ast builder body-ast))))))
+        :form-ast (convert-ast builder (ico:form-ast ast))))))
