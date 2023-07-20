@@ -23,9 +23,9 @@
               do (multiple-value-bind (special-p globally-special-p)
                      (variable-is-special-p
                       client
-                      environment
                       variable-name-ast
-                      declaration-asts)
+                      declaration-asts
+                      environment)
                    (change-class variable-name-ast
                                  (if special-p
                                      'ico:special-variable-bound-ast
@@ -36,7 +36,7 @@
                            (trucler:add-local-special-variable
                             client environment variable-name))
                          (trucler:add-lexical-variable
-                          client environment
+                          client body-environment
                           variable-name variable-name-ast)))))
         (let ((new-builder (make-builder client body-environment)))
           (reinitialize-instance ast
