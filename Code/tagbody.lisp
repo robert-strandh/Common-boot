@@ -16,6 +16,7 @@
       (loop with new-builder = (make-builder client new-environment)
             for segment-ast in (ico:segment-asts ast)
             do (reinitialize-instance segment-ast
-                 :form-asts
-                 (loop for form-ast in (ico:form-asts segment-ast)
-                       collect (convert-ast new-builder form-ast)))))))
+                 :statement-asts
+                 (loop for statement-ast in (ico:statement-asts segment-ast)
+                       collect (convert-ast new-builder statement-ast))))))
+  ast)
