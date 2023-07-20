@@ -4,4 +4,4 @@
 
 (defgeneric pop-stack (client))
 
-(defgeneric cps (client ast continuation))
+(defgeneric cps (client ast environment continuation))
