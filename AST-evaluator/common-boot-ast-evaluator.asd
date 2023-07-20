@@ -6,4 +6,5 @@
   :components
   ((:file "packages")
    (:file "generic-functions")
-   (:file "convert")))
+   (:file "convert")
+   (:file "ast-to-cps")))
