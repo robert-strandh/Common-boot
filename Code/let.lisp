@@ -30,14 +30,14 @@
                                  (if special-p
                                      'ico:special-variable-bound-ast
                                      'ico:variable-definition-ast))
-               (setf body-environment
-                     (if special-p
-                         (unless globally-special-p
-                           (trucler:add-local-special-variable
-                            client environment variable-name))
-                         (trucler:add-lexical-variable
-                          client body-environment
-                          variable-name variable-name-ast)))))
+                   (setf body-environment
+                         (if special-p
+                             (unless globally-special-p
+                               (trucler:add-local-special-variable
+                                client environment variable-name))
+                             (trucler:add-lexical-variable
+                              client body-environment
+                              variable-name variable-name-ast)))))
         (let ((new-builder (make-builder client body-environment)))
           (reinitialize-instance ast
             :form-asts
