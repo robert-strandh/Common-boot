@@ -20,9 +20,9 @@
                  (multiple-value-bind (special-p globally-special-p)
                      (variable-is-special-p
                       client
-                      new-environment
                       variable-name-ast
-                      declaration-asts)
+                      declaration-asts
+                      new-environment)
                    (change-class variable-name-ast
                                  (if special-p
                                      'ico:special-variable-bound-ast
