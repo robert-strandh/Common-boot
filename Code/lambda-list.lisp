@@ -9,8 +9,24 @@
 
 (defmethod finalize-parameter
     (client (parameter-ast ico:required-parameter-ast) environment)
-  (augment-environment-with-variable
-   client (ico:name-ast parameter-ast) '() environment environment))
+  (let* ((variable-name-ast (ico:name-ast parameter-ast))
+         (variable-name (ico:name variable-name-ast)))
+    (multiple-value-bind (special-p globally-special-p)
+        (variable-is-special-p
+         client
+         variable-name-ast
+         '()
+         environment)
+      (change-class variable-name-ast
+                    (if special-p
+                        'ico:special-variable-bound-ast
+                        'ico:variable-definition-ast))
+      (if special-p
+          (unless globally-special-p
+            (trucler:add-local-special-variable
+             client environment variable-name))
+          (trucler:add-lexical-variable
+           client environment variable-name variable-name-ast)))))
 
 (defmethod finalize-parameter
     (client (parameter-ast ico:rest-parameter-ast) environment)
