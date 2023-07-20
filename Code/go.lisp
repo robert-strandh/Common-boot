@@ -16,4 +16,4 @@
         :tag-reference-asts
         (append (ico:tag-reference-asts defining-tag-ast)
          (list referencing-tag-ast)))))
-  ast))
+  ast)
