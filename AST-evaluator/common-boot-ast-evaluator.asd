@@ -6,5 +6,6 @@
   :components
   ((:file "packages")
    (:file "generic-functions")
+   (:file "run-time")
    (:file "convert")
    (:file "ast-to-cps")))
