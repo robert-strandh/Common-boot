@@ -7,10 +7,8 @@
 
 (defgeneric finalize-parameter (client parameter-ast environment))
 
-(defmethod finalize-parameter
-    (client (parameter-ast ico:required-parameter-ast) environment)
-  (let* ((variable-name-ast (ico:name-ast parameter-ast))
-         (variable-name (ico:name variable-name-ast)))
+(defun finalize-parameter-variable (client variable-name-ast environment)
+  (let ((variable-name (ico:name variable-name-ast)))
     (multiple-value-bind (special-p globally-special-p)
         (variable-is-special-p
          client
@@ -29,9 +27,14 @@
            client environment variable-name variable-name-ast)))))
 
 (defmethod finalize-parameter
+    (client (parameter-ast ico:required-parameter-ast) environment)
+  (finalize-parameter-variable
+   client (ico:name-ast parameter-ast) environment))
+
+(defmethod finalize-parameter
     (client (parameter-ast ico:rest-parameter-ast) environment)
-  (augment-environment-with-variable
-   client (ico:name-ast parameter-ast) '() environment environment))
+  (finalize-parameter-variable
+   client (ico:name-ast parameter-ast) environment))
 
 (defmethod finalize-parameter
     (client (parameter-ast ico:optional-parameter-ast) environment)
@@ -39,13 +42,10 @@
         (name-ast (ico:name-ast parameter-ast))
         (supplied-p-ast (ico:supplied-p-parameter-ast parameter-ast)))
     (setf new-environment
-          (augment-environment-with-variable
-           client name-ast '() environment environment))
+          (finalize-parameter-variable client name-ast environment))
     (unless (null supplied-p-ast)
       (setf new-environment
-            (augment-environment-with-variable
-             client (ico:name-ast supplied-p-ast) '()
-             new-environment new-environment)))
+            (finalize-parameter-variable client supplied-p-ast environment)))
     new-environment))
 
 (defmethod finalize-parameter
@@ -54,13 +54,10 @@
         (name-ast (ico:name-ast parameter-ast))
         (supplied-p-ast (ico:supplied-p-parameter-ast parameter-ast)))
     (setf new-environment
-          (augment-environment-with-variable
-           client name-ast '() environment environment))
+          (finalize-parameter-variable client name-ast environment))
     (unless (null supplied-p-ast)
       (setf new-environment
-            (augment-environment-with-variable
-             client (ico:name-ast supplied-p-ast) '()
-             new-environment new-environment)))
+            (finalize-parameter-variable client supplied-p-ast environment)))
     new-environment))
 
 (defmethod finalize-parameter
@@ -68,8 +65,7 @@
   (let ((new-environment environment)
         (name-ast (ico:name-ast parameter-ast)))
     (setf new-environment
-          (augment-environment-with-variable
-           client name-ast '() environment environment))
+          (finalize-parameter-variable client name-ast environment))
     new-environment))
 
 (defmethod finalize-parameter :before
