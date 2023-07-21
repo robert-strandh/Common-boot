@@ -7,6 +7,7 @@
   :components
   ((:file "packages")
    (:file "generic-functions")
+   (:file "utilities")
    (:file "run-time")
    (:file "convert")
    (:file "application-ast")
