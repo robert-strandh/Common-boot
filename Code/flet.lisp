@@ -3,6 +3,8 @@
 ;;; FIXME: handle declarations
 (defmethod finalize-local-function-ast
     (client (ast ico:local-function-ast) environment)
+  (change-class (ico:name-ast ast)
+                'ico:local-function-name-definition-ast)
   (let ((body-environment
           (finalize-ordinary-lambda-list
            client environment (ico:lambda-list-ast ast))))
