@@ -9,5 +9,5 @@
    (:file "generic-functions")
    (:file "run-time")
    (:file "convert")
-   (:file "application")
+   (:file "application-ast")
    (:file "ast-to-cps")))
