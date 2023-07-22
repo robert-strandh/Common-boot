@@ -15,31 +15,44 @@
             for form-ast = (ico:form-ast binding-ast)
             do (reinitialize-instance binding-ast
                  :form-ast (convert-ast builder form-ast)))
+      (let ((variable-name-asts
+              (mapcar #'ico:variable-name-ast binding-asts))
+            (bound-declarations-asts '())
+            (remaining-declaration-asts
+              (reduce #'append
+                      (mapcar #'ico:declaration-specifier-asts
+                              declaration-asts)
+                      :from-end t)))
+        (loop for variable-name-ast in (reverse variable-name-asts)
+              do (multiple-value-bind (bound remaining)
+                     (split-declaration-specifier-asts
+                      remaining-declaration-asts variable-name-ast)
+                   (push bound bound-declarations-asts)
+                   (setf remaining-declaration-asts remaining)))
       ;; Next, compute a new environment to use for the body forms
       (let ((body-environment environment))
-        (loop for binding-ast in binding-asts
-              for variable-name-ast = (ico:variable-name-ast binding-ast)
-              for variable-name = (ico:name variable-name-ast)
-              do (multiple-value-bind (special-p globally-special-p)
+        (loop for variable-name-ast in variable-name-asts
+              for bound-declaration-asts in bound-declarations-asts
+              do (setf body-environment
+                       (augment-environment-with-variable
+                        client
+                        variable-name-ast
+                        bound-declaration-asts
+                        body-environment))
+                 (multiple-value-bind (special-p globally-p)
                      (variable-is-special-p
                       client
                       variable-name-ast
-                      declaration-asts
+                      bound-declaration-asts
                       environment)
+                   (declare (ignore globally-p))
                    (change-class variable-name-ast
                                  (if special-p
                                      'ico:special-variable-bound-ast
-                                     'ico:variable-definition-ast))
-                   (setf body-environment
-                         (if special-p
-                             (unless globally-special-p
-                               (trucler:add-local-special-variable
-                                client environment variable-name))
-                             (trucler:add-lexical-variable
-                              client body-environment
-                              variable-name variable-name-ast)))))
+                                     'ico:variable-definition-ast))))
+        ;; FIXME: Also change class of references in declarations 
         (let ((new-builder (make-builder client body-environment)))
           (reinitialize-instance ast
             :form-asts
             (loop for body-ast in (ico:form-asts ast)
-                  collect (convert-ast new-builder body-ast))))))))
+                  collect (convert-ast new-builder body-ast)))))))))
