@@ -32,3 +32,22 @@
                (t
                 (push declaration-specifier-ast remaining))))
     (values (nreverse result) (nreverse remaining))))
+
+;;; Given a list L of VARIABLE-NAME-ASTs, compute a M list of the same
+;;; length as L, such that each element Mi of M is a list of bound
+;;; DECLARATION-SPECIFIER-ASTs that apply to the VARIABLE-NAME-AST Li
+;;; in L.  Return M as a first value and the remaining
+;;; DECLARATION-SPECIFIER-ASTs that apply to no VARIABLE-NAME-AST in L
+;;; as a second value.
+
+(defun associate-declaration-specifier-asts
+    (declaration-specifier-asts variable-name-asts)
+  (let ((bound-declarations-asts '())
+        (remaining-declaration-asts declaration-specifier-asts))
+    (loop for variable-name-ast in (reverse variable-name-asts)
+          do (multiple-value-bind (bound remaining)
+                 (split-declaration-specifier-asts
+                  remaining-declaration-asts variable-name-ast)
+               (push bound bound-declarations-asts)
+               (setf remaining-declaration-asts remaining)))
+    (values bound-declarations-asts remaining-declaration-asts)))
