@@ -20,6 +20,7 @@
    (:file "environment-query")
    (:file "finalize-name-reference")
    (:file "environment-augmentation")
+   (:file "declarations")
    (:file "application")
    (:file "lambda-list")
    (:file "let")
