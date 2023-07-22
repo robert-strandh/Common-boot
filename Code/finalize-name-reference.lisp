@@ -47,3 +47,15 @@
       (cons name-ast
        (ico:local-function-name-reference-asts
         local-function-name-definition-ast)))))
+
+(defun finalize-variable-name-ast-from-environment
+    (client name-ast environment)
+  (finalize-variable-name-ast-from-description
+   client name-ast
+   (trucler:describe-variable client environment (ico:name name-ast))))
+
+(defun finalize-function-name-ast-from-environment
+    (client name-ast environment)
+  (finalize-function-name-ast-from-description
+   client name-ast
+   (trucler:describe-function client environment (ico:name name-ast))))
