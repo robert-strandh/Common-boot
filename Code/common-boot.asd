@@ -18,6 +18,7 @@
    (:file "builder")
    (:file "environment")
    (:file "environment-query")
+   (:file "finalize-name-reference")
    (:file "environment-augmentation")
    (:file "application")
    (:file "lambda-list")
