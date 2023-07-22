@@ -213,9 +213,9 @@
             already-globally-special-p)))
 
 ;;; Given a single variable bound by some binding form like LET or
-;;; LET*, and a list of canonical declaration specifiers
-;;; concerning that variable, return a new environment that contains
-;;; information about that variable.
+;;; LET*, and a list of declaration specifiers concerning that
+;;; variable, return a new environment that contains information about
+;;; that variable.
 (defun augment-environment-with-variable
     (client variable-ast declaration-specifier-asts environment)
   (let ((new-env environment)
