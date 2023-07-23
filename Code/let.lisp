@@ -1,6 +1,5 @@
 (cl:in-package #:common-boot)
 
-;;; FIXME: handle more declarations
 (defmethod abp:finish-node
     ((builder builder)
      (kind t)
