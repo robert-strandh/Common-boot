@@ -185,9 +185,9 @@
      cst
      (description trucler:special-variable-description)
      environment)
-  (make-instance 'ico:variable-name-ast
-    :origin (cst:source cst)
-    :name (trucler:name description)))
+  (make-instance 'ico:special-variable-reference-ast
+    :name (trucler:name description)
+    :origin (cst:source cst)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
