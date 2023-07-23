@@ -51,3 +51,32 @@
                (push bound bound-declarations-asts)
                (setf remaining-declaration-asts remaining)))
     (values bound-declarations-asts remaining-declaration-asts)))
+
+;;; Given a list of bound declaration ASTs that each has a reference
+;;; to the variable in represented by VARIABLE-NAME-AST, change the
+;;; class of that reference to either VARIABLE-REFERENCE-AST or
+;;; SPECIAL-VARIABLE-REFERENCE-AST according to whether
+;;; VARIABLE-NAME-AST is a VARIABLE-DEFINITION-AST or a
+;;; SPECIAL-VARIABLE-BOUND-AST.  In the first case, also tie the
+;;; definition and the reference together.
+(defun change-class-of-variable-references
+    (variable-name-ast bound-declaration-asts)
+  (loop for bound-declaration-ast in bound-declaration-asts
+        do (loop for name-ast in (ico:name-asts bound-declaration-ast)
+                 do (when (eq (ico:name variable-name-ast)
+                              (ico:name name-ast))
+                      (if (typep variable-name-ast
+                                 'ico:variable-definition-ast)
+                          (progn
+                            (change-class
+                             name-ast
+                             'ico:variable-reference-ast
+                             :variable-definition-ast variable-name-ast)
+                            (reinitialize-instance variable-name-ast
+                              :variable-reference-asts
+                              (cons name-ast
+                               (ico:variable-reference-asts
+                                variable-name-ast))))
+                          (change-class
+                           name-ast
+                           'ico:special-variable-reference-ast))))))
