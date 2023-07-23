@@ -40,6 +40,7 @@
    (:file "multiple-value-call")
    (:file "multiple-value-prog1")
    (:file "progv")
+   (:file "setq")
    (:file "the")
    (:file "unwind-protect")
    (:file "convert-variable")
