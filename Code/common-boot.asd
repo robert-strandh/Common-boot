@@ -27,6 +27,7 @@
    (:file "flet")
    (:file "labels")
    (:file "letstar")
+   (:file "locally")
    (:file "progn")
    (:file "block")
    (:file "return-from")
