@@ -42,14 +42,21 @@
                           client
                           variable-name-ast
                           bound-declaration-asts
-                          environment)
+                          body-environment)
                        (declare (ignore globally-p))
                        (change-class variable-name-ast
                                      (if special-p
                                          'ico:special-variable-bound-ast
-                                         'ico:variable-definition-ast))))
-            ;; FIXME: Also change class of references in declarations.
-            ;; FIXME: Also add free declarations.
+                                         'ico:variable-definition-ast)))
+                     (change-class-of-variable-references
+                      variable-name-ast bound-declaration-asts))
+            ;; Add free SPECIAL declarations to body-environment.
+            (loop for declaration-ast in remaining-declaration-asts
+                  do (when (typep declaration-ast
+                                  'ico:special-ast)
+                       (setf body-environment
+                             (maybe-augment-environment-with-special-ast
+                              client declaration-ast body-environment))))
             (let ((new-builder (make-builder client body-environment)))
               (reinitialize-instance ast
                 :form-asts
