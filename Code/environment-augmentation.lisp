@@ -1,5 +1,23 @@
 (cl:in-package #:common-boot)
 
+(defgeneric maybe-augment-environment-with-special-ast
+    (client declaration-specifier-ast environment))
+
+;;; This case is a bit tricky, because if the variable is globally
+;;; special, nothing should be added to the environment.
+(defmethod maybe-augment-environment-with-special-ast
+    (client declaration-specifier-ast environment)
+  (let ((new-environment environment))
+    (loop for name-ast in (ico:name-asts declaration-specifier-ast)
+          for name = (ico:name name-ast)
+          for description
+            = (trucler:describe-variable client environment name)
+          unless (typep description
+                        'trucler:global-special-variable-description)
+            do (setf new-environment
+                     (trucler:add-local-special-variable
+                      client new-environment name)))
+    new-environment))
 
 (defmethod augment-environment-with-declaration
     (client
