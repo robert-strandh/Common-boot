@@ -10,5 +10,6 @@
    (:file "utilities")
    (:file "run-time")
    (:file "convert")
+   (:file "function-name-ast")
    (:file "application-ast")
    (:file "ast-to-cps")))
