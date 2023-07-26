@@ -12,6 +12,7 @@
    (:file "convert")
    (:file "variable-name-ast")
    (:file "function-name-ast")
+   (:file "progn-ast")
    (:file "let-and-letstar-ast")
    (:file "application-ast")
    (:file "ast-to-cps")))
