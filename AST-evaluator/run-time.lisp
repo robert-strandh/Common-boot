@@ -3,7 +3,7 @@
 (defclass stack-frame ()
   ((%continuation
     :initarg :continuation
-    :reader continuaton)
+    :reader continuation)
    (%dynamic-environment
     :initarg :dynamic-environment
     :reader dynamic-environment)))
@@ -13,20 +13,30 @@
 (defclass dynamic-environment-entry ()
   ((%stack :initarg :stack :reader stack)))
 
-(defclass block-entry (dynamic-environment-entry)
+(defclass continuation-entry (dynamic-environment-entry)
+  ((%continuation
+    :initarg :continuation
+    :reader continuation)))
+
+(defclass block-entry (continuation-entry)
   ())
 
-(defclass tagbody-entry (dynamic-environment-entry)
+(defclass tagbody-entry (continuation-entry)
   ())
 
-(defclass catch-entry (dynamic-environment-entry)
+(defclass catch-entry (continuation-entry)
   ())
 
 (defclass unwind-protect-entry (dynamic-environment-entry)
   ())
 
 (defclass special-variable-entry (dynamic-environment-entry)
-  ())
+  ((%name
+    :initarg :name
+    :reader name)
+   (%value
+    :initarg :value
+    :reader value)))
 
 (defparameter *dynamic-environment* '())
 
@@ -46,5 +56,14 @@
 
 (defun pop-stack ()
   (let ((frame (pop *stack*)))
-    (setf *continuation* (continuation entry)
-          *dynamic-environment* (dynamic-environment entry))))
+    (setf *continuation* (continuation frame)
+          *dynamic-environment* (dynamic-environment frame))))
+
+(defun push-stack-operation (client)
+  (declare (ignore client))
+  `(push-stack))
+
+(defun pop-stack-operation (client)
+  (declare (ignore client))
+  `(pop-stack))
+
