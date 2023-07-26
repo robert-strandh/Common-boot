@@ -2,4 +2,5 @@
 
 (defpackage #:common-boot-ast-evaluator
   (:local-nicknames (#:ico #:iconoclast))
-  (:use #:common-lisp))
+  (:use #:common-lisp)
+  (:shadow #:symbol-value))
