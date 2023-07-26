@@ -6,7 +6,7 @@
          (argument-variables
            (loop for argument-ast in argument-asts
                  collect (gensym)))
-         (action `(progn ,(push-stack client)
+         (action `(progn ,(push-stack-operation client)
                          (step (list ,argument-variables)
                                ,function-variable))))
     (loop for argument-ast in (reverse argument-asts)

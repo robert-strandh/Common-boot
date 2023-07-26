@@ -7,4 +7,4 @@
        ,(cps client ast environment
              `(lambda (&rest ,variable)
                 (declare (ignore ,variable))
-                ,(pop-stack client))))))
+                ,(pop-stack-operation client))))))
