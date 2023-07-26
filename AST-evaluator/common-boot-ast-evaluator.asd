@@ -10,6 +10,8 @@
    (:file "utilities")
    (:file "run-time")
    (:file "convert")
+   (:file "variable-name-ast")
    (:file "function-name-ast")
+   (:file "let-and-letstar-ast")
    (:file "application-ast")
    (:file "ast-to-cps")))
