@@ -37,6 +37,12 @@
 (defmethod finalize-function-name-ast-from-description
     (client
      (name-ast ico:function-name-ast)
+     (description null))
+  (change-class name-ast 'ico:global-function-name-reference-ast))
+
+(defmethod finalize-function-name-ast-from-description
+    (client
+     (name-ast ico:function-name-ast)
      (description trucler:local-function-description))
   (let ((local-function-name-definition-ast (trucler:identity description)))
     (change-class name-ast 'ico:function-reference-ast
