@@ -67,3 +67,11 @@
   (declare (ignore client))
   `(pop-stack))
 
+(defun symbol-value (client name cell)
+  (loop for entry in *dynamic-environment*
+        do (when (and (typep entry 'special-variable-entry)
+                      (eq name (name entry)))
+             (return (value entry)))
+        finally (if (clostrum-sys:variable-cell-boundp client cell)
+                    (return (clostrum-sys:variable-cell-value client cell))
+                    (error "unbound variable ~s" name))))
