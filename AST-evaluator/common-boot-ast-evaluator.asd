@@ -15,5 +15,6 @@
    (:file "progn-ast")
    (:file "let-and-letstar-ast")
    (:file "block-ast")
+   (:file "return-from")
    (:file "application-ast")
    (:file "ast-to-cps")))
