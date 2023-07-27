@@ -2,7 +2,7 @@
 
 (defmethod cps (client (ast ico:block-ast) environment continuation)
   `(progn (push (make-instance 'block-entry
-                  :name (ico:name ast)
+                  :name ',(ico:name (ico:name-ast ast))
                   :continuation ,continuation)
                 *dynamic-environment*)
           ,(cps-implicit-progn
