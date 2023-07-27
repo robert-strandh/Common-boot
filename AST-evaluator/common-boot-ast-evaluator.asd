@@ -10,6 +10,7 @@
    (:file "utilities")
    (:file "run-time")
    (:file "convert")
+   (:file "literal-ast")
    (:file "variable-name-ast")
    (:file "function-name-ast")
    (:file "progn-ast")
