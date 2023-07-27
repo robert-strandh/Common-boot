@@ -8,5 +8,9 @@
 
 (defmethod cps
     (client (ast ico:special-variable-reference-ast) environment continuation)
-  `(step (list (fdefinition ,(ico:name ast)))
+  `(step (list (symbol-value
+                client
+                ,(ico:name ast)
+                (clostrum-sys:variable-cell
+                 environment ,(ico:name ast))))
          ,continuation))
