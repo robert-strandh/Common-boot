@@ -14,5 +14,6 @@
    (:file "function-name-ast")
    (:file "progn-ast")
    (:file "let-and-letstar-ast")
+   (:file "block-ast")
    (:file "application-ast")
    (:file "ast-to-cps")))
