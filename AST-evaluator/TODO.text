@@ -18,7 +18,7 @@ _ multiple-value-call
 _ multiple-value-prog1
 * progn
 * progv
-_ quote
+* quote
 * return-from
 _ setq
 _ symbol-macrolet
