@@ -16,6 +16,7 @@
    (:file "progn-ast")
    (:file "if-ast")
    (:file "let-and-letstar-ast")
+   (:file "locally-st")
    (:file "block-ast")
    (:file "return-from-ast")
    (:file "application-ast")
