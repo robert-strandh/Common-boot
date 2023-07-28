@@ -6,7 +6,7 @@
         for variable-name-ast = (ico:variable-name-ast binding-ast)
         do (when (typep variable-name-ast 'ico:variable-definition-ast)
              (setf (lookup variable-name-ast environment)
-                   (gensym))))
+                   (make-symbol (symbol-name (ico:name variable-name-ast))))))
   ;; Next, compute the action of the body forms as an implicit PROGN.
   (let ((action (cps-implicit-progn
                  client (ico:form-asts ast) environment continuation)))
