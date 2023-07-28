@@ -14,6 +14,7 @@
    (:file "variable-name-ast")
    (:file "function-name-ast")
    (:file "progn-ast")
+   (:file "if-ast")
    (:file "let-and-letstar-ast")
    (:file "block-ast")
    (:file "return-from-ast")
