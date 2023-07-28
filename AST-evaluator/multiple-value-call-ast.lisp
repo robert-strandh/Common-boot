@@ -23,6 +23,7 @@
          environment
          `(lambda (&rest ,function-temp)
             (setf ,function-temp (car ,function-temp))
-            ,action))))
+            (let ((,arguments-temp '()))
+              ,action)))))
 
     
