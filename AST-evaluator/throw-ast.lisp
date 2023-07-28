@@ -1,6 +1,6 @@
 (cl:in-package #:common-boot-ast-evaluator)
 
-(defmethod cst (client (ast ico:throw-ast) environment continuation)
+(defmethod cps (client (ast ico:throw-ast) environment continuation)
   (declare (ignore continuation))
   (let ((temp (gensym)))
     (cps client
