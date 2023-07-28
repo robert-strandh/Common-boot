@@ -14,7 +14,7 @@ _ labels
 _ load-time-value
 * locally
 _ macrolet
-_ multiple-value-call
+* multiple-value-call
 _ multiple-value-prog1
 * progn
 * progv

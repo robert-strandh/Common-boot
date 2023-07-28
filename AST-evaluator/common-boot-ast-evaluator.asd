@@ -20,6 +20,7 @@
    (:file "block-ast")
    (:file "return-from-ast")
    (:file "application-ast")
+   (:file "multiple-value-call")
    (:file "progv-ast")
    (:file "quote-ast")
    (:file "the-ast")
