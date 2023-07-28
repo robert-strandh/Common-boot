@@ -25,7 +25,7 @@
   ())
 
 (defclass catch-entry (continuation-entry)
-  ())
+  ((%tag :initarg :tag :reader tag)))
 
 (defclass unwind-protect-entry (dynamic-environment-entry)
   ())
