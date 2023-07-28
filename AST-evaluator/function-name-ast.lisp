@@ -11,5 +11,8 @@
      (ast ico:global-function-name-reference-ast)
      environment
      continuation)
-  ;; FIXME: refer to Clostrum instead.
-  `(step (list (fdefinition ',(ico:name ast))) ,continuation))
+  `(step (list (clostrum:fdefinition
+                client
+                (trucler:global-environment client environment)
+                ',(ico:name ast)))
+         ,continuation))
