@@ -23,4 +23,5 @@
    (:file "progv-ast")
    (:file "the-ast")
    (:file "throw-ast")
-   (:file "ast-to-cps")))
+   (:file "ast-to-cps")
+   (:file "evaluator")))
