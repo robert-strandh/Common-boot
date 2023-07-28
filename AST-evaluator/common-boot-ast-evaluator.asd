@@ -21,6 +21,7 @@
    (:file "return-from-ast")
    (:file "application-ast")
    (:file "progv-ast")
+   (:file "quote-ast")
    (:file "the-ast")
    (:file "throw-ast")
    (:file "ast-to-cps")
