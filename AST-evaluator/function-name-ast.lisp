@@ -12,4 +12,4 @@
      environment
      continuation)
   ;; FIXME: refer to Clostrum instead.
-  `(step (list (fdefinition ,(ico:name ast))) ,continuation))
+  `(step (list (fdefinition ',(ico:name ast))) ,continuation))
