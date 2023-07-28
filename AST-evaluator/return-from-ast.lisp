@@ -12,7 +12,7 @@
          `(lambda (&rest ,temp)
             (loop for entry in *dynamic-environment*
                   do (when (and (typep entry 'block-entry)
-                                (eq ,name (name entry)))
+                                (eq ',name (name entry)))
                        ;; FIXME: check for expired entry.
                        (step ,temp
                              (continuation entry))))))))
