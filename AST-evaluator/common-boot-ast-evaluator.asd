@@ -18,4 +18,5 @@
    (:file "block-ast")
    (:file "return-from-ast")
    (:file "application-ast")
+   (:file "the-ast")
    (:file "ast-to-cps")))
