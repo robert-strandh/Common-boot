@@ -50,7 +50,7 @@
 
 (defun push-stack ()
   (push (make-instance 'stack-frame
-          :continuaton *continuation*
+          :continuation *continuation*
           :dynamic-environment *dynamic-environment*)
         *stack*))
 
