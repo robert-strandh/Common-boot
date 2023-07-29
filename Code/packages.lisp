@@ -10,4 +10,5 @@
                     (#:ses #:s-expression-syntax)
                     (#:abp #:architecture.builder-protocol)
                     (#:cst #:concrete-syntax-tree))
-  (:export #:create-environment))
+  (:export #:create-environment
+           #:cst-to-ast))
