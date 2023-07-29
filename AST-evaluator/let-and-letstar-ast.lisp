@@ -10,6 +10,7 @@
   ;; Next, compute the action of the body forms as an implicit PROGN.
   (let ((action (cps-implicit-progn
                  client (ico:form-asts ast) environment continuation)))
+    ;; Finally, compute the actions of the binding forms. 
     (loop for binding-ast in (reverse (ico:binding-asts ast))
           for variable-name-ast = (ico:variable-name-ast binding-ast)
           for variable-name = (lookup variable-name-ast environment)
