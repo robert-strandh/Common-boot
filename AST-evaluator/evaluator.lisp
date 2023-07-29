@@ -10,12 +10,12 @@
          (ast (cb:cst-to-ast client cst environment))
          (cps (ast-to-cps client ast))
          (initial-continuation (compile nil cps)))
+    (setq *dynamic-environment* '())
     (setq *continuation*
           (lambda (&rest arguments)
             (return-from eval-cst arguments)))
     (push-stack)
     (setq *continuation* initial-continuation)
-    (setq *dynamic-environment* '())
     (setq *arguments* (list client global-environment))
     (loop (evaluator-step))))
 
