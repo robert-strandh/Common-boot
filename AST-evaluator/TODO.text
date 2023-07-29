@@ -4,11 +4,11 @@ _ = not done
 * block
 * catch
 _ eval-when
-_ flet
+* flet
 _ function
 _ go
 * if
-_ labels
+* labels
 * let
 * let*
 _ load-time-value
