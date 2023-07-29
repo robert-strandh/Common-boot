@@ -12,13 +12,12 @@
          (initial-continuation (compile nil cps)))
     (setq *continuation*
           (lambda (&rest arguments)
-            (declare (ignore arguments))
-            (throw 'a *arguments*)))
+            (return-from eval-cst arguments)))
     (push-stack)
     (setq *continuation* initial-continuation)
     (setq *dynamic-environment* '())
     (setq *arguments* (list client global-environment))
-    (catch 'a (loop (evaluator-step)))))
+    (loop (evaluator-step))))
 
 (defun eval-expression (expression environment)
   (eval-cst (cst:cst-from-expression expression) environment))
