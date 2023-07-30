@@ -5,4 +5,5 @@
                #:parachute)
   :serial t
   :components
-  ((:file "packages")))
+  ((:file "packages")
+   (:file "application")))
