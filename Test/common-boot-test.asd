@@ -8,4 +8,5 @@
   ((:file "packages")
    (:file "utilities")
    (:file "application")
-   (:file "let")))
+   (:file "let")
+   (:file "letstar")))
