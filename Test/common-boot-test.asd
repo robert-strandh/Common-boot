@@ -7,6 +7,7 @@
   :components
   ((:file "packages")
    (:file "utilities")
+   (:file "quote")
    (:file "application")
    (:file "let")
    (:file "letstar")
