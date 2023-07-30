@@ -6,5 +6,5 @@
   (with-default-parameters (client environment global-environment)
     (cbae:import-host-function client '+ global-environment)
     (is #'equal
-        (multiple-value-list (+))
-        (cbae:eval-expression '(+) environment))))
+        (multiple-value-list #1=(+))
+        (cbae:eval-expression '#1# environment))))
