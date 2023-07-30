@@ -41,6 +41,7 @@
    (:file "multiple-value-call")
    (:file "multiple-value-prog1")
    (:file "progv")
+   (:file "quote")
    (:file "setq")
    (:file "the")
    (:file "unwind-protect")
