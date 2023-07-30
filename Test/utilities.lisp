@@ -8,4 +8,5 @@
           (,global-environment-variable
             (trucler:global-environment
              ,client-variable ,environment-variable)))
+     (declare (ignorable ,global-environment-variable))
      ,@body))
