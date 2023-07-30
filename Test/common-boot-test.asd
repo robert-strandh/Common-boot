@@ -9,4 +9,5 @@
    (:file "utilities")
    (:file "application")
    (:file "let")
-   (:file "letstar")))
+   (:file "letstar")
+   (:file "block-and-return-from")))
