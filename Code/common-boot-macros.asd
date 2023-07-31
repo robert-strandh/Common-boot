@@ -7,4 +7,5 @@
   ((:file "and")
    (:file "or")
    (:file "when")
-   (:file "unless")))
+   (:file "unless")
+   (:file "cond")))
