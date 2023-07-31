@@ -8,4 +8,5 @@
    (:file "or")
    (:file "when")
    (:file "unless")
-   (:file "cond")))
+   (:file "cond")
+   (:file "case")))
