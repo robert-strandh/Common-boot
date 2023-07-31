@@ -11,4 +11,5 @@
    (:file "application")
    (:file "let")
    (:file "letstar")
-   (:file "block-and-return-from")))
+   (:file "block-and-return-from")
+   (:file "catch-and-throw")))
