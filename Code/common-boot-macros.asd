@@ -4,5 +4,7 @@
   :depends-on ("common-boot")
   :serial t
   :components
-  ((:file "when")
+  ((:file "and")
+   (:file "or")
+   (:file "when")
    (:file "unless")))
