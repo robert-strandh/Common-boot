@@ -10,4 +10,5 @@
    (:file "unless")
    (:file "cond")
    (:file "case")
-   (:file "ecase")))
+   (:file "ecase")
+   (:file "ccase")))
