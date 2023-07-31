@@ -9,4 +9,5 @@
    (:file "when")
    (:file "unless")
    (:file "cond")
-   (:file "case")))
+   (:file "case")
+   (:file "ecase")))
