@@ -9,6 +9,7 @@
    (:file "utilities")
    (:file "quote")
    (:file "application")
+   (:file "if")
    (:file "let")
    (:file "letstar")
    (:file "locally")
