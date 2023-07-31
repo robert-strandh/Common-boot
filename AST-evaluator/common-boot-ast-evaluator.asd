@@ -25,6 +25,7 @@
    (:file "progv-ast")
    (:file "quote-ast")
    (:file "the-ast")
+   (:file "tag-ast")
    (:file "catch-ast")
    (:file "throw-ast")
    (:file "ast-to-cps")
