@@ -11,6 +11,7 @@
    (:file "application")
    (:file "let")
    (:file "letstar")
+   (:file "locally")
    (:file "flet")
    (:file "labels")
    (:file "block-and-return-from")
