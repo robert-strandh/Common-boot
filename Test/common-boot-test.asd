@@ -15,5 +15,6 @@
    (:file "locally")
    (:file "flet")
    (:file "labels")
+   (:file "multiple-value-call")
    (:file "block-and-return-from")
    (:file "catch-and-throw")))
