@@ -6,7 +6,7 @@
     (cps client
          (ico:tag-ast ast)
          environment
-         `(lambda (&rest temp)
+         `(lambda (&rest ,temp)
             (setq ,temp (car ,temp))
             ,(cps client
                   (ico:form-ast ast)
@@ -16,6 +16,6 @@
                            do (when (and (typep entry 'catch-entry)
                                          (eq (tag entry) ,temp))
                                 (setq *stack* (stack entry))
-                                (setq *continuation (continuation entry)))
+                                (setq *continuation* (continuation entry)))
                            finally (error "No active catch tag named ~s"
                                           ,temp))))))))
