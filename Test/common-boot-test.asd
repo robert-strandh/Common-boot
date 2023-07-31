@@ -12,5 +12,6 @@
    (:file "let")
    (:file "letstar")
    (:file "flet")
+   (:file "labels")
    (:file "block-and-return-from")
    (:file "catch-and-throw")))
