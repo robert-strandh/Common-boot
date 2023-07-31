@@ -12,4 +12,5 @@
    (:file "case")
    (:file "ecase")
    (:file "ccase")
-   (:file "check-type")))
+   (:file "check-type")
+   (:file "decf")))
