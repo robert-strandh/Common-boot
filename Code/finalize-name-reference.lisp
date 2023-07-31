@@ -46,10 +46,10 @@
      (description trucler:local-function-description))
   (let ((local-function-name-definition-ast (trucler:identity description)))
     (change-class name-ast 'ico:function-reference-ast
-                  :function-definition-ast
+                  :local-function-name-definition-ast
                   local-function-name-definition-ast)
     (reinitialize-instance local-function-name-definition-ast
-      :function-reference-asts
+      :local-function-name-reference-asts
       (cons name-ast
        (ico:local-function-name-reference-asts
         local-function-name-definition-ast)))))
