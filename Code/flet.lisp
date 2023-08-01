@@ -6,7 +6,7 @@
   (change-class (ico:name-ast ast)
                 'ico:local-function-name-definition-ast)
   (let ((body-environment
-          (finalize-ordinary-lambda-list
+          (finalize-lambda-list
            client environment (ico:lambda-list-ast ast))))
     (reinitialize-instance ast
       :form-asts
