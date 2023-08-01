@@ -20,4 +20,5 @@
    (:file "defgeneric")
    (:file "define-condition")
    (:file "defmethod")
-   (:file "defparameter")))
+   (:file "defparameter")
+   (:file "defvar")))
