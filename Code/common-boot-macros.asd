@@ -15,4 +15,5 @@
    (:file "check-type")
    (:file "decf")
    (:file "incf")
-   (:file "defclass")))
+   (:file "defclass")
+   (:file "defconstant")))
