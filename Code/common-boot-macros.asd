@@ -17,4 +17,5 @@
    (:file "incf")
    (:file "defclass")
    (:file "defconstant")
-   (:file "defgeneric")))
+   (:file "defgeneric")
+   (:file "define-condition")))
