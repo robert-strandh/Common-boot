@@ -10,7 +10,9 @@
           for variable-name-ast = (ico:variable-name-ast binding-ast)
           for form-ast = (ico:form-ast binding-ast)
           do (reinitialize-instance binding-ast
-               :form-ast (convert-ast new-builder form-ast))
+               :form-ast (if (null form-ast)
+                             nil
+                             (convert-ast new-builder form-ast)))
              (with-builder-components (new-builder client environment)
                (setf new-builder
                      (make-builder

@@ -33,7 +33,9 @@
               for variable-name-ast = (ico:variable-name-ast binding-ast)
               for form-ast = (ico:form-ast ast)
               do (reinitialize-instance binding-ast
-                   :form-ast (convert-ast builder form-ast))
+                   :form-ast (if (null form-ast)
+                                 nil
+                                 (convert-ast builder form-ast)))
                  (setf new-environment
                        (augment-environment-with-binding-variable
                         client
