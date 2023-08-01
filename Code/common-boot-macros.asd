@@ -14,4 +14,5 @@
    (:file "ccase")
    (:file "check-type")
    (:file "decf")
-   (:file "incf")))
+   (:file "incf")
+   (:file "defclass")))
