@@ -1,36 +1,32 @@
 (cl:in-package #:common-boot)
 
-(defgeneric finalize-binding (builder binding-ast declaration-asts))
+(defgeneric finalize-binding
+    (client builder environment binding-ast declaration-asts))
 
 (defmethod finalize-binding
-    (builder (ast ico:variable-binding-ast) declaration-asts)
-  (with-builder-components (builder client environment)
-    (let* ((form-ast (ico:form-ast ast))
-           (variable-name-ast (ico:variable-name-ast ast))
-           (variable-name (ico:name variable-name-ast))
-           (new-environment environment)
-           (new-builder builder))
-      (reinitialize-instance ast
-        :form-ast (convert-ast new-builder form-ast))
-      (multiple-value-bind (special-p globally-special-p)
-          (variable-is-special-p
-           client
-           variable-name-ast
-           declaration-asts
-           new-environment)
-        (change-class variable-name-ast
-                      (if special-p
-                          'ico:special-variable-bound-ast
-                          'ico:variable-definition-ast))
-        (make-builder
-         client 
-         (if special-p
-             (unless globally-special-p
-               (trucler:add-local-special-variable
-                client new-environment variable-name))
-             (trucler:add-lexical-variable
-              client new-environment
-              variable-name variable-name-ast)))))))
+    (client builder environment (ast ico:variable-binding-ast) declaration-asts)
+  (let* ((form-ast (ico:form-ast ast))
+         (variable-name-ast (ico:variable-name-ast ast))
+         (variable-name (ico:name variable-name-ast)))
+    (reinitialize-instance ast
+      :form-ast (convert-ast builder form-ast))
+    (multiple-value-bind (special-p globally-special-p)
+        (variable-is-special-p
+         client
+         variable-name-ast
+         declaration-asts
+         environment)
+      (change-class variable-name-ast
+                    (if special-p
+                        'ico:special-variable-bound-ast
+                        'ico:variable-definition-ast))
+      (if special-p
+          (unless globally-special-p
+            (trucler:add-local-special-variable
+             client environment variable-name))
+          (trucler:add-lexical-variable
+           client environment
+           variable-name variable-name-ast)))))
 
 (defmethod abp:finish-node
     ((builder builder)
