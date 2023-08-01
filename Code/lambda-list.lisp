@@ -91,9 +91,12 @@
 
 ;;; FIXME: handle declarations. 
 
+(defgeneric finalize-lambda-list (client environment lambda-list-ast))
+
 ;;; Finalize the unparsed parts of an ordinary lambda list AST and
 ;;; return a new environment resulting from the introduced variables.
-(defun finalize-ordinary-lambda-list (client environment ast)
+(defmethod finalize-lambda-list
+    (client environment (ast ico:ordinary-lambda-list-ast))
   (let ((new-environment environment))
     (setf new-environment
           (finalize-section
@@ -112,3 +115,24 @@
            client (ico:aux-section-ast ast) new-environment))
     new-environment))
     
+;;; Finalize the unparsed parts of an ordinary lambda list AST and
+;;; return a new environment resulting from the introduced variables.
+(defmethod finalize-lambda-list
+    (client environment (ast ico:specialized-lambda-list-ast))
+  (let ((new-environment environment))
+    (setf new-environment
+          (finalize-section
+           client (ico:required-section-ast ast) new-environment))
+    (setf new-environment
+          (finalize-section
+           client (ico:optional-section-ast ast) new-environment))
+    (setf new-environment
+          (finalize-section
+           client (ico:rest-section-ast ast) new-environment))
+    (setf new-environment
+          (finalize-section
+           client (ico:key-section-ast ast) new-environment))
+    (setf new-environment
+          (finalize-section
+           client (ico:aux-section-ast ast) new-environment))
+    new-environment))
