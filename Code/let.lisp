@@ -1,5 +1,8 @@
 (cl:in-package #:common-boot)
 
+;;; BUILDER is a builder to use for converting the value forms in the
+;;; binding, ENVIRONMENT is the environment to augment with the
+;;; variable of the binding.  The augmented environment is returned.
 (defgeneric finalize-binding
     (client builder environment binding-ast declaration-asts))
 
