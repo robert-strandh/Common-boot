@@ -19,4 +19,5 @@
    (:file "defconstant")
    (:file "defgeneric")
    (:file "define-condition")
-   (:file "defmethod")))
+   (:file "defmethod")
+   (:file "defparameter")))
