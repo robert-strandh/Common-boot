@@ -25,4 +25,5 @@
    (:file "do")
    (:file "dostar")
    (:file "dolist")
-   (:file "dotimes")))
+   (:file "dotimes")
+   (:file "ignore-errors")))
