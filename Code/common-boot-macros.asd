@@ -38,4 +38,5 @@
    (:file "prog1")
    (:file "prog2")
    (:file "psetq")
-   (:file "pushnew")))
+   (:file "pushnew")
+   (:file "return")))
