@@ -35,4 +35,5 @@
    (:file "print-unreadable-object")
    (:file "prog")
    (:file "progstar")
-   (:file "prog1")))
+   (:file "prog1")
+   (:file "prog2")))
