@@ -32,4 +32,5 @@
    (:file "multiple-value-setq")
    (:file "nth-value")
    (:file "pop")
-   (:file "print-unreadable-object")))
+   (:file "print-unreadable-object")
+   (:file "prog")))
