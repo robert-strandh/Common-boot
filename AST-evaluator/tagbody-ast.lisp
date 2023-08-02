@@ -1,16 +1,19 @@
 (cl:in-package #:common-boot-ast-evaluator)
 
 (defmethod cps (client (ast ico:tagbody-ast) environment continuation)
-  (let* ((temp (gensym))
-         (segment-asts (ico:segment-asts ast))
-         (label-count (- (length segment-asts)
-                         (if (and (not (null segment-asts))
-                                  (null (ico:tag-ast (first segment-asts))))
-                             1 0)))
-         (action `(progn
-                    (loop repeat ,label-count do (pop *dynamic-environment*))
-                    (step (list nil) ,continuation))))
+  (let ((segment-asts (ico:segment-asts ast))
+        (label-count 0))
     (loop for segment-ast in segment-asts
+          for tag-ast = (ico:tag-ast segment-ast)
+          do (unless (null tag-ast)
+               (incf label-count)
+               (setf (lookup tag-ast environment) (gensym))))
+    (loop with temp = (gensym)
+          with action = `(progn
+                           (loop repeat ,label-count
+                                 do (pop *dynamic-environment*))
+                           (step (list nil) ,continuation))
+          for segment-ast in segment-asts
           for tag-ast = (ico:tag-ast segment-ast)
           for new-continuation = `(lambda (&rest ,temp)
                                     (declare (ignore ,temp))
@@ -21,7 +24,8 @@
                                  environment
                                  new-continuation)
                            ,(unless (null tag-ast)
-                              `(push (make-instance 'tag-entry
-                                       :name ',(ico:name tag-ast)
-                                       :continuation new-continuation))))))
-    action))
+                              (let ((name (lookup tag-ast environment)))
+                                `(push (make-instance 'tag-entry
+                                         :name ',name
+                                         :continuation new-continuation))))))
+          finally (return action))))
