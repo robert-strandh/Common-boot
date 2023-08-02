@@ -6,12 +6,12 @@ _ = not done
 _ eval-when
 * flet
 _ function
-_ go
+* go
 * if
 * labels
 * let
 * let*
-_ load-time-value
+* load-time-value
 * locally
 _ macrolet
 * multiple-value-call
@@ -22,7 +22,7 @@ _ multiple-value-prog1
 * return-from
 _ setq
 _ symbol-macrolet
-_ tagbody
+* tagbody
 * the
 * throw
 _ unwind-protect
