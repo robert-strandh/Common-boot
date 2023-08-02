@@ -21,4 +21,5 @@
    (:file "define-condition")
    (:file "defmethod")
    (:file "defparameter")
-   (:file "defvar")))
+   (:file "defvar")
+   (:file "do")))
