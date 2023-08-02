@@ -21,8 +21,8 @@
 (defclass block-entry (continuation-entry)
   ((%name :initarg :name :reader name)))
 
-(defclass tagbody-entry (continuation-entry)
-  ())
+(defclass tag-entry (continuation-entry)
+  ((%name :initarg :name :reader name)))
 
 (defclass catch-entry (continuation-entry)
   ((%tag :initarg :tag :reader tag)))
