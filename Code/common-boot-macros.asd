@@ -34,4 +34,5 @@
    (:file "pop")
    (:file "print-unreadable-object")
    (:file "prog")
-   (:file "progstar")))
+   (:file "progstar")
+   (:file "prog1")))
