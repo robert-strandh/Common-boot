@@ -29,5 +29,6 @@
    (:file "catch-ast")
    (:file "throw-ast")
    (:file "tagbody-segment-ast")
+   (:file "tagbody-ast")
    (:file "ast-to-cps")
    (:file "evaluator")))
