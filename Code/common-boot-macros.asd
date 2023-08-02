@@ -33,4 +33,5 @@
    (:file "nth-value")
    (:file "pop")
    (:file "print-unreadable-object")
-   (:file "prog")))
+   (:file "prog")
+   (:file "progstar")))
