@@ -22,4 +22,7 @@
    (:file "defmethod")
    (:file "defparameter")
    (:file "defvar")
-   (:file "do")))
+   (:file "do")
+   (:file "dostar")
+   (:file "dolist")
+   (:file "dotimes")))
