@@ -26,4 +26,5 @@
    (:file "dostar")
    (:file "dolist")
    (:file "dotimes")
-   (:file "ignore-errors")))
+   (:file "ignore-errors")
+   (:file "multiple-value-bind")))
