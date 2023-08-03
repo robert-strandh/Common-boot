@@ -5,6 +5,7 @@
   :serial t
   :components
   ((:file "and")
+   (:file "assert")
    (:file "or")
    (:file "when")
    (:file "unless")
