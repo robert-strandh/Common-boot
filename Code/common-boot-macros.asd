@@ -34,6 +34,7 @@
    (:file "destructuring-bind")
    (:file "do")
    (:file "dostar")
+   (:file "do-all-symbols")
    (:file "dolist")
    (:file "dotimes")
    (:file "ignore-errors")
