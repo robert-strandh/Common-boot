@@ -22,6 +22,7 @@
    (:file "defclass")
    (:file "defconstant")
    (:file "defgeneric")
+   (:file "define-compiler-macro")
    (:file "define-condition")
    (:file "defmethod")
    (:file "defparameter")
