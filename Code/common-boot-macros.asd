@@ -27,6 +27,7 @@
    (:file "defmacro")
    (:file "defmethod")
    (:file "defparameter")
+   (:file "defun")
    (:file "defvar")
    (:file "do")
    (:file "dostar")
