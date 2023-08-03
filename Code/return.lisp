@@ -5,4 +5,4 @@
      (kind t)
      (ast ico:return-ast))
   (reinitialize-instance ast
-    :form-ast (convert-optional-ast biulder (ico:form-ast ast))))
+    :form-ast (convert-optional-ast builder (ico:form-ast ast))))
