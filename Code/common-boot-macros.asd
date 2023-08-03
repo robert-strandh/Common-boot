@@ -16,6 +16,7 @@
    (:file "check-type")
    (:file "typecase")
    (:file "etypecase")
+   (:file "ctypecase")
    (:file "decf")
    (:file "incf")
    (:file "defclass")
