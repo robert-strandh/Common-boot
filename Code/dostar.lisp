@@ -9,12 +9,10 @@
           for init-form-ast = (ico:init-form-ast ast)
           for step-form-ast = (ico:step-form-ast ast)
           do (reinitialize-instance variable-ast
-               :init-form-ast (if (null init-form-ast)
-                                  nil
-                                  (convert-ast new-builder init-form-ast))
-               :step-form-ast (if (null step-form-ast)
-                                  nil
-                                  (convert-ast new-builder step-form-ast)))
+               :init-form-ast
+               (convert-optional-ast new-builder (ico:init-form-ast ast))
+               :step-form-ast
+               (convert-optional-ast new-builder (ico:step-form-ast ast)))
              (with-builder-components (new-builder client environment)
                (setf new-builder
                      (make-builder
@@ -26,13 +24,9 @@
                        (ico:declaration-asts ast))))))
     (reinitialize-instance ast
       :end-test-ast (convert-ast new-builder (ico:end-test-ast ast))
-      :result-asts
-      (loop for result-ast in (ico:result-asts ast)
-            collect (convert-ast new-builder result-ast)))
+      :result-asts (convert-asts new-builder (ico:result-asts ast)))
     (loop for ast in (ico:segment-asts ast)
           do (reinitialize-instance ast
                :statement-asts
-               (loop for statement-ast in (ico:statement-asts ast)
-                     collect (convert-ast new-builder ast))))))
-
+               (convert-asts new-builder (ico:statement-asts ast))))))
     

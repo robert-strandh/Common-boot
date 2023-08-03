@@ -7,6 +7,4 @@
   (reinitialize-instance ast
     :first-form-ast (convert-ast builder (ico:first-form-ast ast))
     :second-form-ast (convert-ast builder (ico:second-form-ast ast))
-    :form-asts
-    (loop for form-ast in (ico:form-asts ast)
-          do (convert-ast builder form-ast))))
+    :form-asts (convert-asts builder (ico:form-asts ast))))

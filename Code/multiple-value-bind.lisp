@@ -16,6 +16,4 @@
       (let ((new-builder (make-builder client new-environment)))
         (reinitialize-instance ast
           :values-ast (convert-ast builder (ico:values-ast ast))
-          :form-asts
-          (loop for form-ast in (ico:form-asts ast)
-                do (convert-ast new-builder form-ast)))))))
+          :form-asts (convert-asts new-builder (ico:form-asts ast)))))))

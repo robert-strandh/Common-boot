@@ -5,6 +5,4 @@
      (kind t)
      (ast ico:and-ast))
   (reinitialize-instance ast
-    :form-asts
-    (loop for body-ast in (ico:form-asts ast)
-          collect (convert-ast builder body-ast))))
+    :form-asts (convert-asts builder (ico:form-asts ast))))

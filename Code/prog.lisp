@@ -8,11 +8,9 @@
       (let ((new-environment environment))
         (loop for binding-ast in (ico:binding-asts ast)
               for variable-name-ast = (ico:variable-name-ast binding-ast)
-              for form-ast = (ico:form-ast ast)
               do (reinitialize-instance binding-ast
-                   :form-ast (if (null form-ast)
-                                 nil
-                                 (convert-ast builder form-ast)))
+                   :form-ast
+                   (convert-optional-ast builder (ico:form-ast ast)))
                  (setf new-environment
                        (augment-environment-with-binding-variable
                         client
@@ -23,5 +21,4 @@
           (loop for ast in (ico:segment-asts ast)
                 do (reinitialize-instance ast
                      :statement-asts
-                     (loop for statement-ast in (ico:statement-asts ast)
-                           collect (convert-ast new-builder ast))))))))
+                     (convert-asts new-builder (ico:statement-asts ast))))))))

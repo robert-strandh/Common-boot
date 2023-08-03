@@ -11,6 +11,5 @@
              client environment (ico:lambda-list-ast ast))))
       (reinitialize-instance ast
         :form-asts
-        (loop with new-builder = (make-builder client body-environment)
-              for form-ast in (ico:form-asts ast)
-              collect (convert-ast new-builder form-ast))))))
+        (convert-asts (make-builder client body-environment)
+                      (ico:form-asts ast))))))

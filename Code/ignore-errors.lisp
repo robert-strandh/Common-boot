@@ -5,6 +5,4 @@
      (kind t)
      (ast ico:ignore-errors-ast))
   (reinitialize-instance ast
-    :form-asts
-    (loop for form-ast in (ico:form-asts ast)
-          do (convert-ast builder form-ast))))
+    :form-asts (convert-asts builder (ico:form-asts ast))))

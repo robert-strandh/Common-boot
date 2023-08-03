@@ -6,6 +6,4 @@
      (ast ico:decf-ast))
   (reinitialize-instance ast
     :place-ast (convert-ast builder (ico:place-ast ast))
-    :delta-ast (if (null (ico:delta-ast ast))
-                   nil
-                   (convert-ast builder (ico:delta-ast ast)))))
+    :delta-ast (convert-optional-ast builder (ico:delta-ast ast))))

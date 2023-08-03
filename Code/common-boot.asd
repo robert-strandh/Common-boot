@@ -15,6 +15,7 @@
   ((:file "packages")
    (:file "variables")
    (:file "generic-functions")
+   (:file "utilities")
    (:file "builder")
    (:file "environment")
    (:file "environment-query")

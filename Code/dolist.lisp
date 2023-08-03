@@ -14,11 +14,9 @@
       (let ((new-builder (make-builder client new-environment)))
         (reinitialize-instance ast
           :list-form-ast (convert-ast builder (ico:list-form-ast ast))
-          :result-ast (if (null (ico:result-ast ast))
-                          nil
-                          (convert-ast new-builder (ico:result-ast ast))))
+          :result-ast
+          (convert-optional-ast new-builder (ico:result-ast ast)))
         (loop for ast in (ico:segment-asts ast)
               do (reinitialize-instance ast
                    :statement-asts
-                   (loop for statement-ast in (ico:statement-asts ast)
-                         collect (convert-ast new-builder ast))))))))
+                   (convert-asts new-builder (ico:statement-asts ast))))))))

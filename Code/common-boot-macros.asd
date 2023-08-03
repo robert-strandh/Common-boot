@@ -14,6 +14,7 @@
    (:file "ecase")
    (:file "ccase")
    (:file "check-type")
+   (:file "typecase")
    (:file "decf")
    (:file "incf")
    (:file "defclass")
