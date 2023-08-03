@@ -24,6 +24,7 @@
    (:file "defgeneric")
    (:file "define-compiler-macro")
    (:file "define-condition")
+   (:file "defmacro")
    (:file "defmethod")
    (:file "defparameter")
    (:file "defvar")
