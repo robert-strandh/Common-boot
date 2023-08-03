@@ -28,6 +28,7 @@
    (:file "defmacro")
    (:file "defmethod")
    (:file "defparameter")
+   (:file "deftype")
    (:file "defun")
    (:file "defvar")
    (:file "do")
