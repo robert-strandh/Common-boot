@@ -17,6 +17,3 @@
               do (reinitialize-instance ast
                    :statement-asts
                    (convert-asts new-builder (ico:statement-asts ast))))))))
-
-          
-        
