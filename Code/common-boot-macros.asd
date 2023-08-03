@@ -31,6 +31,7 @@
    (:file "deftype")
    (:file "defun")
    (:file "defvar")
+   (:file "destructuring-bind")
    (:file "do")
    (:file "dostar")
    (:file "dolist")
