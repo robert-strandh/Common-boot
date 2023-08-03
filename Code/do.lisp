@@ -11,9 +11,9 @@
             for variable-name-ast = (ico:do-variable-name-ast variable-ast)
             do (reinitialize-instance variable-ast
                  :init-form-ast
-                 (convert-optional-ast builder (ico:init-form-ast))
+                 (convert-optional-ast builder (ico:init-form-ast ast))
                  :step-form-ast
-                 (convert-optional-ast builder (ico:step-form-ast)))
+                 (convert-optional-ast builder (ico:step-form-ast ast)))
                (setf new-environment
                      (augment-environment-with-binding-variable
                       client
