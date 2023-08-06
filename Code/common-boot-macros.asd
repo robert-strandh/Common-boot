@@ -41,6 +41,7 @@
    (:file "dotimes")
    (:file "formatter")
    (:file "handler-bind")
+   (:file "handler-case")
    (:file "ignore-errors")
    (:file "multiple-value-bind")
    (:file "multiple-value-list")
