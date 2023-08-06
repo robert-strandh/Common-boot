@@ -39,6 +39,7 @@
    (:file "do-symbols")
    (:file "dolist")
    (:file "dotimes")
+   (:file "formatter")
    (:file "ignore-errors")
    (:file "multiple-value-bind")
    (:file "multiple-value-list")
