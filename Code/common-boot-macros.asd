@@ -43,6 +43,7 @@
    (:file "handler-bind")
    (:file "handler-case")
    (:file "ignore-errors")
+   (:file "lambda")
    (:file "multiple-value-bind")
    (:file "multiple-value-list")
    (:file "multiple-value-setq")
