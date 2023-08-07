@@ -2,10 +2,11 @@
 
 (defun ast-to-cps (client ast)
   (let ((variable (gensym))
-        (environment (make-hash-table :test #'eq)))
+        (environment (make-hash-table :test #'eq))
+        (exit (gensym "EXIT")))
     `(lambda (client environment)
        (declare (ignorable client environment))
-       ,(cps client ast environment
-             `(lambda (&rest ,variable)
-                (declare (ignore ,variable))
-                ,(pop-stack-operation client))))))
+       (let ((,exit (lambda (&rest ,variable)
+                      (declare (ignore ,variable))
+                      ,(pop-stack-operation client))))
+         ,(cps client ast environment exit)))))
