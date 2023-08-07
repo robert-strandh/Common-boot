@@ -56,4 +56,5 @@
    (:file "prog2")
    (:file "psetq")
    (:file "pushnew")
-   (:file "return")))
+   (:file "return")
+   (:file "step")))
