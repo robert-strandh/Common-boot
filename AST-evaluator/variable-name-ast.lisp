@@ -10,7 +10,7 @@
     (client (ast ico:special-variable-reference-ast) environment continuation)
   `(step (list (symbol-value
                 client
-                ,(ico:name ast)
+                ',(ico:name ast)
                 (clostrum-sys:variable-cell
-                 environment ,(ico:name ast))))
+                 environment ',(ico:name ast))))
          ,continuation))
