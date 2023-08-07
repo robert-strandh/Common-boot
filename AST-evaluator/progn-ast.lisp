@@ -5,19 +5,16 @@
     (when (null asts)
       (setf asts
             (list (make-instance 'ico:literal-ast :literal nil))))
-    (let (first-name)
-      `(let* ,(loop for form-ast in asts
-                    for previous-name = continuation then name
-                    for name = (gensym "C-")
-                    collect `(,name (lambda (&rest ignore)
-                                      (declare (ignore ignore))
-                                      ,(cps client
-                                            form-ast
-                                            environment
-                                            previous-name)))
-                    finally (setf first-name name))
-         (setf *arguments* '())
-         (setf *continuation* ,first-name)))))
+    (let ((name (gensym "C-")))
+      `(let* ((,name ,continuation)
+              ,@(loop for form-ast in asts
+                      collect `(,name (lambda (&rest ignore)
+                                        (declare (ignore ignore))
+                                        ,(cps client
+                                              form-ast
+                                              environment
+                                              name)))))
+         (step '() ,name)))))
 
 (defmethod cps (client (ast ico:progn-ast) environment continuation)
   (cps-implicit-progn client (ico:form-asts ast) environment continuation))
