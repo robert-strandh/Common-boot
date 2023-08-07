@@ -5,7 +5,7 @@
          (function-variable (gensym))
          (argument-variables
            (loop for argument-ast in argument-asts
-                 collect (gensym)))
+                 collect (gensym "ARG")))
          (action `(progn (setf *continuation* ,continuation)
                          ,(push-stack-operation client)
                          (step (list ,@argument-variables)
