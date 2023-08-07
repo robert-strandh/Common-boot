@@ -16,7 +16,10 @@
 (defclass continuation-entry (dynamic-environment-entry)
   ((%continuation
     :initarg :continuation
-    :reader continuation)))
+    :reader continuation)
+   (%valid-p
+    :initform t
+    :accessor valid-p)))
 
 (defclass block-entry (continuation-entry)
   ((%name :initarg :name :reader name)))
