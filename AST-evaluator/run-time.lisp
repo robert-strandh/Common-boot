@@ -30,7 +30,11 @@
         do (when (and (typep entry 'block-entry)
                       (eq name (name entry)))
              (if (valid-p entry)
+                 ;; FIXME: handle UNWIND-PROTECT.
                  (let ((new-dynamic-environment (rest rest)))
+                   (loop for entry-to-invalidate in *dynamic-environment*
+                         until (eq entry-to-invalidate entry)
+                         do (setf (valid-p entry-to-invalidate) nil))
                    (setf *dynamic-environment* new-dynamic-environment)
                    (setf *stack* (stack (first new-dynamic-environment))))
                  ;; For now, signal a host error.  It would be better
