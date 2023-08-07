@@ -13,15 +13,18 @@
 (defclass dynamic-environment-entry ()
   ((%stack :initarg :stack :reader stack)))
 
+(defclass valid-p-mixin ()
+  ((%valid-p
+    :initform t
+    :accessor valid-p)))
+
 (defclass continuation-entry (dynamic-environment-entry)
   ((%continuation
     :initarg :continuation
     :reader continuation)
-   (%valid-p
-    :initform t
-    :accessor valid-p)))
+   ))
 
-(defclass block-entry (continuation-entry)
+(defclass block-entry (dynamic-environment-entry valid-p-mixin)
   ((%name :initarg :name :reader name)))
 
 (defun do-return-from (name)
@@ -31,19 +34,22 @@
                       (eq name (name entry)))
              (if (valid-p entry)
                  ;; FIXME: handle UNWIND-PROTECT.
-                 (let ((new-dynamic-environment (rest rest)))
+                 (progn 
                    (loop for entry-to-invalidate in *dynamic-environment*
                          until (eq entry-to-invalidate entry)
                          do (setf (valid-p entry-to-invalidate) nil))
-                   (setf *dynamic-environment* new-dynamic-environment)
-                   (setf *stack* (stack (first new-dynamic-environment))))
+                   (setf *stack* (stack entry))
+                   (pop-stack))
                  ;; For now, signal a host error.  It would be better
                  ;; to call the target function ERROR.
                  (error "attempt to use an expired entry ~s~%"
                         entry)))))
 
-(defclass tag-entry (continuation-entry)
-  ((%name :initarg :name :reader name)))
+(defclass tag-entry (dynamic-environment-entry valid-p-mixin)
+  ((%name :initarg :name :reader name)
+   (%continuation
+    :initarg :continuation
+    :reader continuation)))
 
 (defclass catch-entry (continuation-entry)
   ((%tag :initarg :tag :reader tag)))
