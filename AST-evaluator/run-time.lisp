@@ -24,6 +24,20 @@
 (defclass block-entry (continuation-entry)
   ((%name :initarg :name :reader name)))
 
+(defun do-return-from (name)
+  (loop for rest on *dynamic-environment*
+        for entry = (first rest)
+        do (when (and (typep entry 'block-entry)
+                      (eq name (name entry)))
+             (if (valid-p entry)
+                 (let ((new-dynamic-environment (rest rest)))
+                   (setf *dynamic-environment* new-dynamic-environment)
+                   (setf *stack* (stack (first new-dynamic-environment))))
+                 ;; For now, signal a host error.  It would be better
+                 ;; to call the target function ERROR.
+                 (error "attempt to use an expired entry ~s~%"
+                        entry)))))
+
 (defclass tag-entry (continuation-entry)
   ((%name :initarg :name :reader name)))
 
