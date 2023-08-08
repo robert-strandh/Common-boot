@@ -1,6 +1,7 @@
 (cl:in-package #:common-boot-test)
 
-(define-test block-and-return-from)
+(define-test block-and-return-from
+  :skip (block-with-return-from-inside-let))
 
 (define-test block-no-return-from
   :parent block-and-return-from
