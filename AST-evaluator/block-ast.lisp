@@ -20,7 +20,8 @@
   (let ((name (gensym))
         (temp (gensym)))
     (setf (lookup ast environment) name)
-    `(progn (push-stack)
+    `(progn (setf *continuation* ,continuation)
+            (push-stack)
             (push (make-instance 'block-entry
                     :stack *stack*
                     :name ',name)
