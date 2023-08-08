@@ -18,4 +18,5 @@
    (:file "multiple-value-call")
    (:file "block-and-return-from")
    (:file "catch-and-throw")
+   (:file "progn")
    (:file "the")))
