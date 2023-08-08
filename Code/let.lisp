@@ -31,7 +31,7 @@
       (let ((new-environment environment))
         (loop for binding-ast in (ico:binding-asts ast)
               for variable-name-ast = (ico:variable-name-ast binding-ast)
-              for form-ast = (ico:form-ast ast)
+              for form-ast = (ico:form-ast binding-ast)
               do (reinitialize-instance binding-ast
                    :form-ast (if (null form-ast)
                                  nil
