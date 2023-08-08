@@ -19,7 +19,7 @@
                                  (append ,arguments-temp ,values-temp))
                            ,action))))
     (cps client
-         (ico:function-ast ast)
+         (ico:name-ast (ico:function-ast ast))
          environment
          `(lambda (&rest ,function-temp)
             (setf ,function-temp (car ,function-temp))
