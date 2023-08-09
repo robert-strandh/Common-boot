@@ -58,4 +58,5 @@
    (:file "pushnew")
    (:file "return")
    (:file "step")
-   (:file "time")))
+   (:file "time")
+   (:file "with-accessors")))
