@@ -23,6 +23,4 @@
                        variable-name-ast
                        (ico:declaration-asts ast))))))
     (reinitialize-instance ast
-      :form-asts
-      (loop for body-ast in (ico:form-asts ast)
-            collect (convert-ast new-builder body-ast)))))
+      :form-asts (convert-asts new-builder (ico:form-asts ast)))))
