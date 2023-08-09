@@ -59,4 +59,5 @@
    (:file "return")
    (:file "step")
    (:file "time")
-   (:file "with-accessors")))
+   (:file "with-accessors")
+   (:file "with-compilation-unit")))
