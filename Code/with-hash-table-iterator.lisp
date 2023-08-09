@@ -7,6 +7,4 @@
      (ast ico:with-hash-table-iterator-ast))
   (reinitialize-instance ast
     :hash-table-ast (convert-ast builder (ico:hash-table-ast ast))
-    :form-asts
-    (loop for form-ast in (ico:form-asts ast)
-          collect (convert-ast builder form-ast))))
+    :form-asts (convert-asts builder (ico:form-asts ast))))
