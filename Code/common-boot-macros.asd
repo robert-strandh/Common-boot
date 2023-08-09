@@ -60,4 +60,5 @@
    (:file "step")
    (:file "time")
    (:file "with-accessors")
-   (:file "with-compilation-unit")))
+   (:file "with-compilation-unit")
+   (:file "with-condition-restarts")))
