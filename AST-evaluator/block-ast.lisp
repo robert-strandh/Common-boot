@@ -17,9 +17,9 @@
 ;;; pops the stack, again resulting in restored S, C, and D.
 
 (defmethod cps (client (ast ico:block-ast) environment continuation)
-  (let ((name (gensym))
+  (let ((name (gensym "BLOCK"))
         (temp (gensym)))
-    (setf (lookup ast environment) name)
+    (setf (lookup (ico:name-ast ast) environment) name)
     `(progn (setf *continuation* ,continuation)
             (push-stack)
             (push (make-instance 'block-entry
