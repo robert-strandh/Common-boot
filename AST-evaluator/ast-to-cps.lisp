@@ -3,6 +3,7 @@
 (defun ast-to-cps (client ast)
   (let ((variable (gensym))
         (environment (make-hash-table :test #'eq))
+        (*host-names* (make-hash-table :test #'eq))
         (exit (gensym "EXIT")))
     `(lambda (client environment)
        (declare (ignorable client environment))
