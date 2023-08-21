@@ -7,8 +7,8 @@
   :components
   ((:file "packages")
    (:file "generic-functions")
-   (:file "utilities")
    (:file "run-time")
+   (:file "utilities")
    (:file "convert")
    (:file "literal-ast")
    (:file "variable-name-ast")
