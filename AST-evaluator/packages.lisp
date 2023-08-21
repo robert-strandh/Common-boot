@@ -3,6 +3,7 @@
 (defpackage #:common-boot-ast-evaluator
   (:local-nicknames
    (#:ico #:iconoclast)
+   (#:bld #:iconoclast-builder)
    (#:cb #:common-boot)
    (#:cm #:common-macros))
   (:use #:common-lisp)

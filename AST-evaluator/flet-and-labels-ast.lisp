@@ -6,7 +6,7 @@
         (variable-ast (make-symbol "ARGUMENTS"))
         (temp-ast (make-symbol "TEMP")))
     (cm:with-ast-origin lambda-list-ast
-      (cm:with-builder
+      (cm:with-builder (make-instance 'bld:builder)
         (cm:destructure-lambda-list lambda-list-ast variable-ast let*-ast)))
     (reinitialize-instance let*-ast
       :form-asts form-asts)
@@ -21,17 +21,16 @@
 (defun cps-flet-and-labels (client ast environment continuation)
   ;; First enter all the local-function-names into the environment.
   (loop for binding-ast in (ico:binding-asts ast)
-        for variable-name-ast = (ico:variable-name-ast binding-ast)
-        do (setf (lookup variable-name-ast environment)
-                 (make-symbol (symbol-name (ico:name variable-name-ast)))))
+        for name-ast = (ico:name-ast binding-ast)
+        do (setf (lookup name-ast)
+                 (make-symbol (symbol-name (ico:name name-ast)))))
   ;; Next, compute the action of the body forms as an implicit PROGN.
   (let ((action (cps-implicit-progn
                  client (ico:form-asts ast) environment continuation)))
     ;; Finally compute-the actions of the binding forms.
-    (loop for binding-ast in (reverse (ico:binding-asts ast))
-          for function-name-ast = (ico:variable-name-ast binding-ast)
-          for function-name = (lookup function-name-ast environment)
-          for local-function-ast = (ico:form-ast ast)
+    (loop for local-function-ast in (reverse (ico:binding-asts ast))
+          for function-name-ast = (ico:name-ast local-function-ast)
+          for function-name = (lookup function-name-ast)
           for lambda-list-ast = (ico:lambda-list-ast local-function-ast)
           for form-asts = (ico:form-asts local-function-ast)
           do (setf action

@@ -3,7 +3,7 @@
 (defmethod cps
     (client (ast ico:function-reference-ast) environment continuation)
   (let ((definition-ast (ico:local-function-name-definition-ast ast)))
-    `(step (list ,(lookup definition-ast environment))
+    `(step (list ,(lookup definition-ast))
            ,continuation)))
 
 (defmethod cps

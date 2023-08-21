@@ -3,8 +3,7 @@
 (defmethod cps (client (ast ico:return-from-ast) environment continuation)
   (let* ((form-ast (ico:form-ast ast))
          (block-name-ast (ico:name-ast ast))
-         (name (lookup (ico:block-name-definition-ast block-name-ast)
-                       environment))
+         (name (lookup (ico:block-name-definition-ast block-name-ast)))
          (temp (gensym)))
     (cps client
          (if (null form-ast)

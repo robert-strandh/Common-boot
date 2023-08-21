@@ -2,7 +2,7 @@
 
 (defmethod cps (client (ast ico:go-ast) environment continuation)
   (let* ((tag-ast (ico:tag-ast ast))
-         (name (lookup (ico:tag-definition-ast tag-ast) environment)))
+         (name (lookup (ico:tag-definition-ast tag-ast))))
     `(loop for entry in *dynamic-environment*
            do (when (and (typep entry 'block-entry)
                          (eq ',name (name entry)))

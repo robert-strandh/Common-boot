@@ -5,7 +5,7 @@
   (loop for binding-ast in (ico:binding-asts ast)
         for variable-name-ast = (ico:variable-name-ast binding-ast)
         do (when (typep variable-name-ast 'ico:variable-definition-ast)
-             (setf (lookup variable-name-ast environment)
+             (setf (lookup variable-name-ast)
                    (make-symbol (symbol-name (ico:name variable-name-ast))))))
   ;; Next, compute the action of the body forms as an implicit PROGN.
   (let ((action (cps-implicit-progn
@@ -13,7 +13,7 @@
     ;; Finally, compute the actions of the binding forms. 
     (loop for binding-ast in (reverse (ico:binding-asts ast))
           for variable-name-ast = (ico:variable-name-ast binding-ast)
-          for variable-name = (lookup variable-name-ast environment)
+          for variable-name = (lookup variable-name-ast)
           for form-ast = (ico:form-ast binding-ast)
           do (setf action
                    (cps client

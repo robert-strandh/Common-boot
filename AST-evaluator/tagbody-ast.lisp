@@ -28,7 +28,7 @@
           for tag-ast = (ico:tag-ast segment-ast)
           do (unless (null tag-ast)
                (incf label-count)
-               (setf (lookup tag-ast environment) (gensym))))
+               (setf (lookup tag-ast) (gensym))))
     (loop with temp = (gensym)
           with action = `(progn
                            (loop repeat ,label-count
@@ -45,7 +45,7 @@
                                  environment
                                  new-continuation)
                            ,(unless (null tag-ast)
-                              (let ((name (lookup tag-ast environment)))
+                              (let ((name (lookup tag-ast)))
                                 `(push (make-instance 'tag-entry
                                          :name ',name
                                          :continuation new-continuation))))))

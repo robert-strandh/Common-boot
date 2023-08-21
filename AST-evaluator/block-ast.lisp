@@ -19,7 +19,7 @@
 (defmethod cps (client (ast ico:block-ast) environment continuation)
   (let ((name (gensym "BLOCK"))
         (temp (gensym)))
-    (setf (lookup (ico:name-ast ast) environment) name)
+    (setf (lookup (ico:name-ast ast)) name)
     `(progn (setf *continuation* ,continuation)
             (push-stack)
             (push (make-instance 'block-entry
