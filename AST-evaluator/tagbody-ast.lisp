@@ -21,7 +21,7 @@
 ;;; reinstates the dynamic environment stored in F' on top of
 ;;; S''. This operation will restore S'', Ei, and D'.
 
-(defmethod cps (client (ast ico:tagbody-ast) environment continuation)
+(defmethod cps (client (ast ico:tagbody-ast) continuation)
   (let ((segment-asts (ico:segment-asts ast))
         (label-count 0))
     (loop for segment-ast in segment-asts
@@ -42,7 +42,6 @@
           do (setf action
                    `(progn ,(cps client
                                  segment-ast
-                                 environment
                                  new-continuation)
                            ,(unless (null tag-ast)
                               (let ((name (lookup tag-ast)))

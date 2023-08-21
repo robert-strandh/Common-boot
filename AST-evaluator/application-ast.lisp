@@ -1,6 +1,6 @@
 (cl:in-package #:common-boot-ast-evaluator)
 
-(defmethod cps (client (ast ico:application-ast) environment continuation)
+(defmethod cps (client (ast ico:application-ast) continuation)
   (let* ((argument-asts (ico:argument-asts ast))
          (function-variable (gensym "FUN-"))
          (argument-variables
@@ -21,7 +21,6 @@
                                         (declare (ignore ignore))
                                         ,(cps client
                                               argument-ast
-                                              environment
                                               name))))
               (,name (lambda (&rest var)
                        (setf ,function-variable (car var))
@@ -30,5 +29,4 @@
          (push-stack)
          ,(cps client
                (ico:function-name-ast ast)
-               environment
                name)))))

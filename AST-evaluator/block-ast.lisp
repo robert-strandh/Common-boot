@@ -16,7 +16,7 @@
 ;;; stack from the stored information in E, i.e., S'.  Finally, it
 ;;; pops the stack, again resulting in restored S, C, and D.
 
-(defmethod cps (client (ast ico:block-ast) environment continuation)
+(defmethod cps (client (ast ico:block-ast) continuation)
   (let ((name (gensym "BLOCK"))
         (temp (gensym)))
     (setf (lookup (ico:name-ast ast)) name)
@@ -29,7 +29,6 @@
             ,(cps-implicit-progn
               client
               (ico:form-asts ast)
-              environment
               `(lambda (&rest ,temp)
                  (pop-stack)
                  ,continuation)))))

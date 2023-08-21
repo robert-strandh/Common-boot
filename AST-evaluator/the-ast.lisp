@@ -2,5 +2,5 @@
 
 ;;; We just ignore the value type which is perfectly allowed by the
 ;;; standard.
-(defmethod cps (client (ast ico:the-ast) environment continuation)
-  (cps client (ico:form-ast ast) environment continuation))
+(defmethod cps (client (ast ico:the-ast) continuation)
+  (cps client (ico:form-ast ast) continuation))
