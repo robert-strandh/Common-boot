@@ -27,6 +27,8 @@
 (defclass block-entry (dynamic-environment-entry valid-p-mixin)
   ((%name :initarg :name :reader name)))
 
+(defparameter *dynamic-environment* '())
+
 (defun do-return-from (name)
   (loop for rest on *dynamic-environment*
         for entry = (first rest)
@@ -64,8 +66,6 @@
    (%value
     :initarg :value
     :reader value)))
-
-(defparameter *dynamic-environment* '())
 
 (defparameter *continuation* nil)
 
