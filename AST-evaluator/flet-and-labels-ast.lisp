@@ -6,8 +6,7 @@
         (variable-ast (make-symbol "ARGUMENTS"))
         (temp-ast (make-symbol "TEMP")))
     (cm:with-ast-origin lambda-list-ast
-      (cm:with-builder (make-instance 'bld:builder)
-        (cm:destructure-lambda-list lambda-list-ast variable-ast let*-ast)))
+      (cm:destructure-lambda-list lambda-list-ast variable-ast let*-ast))
     (reinitialize-instance let*-ast
       :form-asts form-asts)
     `(step (lambda (&rest ,variable-ast)
