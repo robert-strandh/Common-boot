@@ -4,7 +4,7 @@
     (client lambda-list-ast form-asts continuation)
   (let ((let*-ast (make-instance 'ico:let*-ast))
         (variable-ast (make-symbol "ARGUMENTS"))
-        (temp-ast (make-symbol "TEMP")))
+        (temp (make-symbol "TEMP")))
     (cm:with-ast-origin lambda-list-ast
       (cm:destructure-lambda-list lambda-list-ast variable-ast let*-ast))
     (reinitialize-instance let*-ast
@@ -12,7 +12,7 @@
     `(step (lambda (&rest ,variable-ast)
              ,(cps client
                    let*-ast
-                   `(lambda (&rest ,temp-ast)
+                   `(lambda (&rest ,temp)
                       ,(pop-stack-operation client))))
            ,continuation)))
 
