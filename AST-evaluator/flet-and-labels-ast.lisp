@@ -2,14 +2,16 @@
 
 (defun cps-function-ast
     (client lambda-list-ast form-asts continuation)
-  (let ((let*-ast (make-instance 'ico:let*-ast))
-        (variable-ast (make-symbol "ARGUMENTS"))
-        (temp (make-symbol "TEMP")))
+  (let* ((let*-ast (make-instance 'ico:let*-ast))
+         (variable-name (make-symbol "ARGUMENTS"))
+         (variable-ast
+           (make-instance 'ico:variable-name-ast :name variable-name))
+         (temp (make-symbol "TEMP")))
     (cm:with-ast-origin lambda-list-ast
       (cm:destructure-lambda-list lambda-list-ast variable-ast let*-ast))
     (reinitialize-instance let*-ast
       :form-asts form-asts)
-    `(step (lambda (&rest ,variable-ast)
+    `(step (lambda (&rest ,variable-name)
              ,(cps client
                    let*-ast
                    `(lambda (&rest ,temp)
