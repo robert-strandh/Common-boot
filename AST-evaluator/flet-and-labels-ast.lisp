@@ -5,7 +5,7 @@
   (let* ((let*-ast (make-instance 'ico:let*-ast))
          (variable-name (make-symbol "ARGUMENTS"))
          (variable-ast
-           (make-instance 'ico:variable-name-ast :name variable-name))
+           (make-instance 'ico:variable-reference-ast :name variable-name))
          (temp (make-symbol "TEMP")))
     (cm:with-ast-origin lambda-list-ast
       (cm:destructure-lambda-list lambda-list-ast variable-ast let*-ast))
