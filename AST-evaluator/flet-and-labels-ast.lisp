@@ -5,10 +5,11 @@
   (let* ((let*-ast (make-instance 'ico:let*-ast))
          (variable-name (make-symbol "ARGUMENTS"))
          (variable-ast
-           (make-instance 'ico:variable-reference-ast :name variable-name))
+           (make-instance 'ico:variable-definition-ast :name variable-name))
          (temp (make-symbol "TEMP")))
     (cm:with-ast-origin lambda-list-ast
       (cm:destructure-lambda-list lambda-list-ast variable-ast let*-ast))
+    (break)
     (reinitialize-instance let*-ast
       :form-asts form-asts)
     `(step (lambda (&rest ,variable-name)
