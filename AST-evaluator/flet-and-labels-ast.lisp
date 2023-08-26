@@ -12,9 +12,11 @@
     (reinitialize-instance let*-ast
       :form-asts form-asts)
     `(step (list (lambda (&rest ,variable-name)
+                   (declare (ignorable ,variable-name))
                    ,(cps client
                          let*-ast
                          `(lambda (&rest ,temp)
+                            (declare (ignore ,temp))
                             ,(pop-stack-operation client)))))
            ,continuation)))
 
