@@ -10,7 +10,7 @@
          #1=(labels ((f () 234)) (f)))
         (cbae:eval-expression '#1# environment))))
 
-(define-test labels-one-parameters
+(define-test labels-one-parameter
   :parent labels
   (with-default-parameters (client environment global-environment)
     (is #'equal
