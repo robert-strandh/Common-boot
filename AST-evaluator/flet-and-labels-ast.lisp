@@ -9,14 +9,13 @@
          (temp (make-symbol "TEMP")))
     (cm:with-ast-origin lambda-list-ast
       (cm:destructure-lambda-list lambda-list-ast variable-ast let*-ast))
-    (break)
     (reinitialize-instance let*-ast
       :form-asts form-asts)
-    `(step (lambda (&rest ,variable-name)
-             ,(cps client
-                   let*-ast
-                   `(lambda (&rest ,temp)
-                      ,(pop-stack-operation client))))
+    `(step (list (lambda (&rest ,variable-name)
+                   ,(cps client
+                         let*-ast
+                         `(lambda (&rest ,temp)
+                            ,(pop-stack-operation client)))))
            ,continuation)))
 
 (defun cps-flet-and-labels (client ast continuation)
