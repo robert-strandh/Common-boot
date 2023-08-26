@@ -19,5 +19,11 @@
     (setq *arguments* (list client global-environment))
     (loop (evaluator-step))))
 
+(defun cps-from-expression (expression environment)
+  (let* ((cst (cst:cst-from-expression expression))
+         (client (make-instance 'trucler-reference:client))
+         (ast (cb:cst-to-ast client cst environment)))
+    (ast-to-cps client ast)))
+
 (defun eval-expression (expression environment)
   (eval-cst (cst:cst-from-expression expression) environment))
