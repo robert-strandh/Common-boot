@@ -3,7 +3,7 @@
 (defmethod abp:finish-node
     ((builder builder)
      (kind t)
-     (ast ico:flet-ast))
+     (ast ico:labels-ast))
   (with-builder-components (builder client environment)
     (let ((new-environment environment))
       (loop for local-function-ast in (ico:binding-asts ast)
