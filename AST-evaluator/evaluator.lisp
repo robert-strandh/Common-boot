@@ -25,5 +25,10 @@
          (ast (cb:cst-to-ast client cst environment)))
     (ast-to-cps client ast)))
 
+(defun ast-from-expression (expression environment)
+  (let* ((cst (cst:cst-from-expression expression))
+         (client (make-instance 'trucler-reference:client)))
+    (cb:cst-to-ast client cst environment)))
+
 (defun eval-expression (expression environment)
   (eval-cst (cst:cst-from-expression expression) environment))
