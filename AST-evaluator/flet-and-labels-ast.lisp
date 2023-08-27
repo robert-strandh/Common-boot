@@ -11,6 +11,7 @@
       (cm:destructure-lambda-list lambda-list-ast variable-ast let*-ast))
     (reinitialize-instance let*-ast
       :form-asts form-asts)
+    (setf (lookup variable-ast) variable-name)
     `(step (list (lambda (&rest ,variable-name)
                    (declare (ignorable ,variable-name))
                    ,(cps client
