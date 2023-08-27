@@ -23,6 +23,7 @@
    (:file "environment-augmentation")
    (:file "declarations")
    (:file "application")
+   (:file "function")
    (:file "lambda-list")
    (:file "let")
    (:file "flet")
