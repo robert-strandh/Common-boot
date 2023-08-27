@@ -15,6 +15,8 @@
   (with-default-parameters (client environment global-environment)
     (cbae:import-host-function client 'null global-environment)
     (cbae:import-host-function client 'error global-environment)
+    (cbae:import-host-function client 'first global-environment)
+    (cbae:import-host-function client 'rest global-environment)
     (is #'equal
         (multiple-value-list
          #1=(flet ((f (x) x)) (f 234)))
@@ -25,6 +27,8 @@
   (with-default-parameters (client environment global-environment)
     (cbae:import-host-function client 'null global-environment)
     (cbae:import-host-function client 'error global-environment)
+    (cbae:import-host-function client 'first global-environment)
+    (cbae:import-host-function client 'rest global-environment)
     (cbae:import-host-function client '+ global-environment)
     (is #'equal
         (multiple-value-list
