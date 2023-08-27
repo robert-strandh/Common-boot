@@ -5,7 +5,10 @@
 (defvar *host-names*)
 
 (defun lookup (ast)
-  (gethash ast *host-names*))
+  (multiple-value-bind (result presentp)
+      (gethash ast *host-names*)
+    (assert presentp)
+    result))
 
 (defun (setf lookup) (value ast)
   (setf (gethash ast *host-names*) value))
