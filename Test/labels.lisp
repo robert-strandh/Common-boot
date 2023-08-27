@@ -13,6 +13,8 @@
 (define-test labels-one-parameter
   :parent labels
   (with-default-parameters (client environment global-environment)
+    (cbae:import-host-function client 'null global-environment)
+    (cbae:import-host-function client 'error global-environment)
     (is #'equal
         (multiple-value-list
          #1=(labels ((f (x) x)) (f 234)))
@@ -21,6 +23,8 @@
 (define-test labels-nested
   :parent labels
   (with-default-parameters (client environment global-environment)
+    (cbae:import-host-function client 'null global-environment)
+    (cbae:import-host-function client 'error global-environment)
     (cbae:import-host-function client '+ global-environment)
     (is #'equal
         (multiple-value-list
