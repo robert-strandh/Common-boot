@@ -34,6 +34,6 @@
         (multiple-value-list
          #1=(labels ((f (x) (+ x 1)))
               (labels ((f (x) x)
-                     (g (x) (f x)))
+                       (g (x) (f x)))
                 (g 234))))
         (cbae:eval-expression '#1# environment))))
