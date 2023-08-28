@@ -13,6 +13,11 @@
       :form-asts form-asts)
     (setf (lookup variable-ast) variable-name)
     `(step (list (lambda (&rest ,variable-name)
+                   ;; We need to wrap the argument list in LIST
+                   ;; because of assignment conversion.  The argument
+                   ;; list is going to be processed by
+                   ;; VARIABLE-REFERENCE-ASTs and those assume that
+                   ;; the variable is wrapped that way.
                    (setq ,variable-name (list ,variable-name))
                    ,(cps client
                          let*-ast

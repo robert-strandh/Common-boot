@@ -20,6 +20,14 @@
                         form-ast
                         `(lambda (&rest ,variable-name)
                            (setf ,variable-name
+                                 ;; The CAR is because the &REST will
+                                 ;; give us a list of arguments.  The
+                                 ;; LIST is because of assignment
+                                 ;; conversion, whereby every host
+                                 ;; variable representing a target
+                                 ;; variable contains a CONS cell
+                                 ;; where the taget variable is the
+                                 ;; CAR of that CONS cell.
                                  (list (car ,variable-name)))
                            ,action))))
     action))

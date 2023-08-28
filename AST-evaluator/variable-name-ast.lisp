@@ -3,8 +3,14 @@
 (defmethod cps
     (client (ast ico:variable-reference-ast) continuation)
   (let ((definition-ast (ico:variable-definition-ast ast)))
-    `(step (list (car ,(lookup definition-ast)))
-           ,continuation)))
+    `(step
+      ;; The LIST is so that we the STEP can use APPLY to apply the
+      ;; continuation to the list of arguments, and the CAR is because
+      ;; of assignment conversion, whereby every host variable
+      ;; representing a target variable contains a CONS cell where the
+      ;; target variable is the CAR of that CONS cell.
+      (list (car ,(lookup definition-ast)))
+      ,continuation)))
 
 (defmethod cps
     (client (ast ico:special-variable-reference-ast) continuation)
