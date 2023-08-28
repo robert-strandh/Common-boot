@@ -3,7 +3,7 @@
 (defmethod cps
     (client (ast ico:variable-reference-ast) continuation)
   (let ((definition-ast (ico:variable-definition-ast ast)))
-    `(step (list ,(lookup definition-ast))
+    `(step (list (car ,(lookup definition-ast)))
            ,continuation)))
 
 (defmethod cps

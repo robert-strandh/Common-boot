@@ -13,7 +13,7 @@
       :form-asts form-asts)
     (setf (lookup variable-ast) variable-name)
     `(step (list (lambda (&rest ,variable-name)
-                   (declare (ignorable ,variable-name))
+                   (setq ,variable-name (list ,variable-name))
                    ,(cps client
                          let*-ast
                          `(lambda (&rest ,temp)

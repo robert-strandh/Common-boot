@@ -20,7 +20,7 @@
                         form-ast
                         `(lambda (&rest ,variable-name)
                            (setf ,variable-name
-                                 (car ,variable-name))
+                                 (list (car ,variable-name)))
                            ,action))))
     action))
                         
