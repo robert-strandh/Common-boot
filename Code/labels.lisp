@@ -10,7 +10,7 @@
             for name-ast = (ico:name-ast local-function-ast)
             do (setf new-environment
                      (augment-environment-with-local-function-name
-                      client name-ast environment)))
+                      client name-ast new-environment)))
       (loop for local-function-ast in (ico:binding-asts ast)
             do (finalize-local-function-ast
                 client local-function-ast new-environment))
