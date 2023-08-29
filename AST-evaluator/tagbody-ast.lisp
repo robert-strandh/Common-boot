@@ -47,5 +47,6 @@
                               (let ((name (lookup tag-ast)))
                                 `(push (make-instance 'tag-entry
                                          :name ',name
-                                         :continuation new-continuation))))))
+                                         :continuation ,new-continuation)
+                                       *dynamic-environment*)))))
           finally (return action))))
