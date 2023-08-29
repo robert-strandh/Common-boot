@@ -20,7 +20,7 @@ _ multiple-value-prog1
 * progv
 * quote
 * return-from
-_ setq
+* setq
 _ symbol-macrolet
 * tagbody
 * the
