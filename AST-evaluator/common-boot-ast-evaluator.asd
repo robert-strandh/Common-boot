@@ -32,5 +32,6 @@
    (:file "tagbody-ast")
    (:file "go-ast")
    (:file "load-time-value-ast")
+   (:file "setq-ast")
    (:file "ast-to-cps")
    (:file "evaluator")))
