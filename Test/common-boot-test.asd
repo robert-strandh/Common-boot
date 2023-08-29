@@ -20,4 +20,5 @@
    (:file "catch-and-throw")
    (:file "progn")
    (:file "the")
-   (:file "setq")))
+   (:file "setq")
+   (:file "tagbody-and-go")))
