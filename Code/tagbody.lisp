@@ -8,11 +8,12 @@
     (let ((new-environment environment))
       (loop for segment-ast in (ico:segment-asts ast)
             for tag-ast = (ico:tag-ast segment-ast)
-            for name = (ico:name tag-ast)
-            do (change-class tag-ast 'ico:tag-definition-ast)
-               (setf new-environment
-                     (trucler:add-tag
-                      client new-environment name tag-ast)))
+            do (unless (null tag-ast)
+                 (let ((name (ico:name tag-ast)))
+                   (change-class tag-ast 'ico:tag-definition-ast)
+                   (setf new-environment
+                         (trucler:add-tag
+                          client new-environment name tag-ast)))))
       (loop with new-builder = (make-builder client new-environment)
             for segment-ast in (ico:segment-asts ast)
             do (reinitialize-instance segment-ast
