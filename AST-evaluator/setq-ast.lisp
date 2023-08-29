@@ -9,8 +9,9 @@
         for host-variable = (lookup variable-definition-ast)
         collect
         `(,tempc (lambda (&rest ,tempa)
+                   (setq ,tempa (car ,tempa))
                    (setf (car ,host-variable) ,tempa)
-                   (step ,tempa ,tempc)))
+                   (step (list ,tempa) ,tempc)))
         collect
         `(,tempc (lambda (&rest ,tempb)
                    (declare (ignore ,tempb))
