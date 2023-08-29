@@ -10,4 +10,5 @@
                         statement-ast
                         `(lambda (&rest ,temp)
                            (declare (ignore ,temp))
-                           ,action))))))
+                           ,action))))
+    action))
