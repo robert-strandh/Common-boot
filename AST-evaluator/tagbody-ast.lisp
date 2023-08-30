@@ -21,14 +21,16 @@
 ;;; reinstates the dynamic environment stored in F' on top of
 ;;; S''. This operation will restore S'', Ei, and D'.
 
+(defun add-tags-to-host-table (segment-asts)
+  (loop for segment-ast in segment-asts
+        for tag-ast = (ico:tag-ast segment-ast)
+        unless (null tag-ast)
+          sum 1
+          and do (setf (lookup tag-ast) (gensym))))
+
 (defmethod cps (client (ast ico:tagbody-ast) continuation)
-  (let ((segment-asts (ico:segment-asts ast))
-        (label-count 0))
-    (loop for segment-ast in segment-asts
-          for tag-ast = (ico:tag-ast segment-ast)
-          do (unless (null tag-ast)
-               (incf label-count)
-               (setf (lookup tag-ast) (gensym))))
+  (let* ((segment-asts (ico:segment-asts ast))
+         (label-count (add-tags-to-host-table segment-asts)))
     (loop with temp = (gensym)
           with action = `(progn
                            (loop repeat ,label-count
