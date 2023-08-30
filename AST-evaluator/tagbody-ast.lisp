@@ -1,54 +1,46 @@
 (cl:in-package #:common-boot-ast-evaluator)
 
-;;; Say the entire TAGBODY form is executed in a continuation C.
-;;; Before the TAGBODY form is executed, the dynamic environment is D
-;;; and the stack is S.  To establish a stack and a dynamic
-;;; environment for the forms of the TAGBODY, we first push the stack.
-;;; This operation Will create and stack S' so that the top frame F of
-;;; S' contains C and D.  We then create another stack frame F' on top
-;;; of the stack, creating the stack S''.  We then push TAG-ENTRYs
-;;; E1-En (one for each tag in teh TAGBODY form) onto the dynamic
-;;; environment, creating the dynamic environment D'.  Each Ei
-;;; contains a continuation Ci corresponding to the associated tag,
-;;; and each Ei contains S''.  S'' contains D'.
-;;;
-;;; So the normal control flow (i.e., no GO) means that the last form
-;;; of the TAGBODY body is executed in a continuation that pops the
-;;; stack twice.  This operation restores S, C and D,
-;;;
-;;; A non-local control transfer finds some Ei.  It then reinstates
-;;; the stack from the stored information in Ei, i.e., S''.  And it
-;;; reinstates the dynamic environment stored in F' on top of
-;;; S''. This operation will restore S'', Ei, and D'.
-
-(defun add-tags-to-host-table (segment-asts)
+(defun add-tags-to-host-table (segment-asts segment-names)
   (loop for segment-ast in segment-asts
+        for segment-name in segment-names
         for tag-ast = (ico:tag-ast segment-ast)
         unless (null tag-ast)
           sum 1
-          and do (setf (lookup tag-ast) (gensym))))
+          and do (setf (lookup tag-ast) segment-name)))
 
 (defmethod cps (client (ast ico:tagbody-ast) continuation)
   (let* ((segment-asts (ico:segment-asts ast))
-         (label-count (add-tags-to-host-table segment-asts)))
-    (loop with temp = (gensym)
-          with action = `(progn
-                           (loop repeat ,label-count
-                                 do (pop *dynamic-environment*))
-                           (step (list nil) ,continuation))
-          for segment-ast in segment-asts
-          for tag-ast = (ico:tag-ast segment-ast)
-          for new-continuation = `(lambda (&rest ,temp)
-                                    (declare (ignore ,temp))
-                                    ,action)
-          do (setf action
-                   `(progn ,(cps client
-                                 segment-ast
-                                 new-continuation)
-                           ,(unless (null tag-ast)
-                              (let ((name (lookup tag-ast)))
-                                `(push (make-instance 'tag-entry
-                                         :name ',name
-                                         :continuation ,new-continuation)
-                                       *dynamic-environment*)))))
-          finally (return action))))
+         (ignore (gensym))
+         (last-continuation
+           `(lambda (&rest ,ignore)
+              (declare (ignore ,ignore))
+              (step '(nil) ,continuation)))
+         (last-continuation-name (gensym))
+         (segment-names
+           (loop for segment-ast in segment-asts collect (gensym))))
+    (add-tags-to-host-table segment-asts segment-names)
+    (let ((segment-continuations
+            (loop for segment-ast in segment-asts
+                  for continuation-name
+                    in (rest (append segment-names
+                                     (list last-continuation-name)))
+                  collect `(lambda (&rest ,ignore)
+                             (declare (ignore ,ignore))
+                             ,(cps client
+                                   segment-ast
+                                   continuation-name)))))
+      `(let* ((,last-continuation-name ,last-continuation)
+              ,@(reverse (mapcar #'list segment-names segment-continuations)))
+              
+         ,@(loop for segment-ast in segment-asts
+                 for segment-name in segment-names
+                 unless (null (ico:tag-ast segment-ast))
+                   collect `(push (make-instance 'tag-entry
+                                    :stack *stack*
+                                    :name ',segment-name
+                                    :continuation ,segment-name)
+                                  *dynamic-environment*))
+         (step '()
+               ,(if (null segment-names)
+                    last-continuation-name
+                    (first segment-names)))))))
