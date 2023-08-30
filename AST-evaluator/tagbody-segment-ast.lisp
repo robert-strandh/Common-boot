@@ -2,13 +2,4 @@
 
 (defmethod cps
     (client (ast ico:tagbody-segment-ast) continuation)
-  (let ((temp (gensym))
-        (action `(step '() ,continuation)))
-    (loop for statement-ast in (reverse (ico:statement-asts ast))
-          do (setf action
-                   (cps client
-                        statement-ast
-                        `(lambda (&rest ,temp)
-                           (declare (ignore ,temp))
-                           ,action))))
-    action))
+  (cps-implicit-progn client (ico:statement-asts ast) continuation))
