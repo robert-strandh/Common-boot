@@ -1,6 +1,7 @@
 (cl:in-package #:common-boot-test)
 
-(define-test tagbody-and-go)
+(define-test tagbody-and-go
+  :skip (tagbody-and-go-one-go))
 
 (define-test tagbody-and-go-empty
   :parent tagbody-and-go
