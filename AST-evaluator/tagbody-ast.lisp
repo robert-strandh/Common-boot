@@ -8,12 +8,33 @@
           sum 1
           and do (setf (lookup tag-ast) segment-name)))
 
+(defun push-tag-entries-forms (segment-asts segment-names)
+  (loop for segment-ast in segment-asts
+        for segment-name in segment-names
+        unless (null (ico:tag-ast segment-ast))
+          collect `(push (make-instance 'tag-entry
+                           :stack *stack*
+                           :name ',segment-name
+                           :continuation ,segment-name)
+                         *dynamic-environment*)))
+
+(defun pop-tag-entries-form (segment-asts)
+  `(setf *dynamic-environment*
+         (nthcdr ,(- (length segment-asts)
+                     (if (null (ico:tag-ast (first segment-asts)))
+                         1 0))
+                 *dynamic-environment*)))
+
 (defmethod cps (client (ast ico:tagbody-ast) continuation)
+  (when (null (ico:segment-asts ast))
+    (return-from cps
+      `(step '(nil) ,continuation)))
   (let* ((segment-asts (ico:segment-asts ast))
          (ignore (gensym))
          (last-continuation
            `(lambda (&rest ,ignore)
               (declare (ignore ,ignore))
+              ,(pop-tag-entries-form segment-asts)
               (step '(nil) ,continuation)))
          (last-continuation-name (gensym))
          (segment-names
@@ -32,15 +53,5 @@
       `(let* ((,last-continuation-name ,last-continuation)
               ,@(reverse (mapcar #'list segment-names segment-continuations)))
               
-         ,@(loop for segment-ast in segment-asts
-                 for segment-name in segment-names
-                 unless (null (ico:tag-ast segment-ast))
-                   collect `(push (make-instance 'tag-entry
-                                    :stack *stack*
-                                    :name ',segment-name
-                                    :continuation ,segment-name)
-                                  *dynamic-environment*))
-         (step '()
-               ,(if (null segment-names)
-                    last-continuation-name
-                    (first segment-names)))))))
+         ,@(push-tag-entries-forms segment-asts segment-names)
+         (step '() ,(first segment-names))))))
