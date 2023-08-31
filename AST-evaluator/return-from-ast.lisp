@@ -11,4 +11,4 @@
              form-ast)
          `(lambda (&rest ,temp)
             (declare (ignore ,temp))
-            (do-return-from ',name)))))
+            (do-return-from ',name dynamic-environment)))))
