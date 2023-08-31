@@ -11,11 +11,5 @@
             ,(cps client
                   (ico:form-ast ast)
                   `(lambda (&rest ,form)
-                     (loop for entry in *dynamic-environment*
-                           do (when (and (typep entry 'catch-entry)
-                                         (eq (tag entry) ,tag))
-                                (setq *arguments* (list ,form))
-                                (setq *stack* (stack entry))
-                                (setq *continuation* (continuation entry)))
-                           finally (error "No active catch tag named ~s"
-                                          ,tag))))))))
+                     (declare (ignore ,form))
+                     (do-throw ,tag dynamic-environment)))))))
