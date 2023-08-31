@@ -42,8 +42,10 @@
                              ,(cps client
                                    segment-ast
                                    continuation-name)))))
-      `(let* ((,last-continuation-name ,last-continuation)
-              ,@(reverse (mapcar #'list segment-names segment-continuations)))
-              
-         ,@(push-tag-entries-forms segment-asts segment-names)
-         (step '() ,(first segment-names))))))
+      `(let ((,last-continuation-name ,last-continuation))
+         (let ((dynamic-environment dynamic-environment)
+               ,@(reverse (mapcar #'list
+                                  segment-names segment-continuations)))
+           (declare (ignorable dynamic-environment))
+           ,@(push-tag-entries-forms segment-asts segment-names)
+           (step '() ,(first segment-names)))))))
