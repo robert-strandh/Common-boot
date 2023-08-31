@@ -53,6 +53,23 @@
     :initarg :continuation
     :reader continuation)))
 
+(defun do-go (name dynamic-environment)
+  (loop for rest on dynamic-environment
+        for entry = (first rest)
+        do (when (and (typep entry 'tag-entry)
+                      (eq name (name entry)))
+             (if (valid-p entry)
+                 ;; FIXME: handle UNWIND-PROTECT.
+                 (progn 
+                   (loop for entry-to-invalidate in dynamic-environment
+                         until (eq entry-to-invalidate entry)
+                         do (setf (valid-p entry-to-invalidate) nil))
+                   (setf *stack* (stack entry)))
+                 ;; For now, signal a host error.  It would be better
+                 ;; to call the target function ERROR.
+                 (error "attempt to use an expired entry ~s~%"
+                        entry)))))
+
 (defclass catch-entry (continuation-entry)
   ((%tag :initarg :tag :reader tag)))
 
