@@ -6,10 +6,11 @@
          (ico:tag-ast ast)
          `(lambda (&rest ,temp)
             (setq ,temp (car ,temp))
-            (push (make-instance 'catch-entry
-                    :tag ,temp
-                    :continuation ,continuation
-                    :stack *stack*)
-                  *dynamic-environment*)
-            ,(cps-implicit-progn
-              client (ico:form-asts ast) continuation)))))
+            (let ((dynamic-environment dynamic-environment))
+              (push (make-instance 'catch-entry
+                      :tag ,temp
+                      :continuation ,continuation
+                      :stack *stack*)
+                    dynamic-environment)
+              ,(cps-implicit-progn
+                client (ico:form-asts ast) continuation))))))
