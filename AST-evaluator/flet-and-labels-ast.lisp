@@ -18,12 +18,15 @@
                    ;; list is going to be processed by
                    ;; VARIABLE-REFERENCE-ASTs and those assume that
                    ;; the variable is wrapped that way.
-                   (setq ,variable-name (list ,variable-name))
-                   ,(cps client
-                         let*-ast
-                         `(lambda (&rest ,temp)
-                            (declare (ignore ,temp))
-                            ,(pop-stack-operation client)))))
+                   (let ((dynamic-environment
+                           (prog1 *dynamic-environment*
+                             (setf *dynamic-environment* nil))))
+                     (setq ,variable-name (list ,variable-name))
+                     ,(cps client
+                           let*-ast
+                           `(lambda (&rest ,temp)
+                              (declare (ignore ,temp))
+                              ,(pop-stack-operation client))))))
            ,continuation)))
 
 (defun cps-flet-and-labels (client ast continuation)
