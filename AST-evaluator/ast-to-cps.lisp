@@ -12,6 +12,6 @@
          (let ((,exit (lambda (&rest ,variable)
                         (declare (ignore ,variable))
                         ,(pop-stack-operation client)))
-               (dynamic-environment '()))
+               (dynamic-environment *dynamic-environment*))
            (declare (ignorable dynamic-environment))
            ,(cps client ast exit))))))
