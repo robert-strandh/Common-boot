@@ -3,4 +3,4 @@
 (defmethod cps (client (ast ico:go-ast) continuation)
   (let* ((tag-reference-ast (ico:tag-ast ast))
          (name (lookup (ico:tag-definition-ast tag-reference-ast))))
-    `(do-go ,name dynamic-environment)))
+    `(do-go ',name dynamic-environment)))
