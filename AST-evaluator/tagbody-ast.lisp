@@ -18,13 +18,6 @@
                            :continuation ,segment-name)
                          *dynamic-environment*)))
 
-(defun pop-tag-entries-form (segment-asts)
-  `(setf *dynamic-environment*
-         (nthcdr ,(- (length segment-asts)
-                     (if (null (ico:tag-ast (first segment-asts)))
-                         1 0))
-                 *dynamic-environment*)))
-
 (defmethod cps (client (ast ico:tagbody-ast) continuation)
   (when (null (ico:segment-asts ast))
     (return-from cps
@@ -34,7 +27,6 @@
          (last-continuation
            `(lambda (&rest ,ignore)
               (declare (ignore ,ignore))
-              ,(pop-tag-entries-form segment-asts)
               (step '(nil) ,continuation)))
          (last-continuation-name (gensym))
          (segment-names
