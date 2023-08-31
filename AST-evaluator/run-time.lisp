@@ -24,6 +24,10 @@
 (defclass block-entry (continuation-entry valid-p-mixin)
   ((%name :initarg :name :reader name)))
 
+;;; This variable is used only to pass the dynamic environment over a
+;;; function call.  The caller assigns the current dynamic environment
+;;; to it, and the callee initializes its own lexical variable holding
+;;; the dynamic environment to its value.
 (defparameter *dynamic-environment* '())
 
 ;;; FIXME: there is some considerable code duplication here.
