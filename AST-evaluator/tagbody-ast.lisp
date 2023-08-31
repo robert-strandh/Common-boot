@@ -16,7 +16,7 @@
                            :stack *stack*
                            :name ',segment-name
                            :continuation ,segment-name)
-                         *dynamic-environment*)))
+                         dynamic-environment)))
 
 (defmethod cps (client (ast ico:tagbody-ast) continuation)
   (when (null (ico:segment-asts ast))
@@ -43,8 +43,8 @@
                                    segment-ast
                                    continuation-name)))))
       `(let ((,last-continuation-name ,last-continuation))
-         (let ((dynamic-environment dynamic-environment)
-               ,@(reverse (mapcar #'list
+         (let* ((dynamic-environment dynamic-environment)
+                ,@(reverse (mapcar #'list
                                   segment-names segment-continuations)))
            (declare (ignorable dynamic-environment))
            ,@(push-tag-entries-forms segment-asts segment-names)
