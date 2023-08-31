@@ -8,8 +8,9 @@
     (let ((name (gensym "C-")))
       `(let* ((,name ,continuation)
               ,@(loop for form-ast in asts
-                      collect `(,name (lambda (&rest ignore)
-                                        (declare (ignore ignore))
+                      for ignore = (gensym "IGNORE")
+                      collect `(,name (lambda (&rest ,ignore)
+                                        (declare (ignore ,ignore))
                                         ,(cps client
                                               form-ast
                                               name)))))
