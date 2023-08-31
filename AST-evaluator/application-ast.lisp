@@ -25,6 +25,7 @@
               (,name (lambda (&rest var)
                        (setf ,function-variable (car var))
                        (step nil ,name))))
+         (setq *dynamic-environment* dynamic-environment)
          (setq *continuation* ,continuation)
          (push-stack)
          ,(cps client
