@@ -37,12 +37,14 @@
                    (loop for entry-to-invalidate in *dynamic-environment*
                          until (eq entry-to-invalidate entry)
                          do (setf (valid-p entry-to-invalidate) nil))
+                   (setf *continuation* (continuation entry))
                    (setf *stack* (stack entry))
-                   (pop-stack))
+                   (return))
                  ;; For now, signal a host error.  It would be better
                  ;; to call the target function ERROR.
                  (error "attempt to use an expired entry ~s~%"
-                        entry)))))
+                        entry)))
+        finally (error "No valid block entry for ~s" name)))
 
 (defclass tag-entry (dynamic-environment-entry valid-p-mixin)
   ((%name :initarg :name :reader name)
@@ -61,11 +63,14 @@
                    (loop for entry-to-invalidate in dynamic-environment
                          until (eq entry-to-invalidate entry)
                          do (setf (valid-p entry-to-invalidate) nil))
-                   (setf *stack* (stack entry)))
+                   (setf *continuation* (continuation entry))
+                   (setf *stack* (stack entry))
+                   (return))
                  ;; For now, signal a host error.  It would be better
                  ;; to call the target function ERROR.
                  (error "attempt to use an expired entry ~s~%"
-                        entry)))))
+                        entry)))
+        finally (error "no valid tag entry for ~s" name)))
 
 (defclass catch-entry (continuation-entry)
   ((%tag :initarg :tag :reader tag)))
