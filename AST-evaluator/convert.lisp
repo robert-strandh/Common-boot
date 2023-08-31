@@ -91,7 +91,4 @@
 
 (defun eval-step ()
   (apply *continuation* *arguments*)
-  (format *trace-output*
-          "Continuation: ~s~%Arguments: ~s~%Stack: ~s~%~%"
-          *continuation* *arguments* *stack*)
   (values))
