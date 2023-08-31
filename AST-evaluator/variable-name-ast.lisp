@@ -18,5 +18,6 @@
                 client
                 ',(ico:name ast)
                 (clostrum-sys:variable-cell
-                 environment ',(ico:name ast))))
+                 environment ',(ico:name ast))
+                dynamic-environment))
          ,continuation))
