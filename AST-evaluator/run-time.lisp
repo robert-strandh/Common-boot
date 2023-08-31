@@ -3,10 +3,7 @@
 (defclass stack-frame ()
   ((%continuation
     :initarg :continuation
-    :reader continuation)
-   (%dynamic-environment
-    :initarg :dynamic-environment
-    :reader dynamic-environment)))
+    :reader continuation)))
 
 (defparameter *stack* '())
 
@@ -94,14 +91,12 @@
 
 (defun push-stack ()
   (push (make-instance 'stack-frame
-          :continuation *continuation*
-          :dynamic-environment *dynamic-environment*)
+          :continuation *continuation*)
         *stack*))
 
 (defun pop-stack ()
   (let ((frame (pop *stack*)))
-    (setf *continuation* (continuation frame)
-          *dynamic-environment* (dynamic-environment frame))))
+    (setf *continuation* (continuation frame))))
 
 (defun push-stack-operation (client)
   (declare (ignore client))
