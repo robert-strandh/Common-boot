@@ -24,6 +24,20 @@
 ;;; arguments and stores them in the global variables and then
 ;;; returns.  The function in the global variable can be a target
 ;;; function, a host function, or a continuation.
+;;;
+;;; The main advantage of using CPS is that managing the dynamic
+;;; environment becomes relatively simple.  The dynamic environment is
+;;; kept in the host variable DYNAMIC-ENVIRONMENT and this variable is
+;;; captured by each continuation, so that restoring a particular
+;;; continuation automatically restores the dynamic environment.
+;;;
+;;; The CPS conversion function takes an AST representing some form
+;;; and a continuation represented as host source code, and it returns
+;;; a host form to be evaluated in order to achieve the effect of the
+;;; form represented by the AST.  The code returned by the CPS
+;;; conversion function must incorporate the continuation it was
+;;; passed so that the values of the AST form are passed to that
+;;; continuation.
 
 (defsystem #:common-boot-ast-evaluator
   :depends-on (#:closer-mop
