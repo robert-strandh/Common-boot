@@ -12,7 +12,7 @@
     (reinitialize-instance let*-ast
       :form-asts form-asts)
     (setf (lookup variable-ast) variable-name)
-    `(step (list (lambda (&rest ,variable-name)
+    `(step (list (xlambda (&rest ,variable-name)
                    ;; We need to wrap the argument list in LIST
                    ;; because of assignment conversion.  The argument
                    ;; list is going to be processed by
@@ -21,6 +21,7 @@
                    (let ((dynamic-environment
                            (prog1 *dynamic-environment*
                              (setf *dynamic-environment* nil))))
+                     (declare (ignorable dynamic-environment))
                      (setq ,variable-name (list ,variable-name))
                      ,(cps client
                            let*-ast
