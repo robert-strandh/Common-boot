@@ -5,7 +5,7 @@
      (kind t)
      (ast ico:multiple-value-prog1-ast))
   (reinitialize-instance ast
-    :first-form-ast (convert-ast builder (ico:first-form-ast ast))
+    :values-ast (convert-ast builder (ico:values-ast ast))
     :form-asts
     (loop for body-ast in (ico:form-asts ast)
           collect (convert-ast builder body-ast))))
