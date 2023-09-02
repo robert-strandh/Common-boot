@@ -72,5 +72,6 @@
    (:file "go-ast")
    (:file "load-time-value-ast")
    (:file "setq-ast")
+   (:file "multiple-value-prog1-ast")
    (:file "ast-to-cps")
    (:file "evaluator")))
