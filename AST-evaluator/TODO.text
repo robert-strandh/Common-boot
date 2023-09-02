@@ -4,7 +4,7 @@ _ = not done
 
 * block
 * catch
-_ eval-when
+x eval-when (must be implemented in Common Boot)
 * flet
 _ function
 * go
