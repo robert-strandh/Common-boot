@@ -30,12 +30,10 @@
 ;;; the dynamic environment to its value.
 (defparameter *dynamic-environment* '())
 
-;;; FIXME: there is some considerable code duplication here.
-
-(defun do-return-from (name dynamic-environment)
+(defun unwind (name dynamic-environment entry-type entry-name)
   (loop for rest on dynamic-environment
         for entry = (first rest)
-        do (when (and (typep entry 'block-entry)
+        do (when (and (typep entry entry-type)
                       (eq name (name entry)))
              (if (valid-p entry)
                  ;; FIXME: handle UNWIND-PROTECT.
@@ -48,55 +46,24 @@
                    (return))
                  ;; For now, signal a host error.  It would be better
                  ;; to call the target function ERROR.
-                 (error "attempt to use an expired entry ~s~%"
+                 (error "Attempt to use an expired entry ~s~%"
                         entry)))
-        finally (error "No valid block entry for ~s" name)))
+        finally (error "No valid ~a entry for ~s" entry-name name)))
+
+(defun do-return-from (name dynamic-environment)
+  (unwind name dynamic-environment 'block-entry "block"))
 
 (defclass tag-entry (continuation-entry valid-p-mixin)
   ((%name :initarg :name :reader name)))
 
 (defun do-go (name dynamic-environment)
-  (loop for rest on dynamic-environment
-        for entry = (first rest)
-        do (when (and (typep entry 'tag-entry)
-                      (eq name (name entry)))
-             (if (valid-p entry)
-                 ;; FIXME: handle UNWIND-PROTECT.
-                 (progn 
-                   (loop for entry-to-invalidate in dynamic-environment
-                         until (eq entry-to-invalidate entry)
-                         do (setf (valid-p entry-to-invalidate) nil))
-                   (setf *continuation* (continuation entry))
-                   (setf *stack* (stack entry))
-                   (return))
-                 ;; For now, signal a host error.  It would be better
-                 ;; to call the target function ERROR.
-                 (error "attempt to use an expired entry ~s~%"
-                        entry)))
-        finally (error "no valid tag entry for ~s" name)))
+  (unwind name dynamic-environment 'tag-entry "tag"))
 
 (defclass catch-entry (continuation-entry valid-p-mixin)
   ((%name :initarg :name :reader name)))
 
-(defun do-throw (tag dynamic-environment)
-  (loop for rest on dynamic-environment
-        for entry = (first rest)
-        do (when (and (typep entry 'catch-entry)
-                      (eq tag (name entry)))
-             (if (valid-p entry)
-                 ;; FIXME: handle UNWIND-PROTECT.
-                 (progn 
-                   (loop for entry-to-invalidate in dynamic-environment
-                         until (eq entry-to-invalidate entry)
-                         do (setf (valid-p entry-to-invalidate) nil))
-                   (setf *continuation* (continuation entry))
-                   (setf *stack* (stack entry))
-                   (return))
-                 ;; For now, signal a host error.  It would be better
-                 ;; to call the target function ERROR.
-                 (error "attempt to use an expired entry ~s~%"
-                        entry)))
-        finally (error "no valid tag entry for ~s" tag)))
+(defun do-throw (name dynamic-environment)
+  (unwind name dynamic-environment 'catch-entry "catch"))
 
 (defclass unwind-protect-entry (dynamic-environment-entry)
   ())
