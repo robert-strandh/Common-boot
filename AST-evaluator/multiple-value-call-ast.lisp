@@ -5,10 +5,16 @@
   (let* ((values-temp (make-symbol "VALUES"))
          (function-temp (make-symbol "FUNCTION"))
          (arguments-temp (make-symbol "ARGUMENTS"))
-         (action `(progn (setf *continuation* ,continuation)
-                         ,(push-stack-operation client)
-                         (step ,arguments-temp
-                                ,function-temp))))
+         (action `(if (typep ,function-temp 'cps-function)
+                      (progn (setf *continuation* ,continuation)
+                             ,(push-stack-operation client)
+                             (step ,arguments-temp
+                                   ,function-temp))
+                      (progn (setf *arguments*
+                                   (multiple-value-list
+                                    (apply ,function-temp
+                                           ,arguments-temp)))
+                             (pop-stack)))))
     (loop for form-ast in (reverse (ico:form-asts ast))
           do (setf action
                    (cps client

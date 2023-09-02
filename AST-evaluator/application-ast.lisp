@@ -11,7 +11,14 @@
        (let* ((,name
                 (lambda (&rest ignore)
                   (declare (ignore ignore))
-                  (step (list ,@argument-variables) ,function-variable)))
+                  (if (typep ,function-variable 'cps-function)
+                      (step (list ,@argument-variables)
+                            ,function-variable)
+                      (progn (setf *arguments*
+                                   (multiple-value-list
+                                    (funcall ,function-variable
+                                             ,@argument-variables)))
+                             (pop-stack)))))
               ,@(loop for argument-ast in (reverse argument-asts)
                       for argument-variable in (reverse argument-variables)
                       collect `(,name (lambda (&rest var)
