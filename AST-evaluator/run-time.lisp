@@ -76,13 +76,13 @@
         finally (error "no valid tag entry for ~s" name)))
 
 (defclass catch-entry (continuation-entry valid-p-mixin)
-  ((%tag :initarg :tag :reader tag)))
+  ((%name :initarg :name :reader name)))
 
 (defun do-throw (tag dynamic-environment)
   (loop for rest on dynamic-environment
         for entry = (first rest)
         do (when (and (typep entry 'catch-entry)
-                      (eq tag (tag entry)))
+                      (eq tag (name entry)))
              (if (valid-p entry)
                  ;; FIXME: handle UNWIND-PROTECT.
                  (progn 

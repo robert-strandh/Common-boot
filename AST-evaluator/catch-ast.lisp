@@ -8,7 +8,7 @@
             (setq ,temp (car ,temp))
             (let ((dynamic-environment dynamic-environment))
               (push (make-instance 'catch-entry
-                      :tag ,temp
+                      :name ,temp
                       :continuation ,continuation
                       :stack *stack*)
                     dynamic-environment)
