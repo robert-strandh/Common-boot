@@ -1,3 +1,4 @@
+x = can't be done
 * = done
 _ = not done
 
@@ -13,7 +14,7 @@ _ function
 * let*
 * load-time-value
 * locally
-_ macrolet
+x macrolet (must be implemented in Common Boot)
 * multiple-value-call
 _ multiple-value-prog1
 * progn
@@ -21,7 +22,7 @@ _ multiple-value-prog1
 * quote
 * return-from
 * setq
-_ symbol-macrolet
+x symbol-macrolet (must be implemented in Common Boot)
 * tagbody
 * the
 * throw
