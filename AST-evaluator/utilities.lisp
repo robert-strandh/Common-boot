@@ -14,12 +14,8 @@
   (setf (gethash ast *host-names*) value))
 
 (defun import-host-function (client name global-environment)
-  (let ((host-function (fdefinition name)))
-    (setf (clostrum:fdefinition client global-environment name)
-          (lambda (&rest arguments)
-            (setf *arguments*
-                  (multiple-value-list (apply host-function arguments)))
-            (pop-stack)))))
+  (setf (clostrum:fdefinition client global-environment name)
+        (fdefinition name)))
 
 (defclass cps-function (closer-mop:funcallable-standard-object)
   ()
@@ -28,4 +24,5 @@
 (defmacro xlambda (lambda-list &body body)
   `(let ((result (make-instance 'cps-function)))
      (closer-mop:set-funcallable-instance-function
-      result (lambda ,lambda-list ,@body))))
+      result (lambda ,lambda-list ,@body))
+     result))
