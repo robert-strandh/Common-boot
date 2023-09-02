@@ -20,3 +20,12 @@
             (setf *arguments*
                   (multiple-value-list (apply host-function arguments)))
             (pop-stack)))))
+
+(defclass cps-function (closer-mop:funcallable-standard-object)
+  ()
+  (:metaclass closer-mop:funcallable-standard-class))
+
+(defmacro xlambda (lambda-list &body body)
+  `(let ((result (make-instance 'cps-function)))
+     (closer-mop:set-funcallable-instance-function
+      result (lambda ,lambda-list ,@body))))
