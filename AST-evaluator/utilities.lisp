@@ -18,11 +18,13 @@
         (fdefinition name)))
 
 (defclass cps-function (closer-mop:funcallable-standard-object)
-  ()
+  ((%cps-entry-point :initarg :cps-entry-point :reader cps-entry-point))
   (:metaclass closer-mop:funcallable-standard-class))
 
 (defmacro xlambda (lambda-list &body body)
-  `(let ((result (make-instance 'cps-function)))
+  `(let* ((cps-entry-point (lambda ,lambda-list ,@body))
+          (result (make-instance 'cps-function
+                    :cps-entry-point cps-entry-point)))
      (closer-mop:set-funcallable-instance-function
-      result (lambda ,lambda-list ,@body))
+      result cps-entry-point)
      result))
