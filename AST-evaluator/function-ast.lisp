@@ -6,6 +6,6 @@
         (cps client name-ast continuation)
         (cps-function-ast
          client
-         (ico:lambda-list-ast ast)
-         (ico:form-asts ast)
+         (ico:lambda-list-ast name-ast)
+         (ico:form-asts name-ast)
          continuation))))
