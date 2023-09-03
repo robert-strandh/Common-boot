@@ -1,7 +1,10 @@
 (cl:in-package #:common-boot-ast-evaluator)
 
 (defun evaluator-step ()
-  (apply *continuation* *arguments*)
+  (apply (if (typep *continuation* 'cps-function)
+             (cps-entry-point *continuation*)
+             *continuation*)
+         *arguments*)
   *arguments*)
 
 (defun eval-cst (cst environment)
