@@ -6,7 +6,7 @@ _ = not done
 * catch
 x eval-when (must be implemented in Common Boot)
 * flet
-_ function
+* function
 * go
 * if
 * labels
@@ -16,7 +16,7 @@ _ function
 * locally
 x macrolet (must be implemented in Common Boot)
 * multiple-value-call
-_ multiple-value-prog1
+* multiple-value-prog1
 * progn
 * progv
 * quote
