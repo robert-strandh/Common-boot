@@ -1,10 +1,9 @@
 (cl:in-package #:common-boot-ast-evaluator)
 
-(defun ast-to-cps (client ast)
+(defun ast-to-cps (client ast environment)
   (let* ((variable (gensym))
          (*host-names* (make-hash-table :test #'eq))
          (exit (gensym "EXIT"))
-         (environment (cb:create-environment))
          (builder (cb::make-builder client environment)))
     (cm:with-builder builder
       `(lambda (client environment)
