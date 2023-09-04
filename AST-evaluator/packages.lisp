@@ -9,5 +9,6 @@
   (:use #:common-lisp)
   (:shadow #:symbol-value #:step)
   (:export #:eval-cst
+           #:eval-ast
            #:eval-expression
            #:import-host-function))
