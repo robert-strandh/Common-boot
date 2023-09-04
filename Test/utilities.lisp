@@ -15,3 +15,6 @@
   `(is #'equal
        (multiple-value-list ,form1)
        (multiple-value-list ,form2)))
+
+(defun eval-expression (expression environment)
+  (cbae:eval-expression expression environment))
