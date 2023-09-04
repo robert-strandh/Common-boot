@@ -9,7 +9,8 @@
                #:clostrum-trucler
                #:trucler-reference
                #:iconoclast-builder
-               #:common-macros)
+               #:common-macros
+               #:common-boot-ast-evaluator)
   :serial t
   :components
   ((:file "packages")
@@ -52,4 +53,5 @@
    (:file "convert-with-description")
    (:file "convert")
    (:file "convert-ast")
-   (:file "cst-to-ast")))
+   (:file "cst-to-ast")
+   (:file "eval")))
