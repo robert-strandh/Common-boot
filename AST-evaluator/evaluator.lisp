@@ -34,8 +34,5 @@
     (cb:cst-to-ast client cst environment)))
 
 (defun eval-expression (expression environment)
-  (eval-cst (cst:cst-from-expression expression) environment))
-
-(defun new-eval-expression (expression environment)
   (apply #'values
          (eval-cst (cst:cst-from-expression expression) environment)))
