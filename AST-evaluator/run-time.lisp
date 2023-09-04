@@ -5,6 +5,8 @@
     :initarg :continuation
     :reader continuation)))
 
+(defparameter *continuation* nil)
+
 (defparameter *stack* '())
 
 (defclass dynamic-environment-entry ()
@@ -75,8 +77,6 @@
    (%value
     :initarg :value
     :reader value)))
-
-(defparameter *continuation* nil)
 
 (defparameter *arguments* nil)
 
