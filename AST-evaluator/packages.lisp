@@ -4,11 +4,10 @@
   (:local-nicknames
    (#:ico #:iconoclast)
    (#:bld #:iconoclast-builder)
-   (#:cb #:common-boot)
    (#:cm #:common-macros))
   (:use #:common-lisp)
   (:shadow #:symbol-value #:step)
-  (:export #:eval-cst
-           #:eval-ast
+  (:export #:eval-ast
+           #:ast-to-cps
            #:eval-expression
            #:import-host-function))
