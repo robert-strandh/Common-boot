@@ -1,7 +1,8 @@
 (cl:in-package #:asdf-user)
 
 (defsystem #:common-boot-test
-  :depends-on (#:common-boot-ast-evaluator
+  :depends-on (#:common-boot
+               #:common-boot-ast-evaluator
                #:parachute)
   :serial t
   :components
