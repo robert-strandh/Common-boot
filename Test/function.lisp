@@ -12,4 +12,4 @@
     (cbae:import-host-function client '1+ global-environment)
     (cbae:import-host-function client 'funcall global-environment)
     (iss #1=(funcall (function (lambda (x) (1+ x))) 234)
-         (cbae:eval-expression '#1# environment))))
+         (eval-expression '#1# environment))))
