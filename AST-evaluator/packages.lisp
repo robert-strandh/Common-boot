@@ -10,5 +10,4 @@
   (:shadow #:symbol-value #:step)
   (:export #:eval-cst
            #:eval-expression
-           #:new-eval-expression
            #:import-host-function))
