@@ -6,22 +6,22 @@
   :parent setq
   (with-default-parameters (client environment global-environment)
     (iss #1=(setq)
-         (cbae:new-eval-expression '#1# environment))))
+         (cbae:eval-expression '#1# environment))))
 
 (define-test setq-one-pair
   :parent setq
   (with-default-parameters (client environment global-environment)
     (iss #1=(let ((x 10)) (setq x 20))
-         (cbae:new-eval-expression '#1# environment))))
+         (cbae:eval-expression '#1# environment))))
 
 (define-test setq-two-pairs
   :parent setq
   (with-default-parameters (client environment global-environment)
     (iss #1=(let ((x 10)) (setq x 20 x 30))
-         (cbae:new-eval-expression '#1# environment))))
+         (cbae:eval-expression '#1# environment))))
 
 (define-test setq-two-pairs-and-return
   :parent setq
   (with-default-parameters (client environment global-environment)
     (iss #1=(let ((x 10)) (setq x 20 x 30) x)
-         (cbae:new-eval-expression '#1# environment))))
+         (cbae:eval-expression '#1# environment))))

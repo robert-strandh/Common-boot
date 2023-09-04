@@ -6,7 +6,7 @@
   :parent labels
   (with-default-parameters (client environment global-environment)
     (iss #1=(labels ((f () 234)) (f))
-         (cbae:new-eval-expression '#1# environment))))
+         (cbae:eval-expression '#1# environment))))
 
 (define-test labels-one-parameter
   :parent labels
@@ -16,7 +16,7 @@
     (cbae:import-host-function client 'first global-environment)
     (cbae:import-host-function client 'rest global-environment)
     (iss #1=(labels ((f (x) x)) (f 234))
-         (cbae:new-eval-expression '#1# environment))))
+         (cbae:eval-expression '#1# environment))))
 
 (define-test labels-nested
   :parent labels
@@ -30,4 +30,4 @@
               (labels ((f (x) x)
                        (g (x) (f x)))
                 (g 234)))
-         (cbae:new-eval-expression '#1# environment))))
+         (cbae:eval-expression '#1# environment))))
