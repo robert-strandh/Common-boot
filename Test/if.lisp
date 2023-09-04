@@ -5,10 +5,8 @@
 (define-test if-false-no-else
   :parent if
   (with-default-parameters (client environment global-environment)
-    (is #'equal
-        (multiple-value-list
-         #1=(if nil 234))
-        (cbae:eval-expression '#1# environment))))
+    (iss #1=(if nil 234)
+         (cbae:new-eval-expression '#1# environment))))
 
 (define-test if-true-no-else
   :parent if
