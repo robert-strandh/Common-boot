@@ -10,3 +10,8 @@
              ,client-variable ,environment-variable)))
      (declare (ignorable ,global-environment-variable))
      ,@body))
+
+(defmacro iss (form1 form2)
+  `(is #'equal
+       (multiple-value-list ,form1)
+       (multiple-value-list ,form2)))
