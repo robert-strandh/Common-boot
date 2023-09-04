@@ -7,20 +7,23 @@
          *arguments*)
   *arguments*)
 
-(defun eval-cst (cst environment)
-  (let* ((client (make-instance 'trucler-reference:client))
-         (global-environment (trucler:global-environment client environment))
-         (ast (cb:cst-to-ast client cst environment))
+(defun eval-ast (client ast environment)
+  (let* ((global-environment (trucler:global-environment client environment))
          (cps (ast-to-cps client ast))
          (initial-continuation (compile nil cps)))
     (setq *dynamic-environment* '())
     (setq *continuation*
           (lambda (&rest arguments)
-            (return-from eval-cst arguments)))
+            (return-from eval-ast arguments)))
     (push-stack)
     (setq *continuation* initial-continuation)
     (setq *arguments* (list client global-environment))
     (loop (evaluator-step))))
+
+(defun eval-cst (cst environment)
+  (let* ((client (make-instance 'trucler-reference:client))
+         (ast (cb:cst-to-ast client cst environment)))
+    (eval-ast client ast environment)))
 
 (defun cps-from-expression (expression environment)
   (let* ((cst (cst:cst-from-expression expression))
