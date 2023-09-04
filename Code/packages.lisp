@@ -6,9 +6,12 @@
                     (#:clo #:clostrum)
                     (#:ico #:iconoclast)
                     (#:bld #:iconoclast-builder)
+                    (#:cm #:common-macros)
                     (#:cmd #:common-macro-definitions)
                     (#:ses #:s-expression-syntax)
                     (#:abp #:architecture.builder-protocol)
-                    (#:cst #:concrete-syntax-tree))
+                    (#:cst #:concrete-syntax-tree)
+                    (#:cbae #:common-boot-ast-evaluator))
   (:export #:create-environment
+           #:eval-expression
            #:cst-to-ast))
