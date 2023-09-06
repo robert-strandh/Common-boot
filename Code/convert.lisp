@@ -1,5 +1,39 @@
 (cl:in-package #:common-boot)
 
+(defgeneric finalize-ast (client ast environment))
+
+;; A SPECIAL-FORM-AST has already been finalized, so there is nothing
+;; more to do.
+(defmethod finalize-ast (client (ast ico:special-form-ast) environment)
+  ast)
+
+;; A FUNCTION-FORM-AST has already been finalized, so there is nothing
+;; more to do.
+(defmethod finalize-ast (client (ast ico:function-form-ast) environment)
+  ast)
+
+;; For a MACRO-FORM-AST, we need to expand the corresponding macro
+;; form.  If we are luckly, COMMON-MACROS has an EXPAND method.  If we
+;; are not so lucky, we must unparse the AST, take the raw form of the
+;; resulting CST, apply the macro function to do the expansion,
+;; reconstruct the CST from the expanded form, and then convert the
+;; resulting CST.
+(defmethod finalize-ast (client (ast ico:macro-form-ast) environment)
+  (finalize-ast 
+   client
+   (handler-case (cm:expand client ast environment)
+     (error ()
+       (let* ((cst (ses:unparse client t ast))
+              (form (cst:raw cst))
+              (macro-function
+                (trucler:macro-function (first form) environment))
+              (expansion
+                (funcall macro-function form environment))
+              (expanded-cst
+                (cst:reconstruct client expansion cst)))
+         (convert client expanded-cst environment))))
+   environment))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; CONVERT is responsible for converting a cst to an abstract syntax
@@ -30,8 +64,9 @@
                    (convert-with-description client cst d environment))
                  ;; There is a syntax available for this operator, so
                  ;; we parse the expression according to that syntax.
-                 (let ((builder (make-builder client environment)))
-                   (ses:parse builder syntax cst)))))
+                 (let* ((builder (make-builder client environment))
+                        (ast (ses:parse builder syntax cst)))
+                   (finalize-ast client ast environment)))))
           (t
            ;; The form must be a compound form where the CAR is a lambda
            ;; expression.  Evaluating such a form might have some
