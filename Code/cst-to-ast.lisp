@@ -5,7 +5,8 @@
         (*compile-time-too* nil)
         (s-expression-syntax.expression-grammar:*client*
           s-expression-syntax.concrete-syntax-tree::*client*))
-    (convert client cst environment)))
+    (cm:with-builder (make-builder client environment)
+      (convert client cst environment))))
 
 (defclass client (trucler-reference:client)
   ())
