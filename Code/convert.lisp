@@ -19,20 +19,22 @@
 ;; reconstruct the CST from the expanded form, and then convert the
 ;; resulting CST.
 (defmethod finalize-ast (client (ast ico:macro-form-ast) environment)
-  (finalize-ast 
-   client
-   (handler-case (cm:expand client ast environment)
-     (error ()
-       (let* ((cst (ses:unparse client t ast))
-              (form (cst:raw cst))
-              (macro-function
-                (trucler:macro-function (first form) environment))
-              (expansion
-                (funcall macro-function form environment))
-              (expanded-cst
-                (cst:reconstruct client expansion cst)))
-         (convert client expanded-cst environment))))
-   environment))
+  (cm:expand client ast environment)
+  (finalize-ast client (cm:expand client ast environment) environment))
+
+;;; This method is applicable when there is no applicable primary
+;;; method specialized to the class of the AST argument that was
+;;; supplied.
+(defmethod cm:expand ((client client) ast environment)
+  (let* ((cst (ses:unparse client t ast))
+         (form (cst:raw cst))
+         (macro-function
+           (trucler:macro-function (first form) environment))
+         (expansion
+           (funcall macro-function form environment))
+         (expanded-cst
+           (cst:reconstruct client expansion cst)))
+    (convert client expanded-cst environment)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
