@@ -1,3 +1,5 @@
+(in-package #:common-boot)
+
 (defmethod abp:finish-node
     ((builder builder)
      (kind t)
@@ -29,4 +31,3 @@
           do (reinitialize-instance ast
                :statement-asts
                (convert-asts new-builder (ico:statement-asts ast))))))
-    
