@@ -17,6 +17,7 @@
    (:file "variables")
    (:file "generic-functions")
    (:file "utilities")
+   (:file "client")
    (:file "builder")
    (:file "environment")
    (:file "environment-query")
