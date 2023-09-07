@@ -25,7 +25,7 @@
   (with-builder-components (builder client environment)
     (cm:expand client ast environment)))
 
-(defmethod cm:expand ((client macro-transforming-client) ast environment)
+(defmethod cm:expand (client ast environment)
   (expand-macro client ast environment))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
