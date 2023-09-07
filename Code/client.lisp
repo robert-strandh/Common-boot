@@ -29,5 +29,5 @@
 ;;; the traditional way, i.e. by looking up a macro function in the
 ;;; environment, and applying that macro function to the S-expression
 ;;; represented by the AST.
-(defclass macro-transforming-client (macro-expanding-client)
+(defclass macro-transforming-client (macro-function-client)
   ())
