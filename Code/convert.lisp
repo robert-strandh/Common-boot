@@ -1,31 +1,6 @@
 (cl:in-package #:common-boot)
 
-(defgeneric finalize-ast (client ast environment))
-
-;; A SPECIAL-FORM-AST has already been finalized, so there is nothing
-;; more to do.
-(defmethod finalize-ast (client (ast ico:special-form-ast) environment)
-  ast)
-
-;; A FUNCTION-FORM-AST has already been finalized, so there is nothing
-;; more to do.
-(defmethod finalize-ast (client (ast ico:function-form-ast) environment)
-  ast)
-
-;; For a MACRO-FORM-AST, we need to expand the corresponding macro
-;; form.  If we are luckly, COMMON-MACROS has an EXPAND method.  If we
-;; are not so lucky, we must unparse the AST, take the raw form of the
-;; resulting CST, apply the macro function to do the expansion,
-;; reconstruct the CST from the expanded form, and then convert the
-;; resulting CST.
-(defmethod finalize-ast (client (ast ico:macro-form-ast) environment)
-  (cm:expand client ast environment)
-  (finalize-ast client (cm:expand client ast environment) environment))
-
-;;; This method is applicable when there is no applicable primary
-;;; method specialized to the class of the AST argument that was
-;;; supplied.
-(defmethod cm:expand ((client client) ast environment)
+(defun expand-macro (client ast environment)
   (let* ((cst (ses:unparse client t ast))
          (form (cst:raw cst))
          (macro-function
@@ -35,6 +10,23 @@
          (expanded-cst
            (cst:reconstruct client expansion cst)))
     (convert client expanded-cst environment)))
+
+(defmethod abp:finish-node
+    ((builder macro-function-builder)
+     (kind t)
+     (ast ico:macro-form-ast))
+  (with-builder-components (builder client environment)
+    (expand-macro client ast environment)))
+
+(defmethod abp:finish-node
+    ((builder macro-transforming-builder)
+     (kind t)
+     (ast ico:macro-form-ast))
+  (with-builder-components (builder client environment)
+    (cm:expand client ast environment)))
+
+(defmethod cm:expand ((client macro-transforming-client) ast environment)
+  (expand-macro client ast environment))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -66,9 +58,8 @@
                    (convert-with-description client cst d environment))
                  ;; There is a syntax available for this operator, so
                  ;; we parse the expression according to that syntax.
-                 (let* ((builder (make-builder client environment))
-                        (ast (ses:parse builder syntax cst)))
-                   (finalize-ast client ast environment)))))
+                 (let* ((builder (make-builder client environment)))
+                   (ses:parse builder syntax cst)))))
           (t
            ;; The form must be a compound form where the CAR is a lambda
            ;; expression.  Evaluating such a form might have some
