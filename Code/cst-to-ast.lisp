@@ -7,6 +7,3 @@
           s-expression-syntax.concrete-syntax-tree::*client*))
     (cm:with-builder (make-builder client environment)
       (convert client cst environment))))
-
-(defclass client (trucler-reference:client)
-  ())
