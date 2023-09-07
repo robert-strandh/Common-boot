@@ -12,6 +12,11 @@
                     (#:abp #:architecture.builder-protocol)
                     (#:cst #:concrete-syntax-tree)
                     (#:cbae #:common-boot-ast-evaluator))
-  (:export #:create-environment
+  (:export #:client
+           #:macro-preserving-client
+           #:macro-expanding-client
+           #:macro-function-client
+           #:macro-transforming-client
+   #:create-environment
            #:eval-expression
            #:cst-to-ast))
