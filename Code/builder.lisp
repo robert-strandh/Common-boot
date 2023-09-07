@@ -12,8 +12,37 @@
     :initarg :environment
     :reader environment)))
 
-(defun make-builder (client environment)
-  (make-instance 'builder
+(defclass macro-preserving-builder (builder)
+  ())
+
+(defclass macro-expanding-builder (builder)
+  ())
+
+(defclass macro-function-builder (macro-expanding-builder)
+  ())
+
+(defclass macro-transforming-builder (macro-function-builder)
+  ())
+
+(defgeneric make-builder (client environment))
+
+(defmethod make-builder ((client macro-preserving-client) environment)
+  (make-instance 'macro-preserving-builder
+    :client client
+    :environment environment))
+
+(defmethod make-builder ((client macro-expanding-client) environment)
+  (make-instance 'macro-expanding-builder
+    :client client
+    :environment environment))
+
+(defmethod make-builder ((client macro-function-client) environment)
+  (make-instance 'macro-function-builder
+    :client client
+    :environment environment))
+
+(defmethod make-builder ((client macro-transforming-client) environment)
+  (make-instance 'macro-transforming-builder
     :client client
     :environment environment))
 
