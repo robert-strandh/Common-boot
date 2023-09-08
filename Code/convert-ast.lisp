@@ -13,3 +13,8 @@
 (defmethod convert-ast-in-environment
     (client (ast ico:unparsed-form-ast) environment)
   (convert client (ico:form ast) environment))
+
+;;; This method is applicable when we receive an AST that has already
+;;; been converted.
+(defmethod convert-ast-in-environment (client ast environment)
+  ast)
