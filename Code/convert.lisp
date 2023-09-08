@@ -1,7 +1,8 @@
 (cl:in-package #:common-boot)
 
 (defun expand-macro (client ast environment)
-  (let* ((cst (ses:unparse client t ast))
+  (let* ((builder (make-builder client environment))
+         (cst (ses:unparse builder t ast))
          (form (cst:raw cst))
          (macro-function
            (trucler:macro-function (first form) environment))
@@ -11,17 +12,18 @@
            (cst:reconstruct client expansion cst)))
     (convert client expanded-cst environment)))
 
-(defmethod abp:finish-node
-    ((builder macro-function-builder)
-     (kind t)
-     (ast ico:macro-form-ast))
-  (with-builder-components (builder client environment)
-    (expand-macro client ast environment)))
+;; (defmethod abp:finish-node
+;;     ((builder macro-function-builder)
+;;      (kind t)
+;;      (ast ico:macro-form-ast))
+;;   (with-builder-components (builder client environment)
+;;     (expand-macro client ast environment)))
 
-(defmethod abp:finish-node
+(defmethod abp:finish-node :around
     ((builder macro-transforming-builder)
      (kind t)
      (ast ico:macro-form-ast))
+  (call-next-method)
   (with-builder-components (builder client environment)
     (cm:expand client ast environment)))
 
