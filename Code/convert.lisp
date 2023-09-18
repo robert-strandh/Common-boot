@@ -57,7 +57,7 @@
                    (convert-with-description client cst d environment))
                  ;; There is a syntax available for this operator, so
                  ;; we parse the expression according to that syntax.
-                 (let* ((builder (make-builder client environment)))
+                 (let ((builder (make-builder client environment)))
                    (ses:parse builder syntax cst)))))
           (t
            ;; The form must be a compound form where the CAR is a lambda
