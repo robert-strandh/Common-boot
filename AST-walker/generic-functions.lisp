@@ -13,19 +13,27 @@
 (defmethod walk-ast-node (client node)
   node)
 
+(defun set-slot (ast reader-name value)
+  (let* ((symbol-name (symbol-name reader-name))
+         (initarg (intern symbol-name (find-package "KEYWORD"))))
+    (reinitialize-instance ast initarg value)))
+
 (defmethod walk-ast-node (client (ast iconoclast:ast))
   (loop for (cardinality slot-reader) in (iconoclast:slot-designators ast)
         do (ecase cardinality
              (*
-              (loop for child in (funcall slot-reader ast)
-                    do (walk-ast-node client child)))
+              (set-slot ast slot-reader
+                        (loop for child in (funcall slot-reader ast)
+                              collect (walk-ast-node client child))))
              (iconoclast:?
               (let ((possible-child (funcall slot-reader ast)))
                 (unless (null possible-child)
-                  (walk-ast-node client possible-child))))
+                  (set-slot ast slot-reader
+                            (walk-ast-node client possible-child)))))
              (1
               (let ((child (funcall slot-reader ast)))
-                (walk-ast-node client child)))))
+                (set-slot ast slot-reader
+                          (walk-ast-node client child))))))
   ast)
 
 (defvar *visited*)
