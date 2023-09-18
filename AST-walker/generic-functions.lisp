@@ -1,5 +1,13 @@
 (cl:in-package #:common-boot-ast-walker)
 
+;;;; This system implements a general AST walker.  All it does it
+;;;; traverse the AST tree without invoking any action.  To implement
+;;;; some action, client code can define an :AROUND method on
+;;;; WALK-AST-NODE, that specializes to a particular CLIENT class.
+;;;; That around method can then implement actions before or after
+;;;; recursive processing takes place, or call WALK-AST-NODE
+;;;; recursively with some new AST node.
+
 (defgeneric walk-ast-node (client node))
 
 (defmethod walk-ast-node (client node)
