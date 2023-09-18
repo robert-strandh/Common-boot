@@ -36,9 +36,6 @@
 ;;; tree.
 
 (defmethod convert (client cst environment)
-  ;; (let ((builder (make-builder client environment)))
-  ;;   (format *trace-output* "*** ~s ***~%"
-  ;;           (ses:classify builder cst)))
   (let ((form (cst:raw cst)))
     (cond ((or (and (not (consp form)) (not (symbolp form)))
                (keywordp form)
