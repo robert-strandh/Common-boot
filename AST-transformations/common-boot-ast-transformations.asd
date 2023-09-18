@@ -6,4 +6,5 @@
   :components
   ((:file "packages")
    (:file "client")
-   (:file "canonicalize-declaration-asts")))
+   (:file "canonicalize-declaration-asts")
+   (:file "application-lambda-to-labels")))
