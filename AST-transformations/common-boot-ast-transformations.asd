@@ -7,4 +7,5 @@
   ((:file "packages")
    (:file "client")
    (:file "canonicalize-declaration-asts")
-   (:file "application-lambda-to-labels")))
+   (:file "application-lambda-to-labels")
+   (:file "function-lambda-to-labels")))
