@@ -67,11 +67,9 @@
            ;; the form as well.
            (when (and *current-form-is-top-level-p* *compile-time-too*)
              (eval-cst client cst environment))
-           (let ((builder (make-builder client environment)))
-             ;; FIXME: Use the particular syntax that is valid for
-             ;; applications where the operator is a lambda
-             ;; expression.
-             (ses:parse builder t cst))))))
+           (let ((builder (make-builder client environment))
+                 (syntax (ses:find-syntax 'ses:application)))
+             (ses:parse builder syntax cst))))))
 
 (defmethod convert :around (client cst environment)
   #+sbcl(declare (sb-ext:muffle-conditions sb-ext:compiler-note))
