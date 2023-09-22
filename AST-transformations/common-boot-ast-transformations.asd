@@ -9,4 +9,5 @@
    (:file "canonicalize-declaration-asts")
    (:file "application-lambda-to-labels")
    (:file "function-lambda-to-labels")
-   (:file "flet-to-labels")))
+   (:file "flet-to-labels")
+   (:file "eliminate-special-declarations")))
