@@ -7,8 +7,11 @@
 ;;;; purpose, SPECIAL declarations can be removed without changing the
 ;;;; semantics, as they are not going to be consulted again.
 
+(defclass eliminate-special-declarations-client (client) ())
+
 (defmethod cbaw:walk-ast-node :around
-    ((client client) (ast ico:declaration-asts-mixin))
+    ((client eliminate-special-declarations-client)
+     (ast ico:declaration-asts-mixin))
   (loop for declaration-ast in (ico:declaration-asts ast)
         do (reinitialize-instance declaration-ast
              :declaration-specifier-asts
@@ -17,3 +20,8 @@
                                  'ico:special-ast))
                         (ico:declaration-specifier-asts ast))))
   (call-next-method))
+
+(defun eliminate-special-declarations (ast)
+  (let ((client (make-instance 'eliminate-special-declarations-client)))
+    (cbaw:walk-ast-node client ast)))
+
