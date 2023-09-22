@@ -11,4 +11,5 @@
    (:file "function-lambda-to-labels")
    (:file "flet-to-labels")
    (:file "let-to-labels")
+   (:file "letstar-to-labels")
    (:file "eliminate-special-declarations")))
