@@ -5,10 +5,8 @@
 
 (defclass let-to-labels-client (client) ())
 
-(defmethod cbaw:walk-ast-node :around
-    ((client let-to-labels-client) (ast ico:let-ast))
-  ;; Start by converting any children of this AST node.
-  (call-next-method)
+(defun bindings-and-body-to-labels
+    (binding-asts declaration-asts form-asts)
   (let* ((local-function-definition
            (make-instance 'ico:local-function-name-definition-ast
              :name (gensym)))
@@ -26,20 +24,22 @@
                 :required-section-ast
                 (make-instance 'ico:required-section-ast
                   :parameter-asts
-                  (loop for binding-ast in (ico:binding-asts ast)
+                  (loop for binding-ast in binding-asts
                         for variable-name-ast
                           = (ico:variable-name-ast binding-ast)
                         collect (make-instance 'ico:required-parameter-ast
                                   :name-ast variable-name-ast))))
-              :declaration-asts (ico:declaration-asts ast)
-              :form-asts (ico:form-asts ast)))
+              :declaration-asts declaration-asts
+              :form-asts form-asts))
       :form-asts
       (list (make-instance 'ico:application-ast
               :function-name-ast local-function-reference
               :argument-asts
-              (mapcar #'ico:form-ast
-                      (ico:binding-asts ast)))))))
+              (mapcar #'ico:form-ast binding-asts))))))
 
-(defun let-to-labels (ast)
-  (let ((client (make-instance 'let-to-ast-client)))
-    (cbaw:walk-ast-node client ast)))
+(defmethod cbaw:walk-ast-node :around
+    ((client let-to-labels-client) (ast ico:let-ast))
+  ;; Start by converting any children of this AST node.
+  (call-next-method)
+  (bindings-and-body-to-labels
+   (ico:binding-asts ast) (ico:declaration-asts ast) (ico:form-asts ast)))
