@@ -1,6 +1,7 @@
 (cl:in-package #:common-boot-ast-evaluator)
 
 (defun ast-to-cps (client ast environment)
+  (declare (ignore environment))
   (let* ((variable (gensym))
          (*host-names* (make-hash-table :test #'eq))
          (exit (gensym "EXIT")))
