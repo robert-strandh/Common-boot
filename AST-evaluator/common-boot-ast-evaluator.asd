@@ -40,7 +40,8 @@
 ;;; continuation.
 
 (defsystem #:common-boot-ast-evaluator
-  :depends-on (#:closer-mop)
+  :depends-on (#:closer-mop
+               #:common-boot-ast-transformations)
   :serial t
   :components
   ((:file "packages")
