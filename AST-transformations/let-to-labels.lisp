@@ -7,11 +7,13 @@
 
 (defun bindings-and-body-to-labels
     (binding-asts declaration-asts form-asts)
-  (let* ((local-function-definition
+  (let* ((name (gensym))
+         (local-function-definition
            (make-instance 'ico:local-function-name-definition-ast
-             :name (gensym)))
+             :name name))
          (local-function-reference
            (make-instance 'ico:function-reference-ast
+             :name name
              :local-function-name-definition-ast local-function-definition)))
     (reinitialize-instance local-function-definition
       :local-function-name-reference-asts (list local-function-reference))
