@@ -23,5 +23,5 @@
 
 (defun eliminate-special-declarations (ast)
   (let ((client (make-instance 'eliminate-special-declarations-client)))
-    (cbaw:walk-ast-node client ast)))
+    (cbaw:walk-ast client ast)))
 

@@ -15,4 +15,4 @@
 
 (defun flet-to-labels (ast)
   (let ((client (make-instance 'flet-to-ast-client)))
-    (cbaw:walk-ast-node client ast)))
+    (cbaw:walk-ast client ast)))

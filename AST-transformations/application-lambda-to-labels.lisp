@@ -44,4 +44,4 @@
                   
 (defun application-lambda-to-labels (ast)
   (let ((client (make-instance 'application-lambda-to-labels-client)))
-    (cbaw:walk-ast-node client ast)))
+    (cbaw:walk-ast client ast)))
