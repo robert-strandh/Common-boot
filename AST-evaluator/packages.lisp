@@ -2,6 +2,7 @@
 
 (defpackage #:common-boot-ast-evaluator
   (:local-nicknames
+   (#:cbat #:common-boot-ast-transformations)
    (#:ico #:iconoclast)
    (#:bld #:iconoclast-builder)
    (#:cm #:common-macros))
