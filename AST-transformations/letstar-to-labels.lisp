@@ -12,7 +12,9 @@
         (declaration-asts (ico:declaration-asts ast))
         (form-asts (ico:form-asts ast)))
     (if (null binding-asts)
-        form-asts
+        (make-instance 'ico:progn-ast
+          :origin (ico:origin ast)
+          :form-asts form-asts)
         (let* ((labels-ast
                  (bindings-and-body-to-labels
                   (last binding-asts)
