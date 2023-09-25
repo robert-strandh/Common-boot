@@ -9,6 +9,22 @@
             (trucler:global-environment
              ,client-variable ,environment-variable)))
      (declare (ignorable ,global-environment-variable))
+     (cbae:import-host-function
+      ,client-variable 'null ,global-environment-variable)
+     (cbae:import-host-function
+      ,client-variable 'first ,global-environment-variable)
+     (cbae:import-host-function
+      ,client-variable 'rest ,global-environment-variable)
+     (cbae:import-host-function
+      ,client-variable 'error ,global-environment-variable)
+     (cbae:import-host-function
+      ,client-variable '+ ,global-environment-variable)
+     (cbae:import-host-function
+      ,client-variable '1+ ,global-environment-variable)
+     (cbae:import-host-function
+      ,client-variable 'floor ,global-environment-variable)
+     (cbae:import-host-function
+      ,client-variable 'funcall ,global-environment-variable)
      ,@body))
 
 (defmacro iss (form1 form2)
