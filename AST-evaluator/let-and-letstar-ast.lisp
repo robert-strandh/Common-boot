@@ -31,9 +31,6 @@
                                  (list (car ,variable-name)))
                            ,action))))
     action))
-                        
-(defmethod cps (client (ast ico:let-ast) continuation)
-  (cps-let-let* client ast continuation))
 
 (defmethod cps (client (ast ico:let*-ast) continuation)
   (cps-let-let* client ast continuation))
