@@ -7,8 +7,13 @@
          *arguments*)
   *arguments*)
 
+(defun simplify-ast (ast)
+  (let* ((ast (cbat:let-to-labels ast))
+         (ast (cbat:let*-to-labels ast)))
+    ast))
+
 (defun eval-ast (client ast environment)
-  (let* ((transformed-ast (cbat:let-to-labels ast))
+  (let* ((transformed-ast (simplify-ast ast))
          (global-environment (trucler:global-environment client environment))
          (cps (ast-to-cps client transformed-ast environment))
          (initial-continuation (compile nil cps)))
