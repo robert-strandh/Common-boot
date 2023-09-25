@@ -25,3 +25,7 @@
                          :form-asts
                          (list labels-ast))))
           (cbaw:walk-ast-node client result)))))
+
+(defun let*-to-labels (ast)
+  (let ((client (make-instance 'let*-to-labels-client)))
+    (cbaw:walk-ast-node client ast)))
