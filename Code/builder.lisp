@@ -26,6 +26,11 @@
 
 (defgeneric make-builder (client environment))
 
+(defmethod make-builder (client environment)
+  (make-instance 'builder
+    :client client
+    :environment environment))
+
 (defmethod make-builder ((client macro-preserving-client) environment)
   (make-instance 'macro-preserving-builder
     :client client
