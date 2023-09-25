@@ -7,4 +7,10 @@
    (#:ico #:iconoclast))
   (:export
    #:client
-   #:canonicalize-declaration-asts))
+   #:canonicalize-declaration-asts
+   #:application-lambda-to-labels
+   #:function-lambda-to-labels
+   #:flet-to-labels
+   #:let-to-labels
+   #:let*-to-labels
+   #:eliminate-special-declarations))
