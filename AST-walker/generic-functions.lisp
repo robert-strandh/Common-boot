@@ -39,9 +39,11 @@
 (defvar *visited*)
 
 (defmethod walk-ast-node :around (client node)
-  (unless (gethash node *visited*)
-    (setf (gethash node *visited*) t)
-    (call-next-method)))
+  (if (gethash node *visited*)
+      node
+      (progn 
+        (setf (gethash node *visited*) t)
+        (call-next-method))))
 
 (defgeneric walk-ast (client ast))
 
