@@ -43,3 +43,7 @@
   (call-next-method)
   (bindings-and-body-to-labels
    (ico:binding-asts ast) (ico:declaration-asts ast) (ico:form-asts ast)))
+
+(defun let-to-labels (ast)
+  (let ((client (make-instance 'let-to-labels-client)))
+    (cbaw:walk-ast-node client ast)))
