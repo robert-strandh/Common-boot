@@ -10,8 +10,10 @@
 ;;;;
 ;;;; where <name> is a generated symbol.
 
+(defclass function-lambda-to-labels-client (client) ())
+
 (defmethod cbaw:walk-ast-node :around
-    ((client client) (ast ico:function-ast))
+    ((client function-lambda-to-labels-client) (ast ico:function-ast))
   ;; Start by converting any children of this AST node.
   (call-next-method)
   (if (typep (ico:name-ast ast) 'ico:lambda-expression-ast)
@@ -39,3 +41,6 @@
                   :origin (ico:origin ast)))))
       ast))
                   
+(defun function-lambda-to-labels (ast)
+  (let ((client (make-instance 'function-lambda-to-labels-client)))
+    (cbaw:walk-ast-node client ast)))
