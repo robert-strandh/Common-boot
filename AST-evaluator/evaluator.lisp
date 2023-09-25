@@ -8,8 +8,9 @@
   *arguments*)
 
 (defun eval-ast (client ast environment)
-  (let* ((global-environment (trucler:global-environment client environment))
-         (cps (ast-to-cps client ast environment))
+  (let* ((transformed-ast (cbat:let-to-labels ast))
+         (global-environment (trucler:global-environment client environment))
+         (cps (ast-to-cps client transformed-ast environment))
          (initial-continuation (compile nil cps)))
     (setq *dynamic-environment* '())
     (setq *continuation*
