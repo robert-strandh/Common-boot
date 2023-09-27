@@ -10,6 +10,7 @@
                #:trucler-reference
                #:iconoclast-builder
                #:common-macros
+               #:common-macro-definitions
                #:common-boot-ast-evaluator)
   :serial t
   :components
