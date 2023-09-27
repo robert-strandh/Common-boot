@@ -30,6 +30,10 @@
 (defmethod cm:expand (client ast environment)
   (expand-macro client ast environment))
 
+(defgeneric convert-with-parser-p (client operator))
+
+(defgeneric convert-with-ordinary-macro-p (client operator))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; CONVERT is responsible for converting a cst to an abstract syntax
@@ -47,18 +51,19 @@
            (when (and *current-form-is-top-level-p* *compile-time-too*)
              (eval-cst client cst environment))
            (let* ((operator-cst (cst:first cst))
-                  (operator (first form))
-                  (syntax (ses:find-syntax operator :if-does-not-exist nil)))
-             (if (null syntax)
-                 ;; There is no syntax available for this operator, so
-                 ;; we must see whethere there is a description for
-                 ;; it, and act according to that description.
-                 (let ((d (describe-function client environment operator-cst)))
-                   (convert-with-description client cst d environment))
-                 ;; There is a syntax available for this operator, so
-                 ;; we parse the expression according to that syntax.
-                 (let ((builder (make-builder client environment)))
-                   (ses:parse builder syntax cst)))))
+                  (operator (first form)))
+             (cond ((convert-with-parser-p client operator)
+                    (let ((builder (make-builder client environment)))
+                      (ses:parse builder t cst)))
+                   ((convert-with-ordinary-macro-p client operator)
+                    (let* ((expansion (cmd:macroexpand-1 form environment))
+                           (new-cst (cst:reconstruct client expansion cst)))
+                      (convert client new-cst environment)))
+                   (t
+                    (let ((d (describe-function
+                              client environment operator-cst)))
+                      (convert-with-description
+                       client cst d environment))))))
           (t
            ;; The form must be a compound form where the CAR is a lambda
            ;; expression.  Evaluating such a form might have some
