@@ -17,6 +17,8 @@
            #:macro-expanding-client
            #:macro-function-client
            #:macro-transforming-client
-   #:create-environment
+           #:create-environment
            #:eval-expression
-           #:cst-to-ast))
+           #:cst-to-ast
+           #:convert-with-parser-p
+           #:convert-with-ordinary-macro-p))
