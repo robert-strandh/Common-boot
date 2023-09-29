@@ -20,7 +20,7 @@
     (setq *dynamic-environment* '())
     (setq *continuation*
           (lambda (&rest arguments)
-            (return-from eval-ast arguments)))
+            (return-from eval-ast (apply #'values arguments))))
     (push-stack)
     (setq *continuation* initial-continuation)
     (setq *arguments* (list client global-environment))
