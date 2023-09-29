@@ -6,16 +6,16 @@
   :parent multiple-value-call
   (with-default-parameters (client environment global-environment)
     (iss #1=(multiple-value-call #'+ (+))
-         (eval-expression '#1# environment))))
+         (eval-expression client '#1# environment))))
 
 (define-test multiple-value-call-one-form-two-values
   :parent multiple-value-call
   (with-default-parameters (client environment global-environment)
     (iss #1=(multiple-value-call #'+ (floor 234 33))
-         (eval-expression '#1# environment))))
+         (eval-expression client '#1# environment))))
 
 (define-test multiple-value-call-two-forms-two-values
   :parent multiple-value-call
   (with-default-parameters (client environment global-environment)
     (iss #1=(multiple-value-call #'+ (floor 234 33) 11)
-         (eval-expression '#1# environment))))
+         (eval-expression client '#1# environment))))

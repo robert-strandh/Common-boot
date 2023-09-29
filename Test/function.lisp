@@ -6,4 +6,4 @@
   :parent function
   (with-default-parameters (client environment global-environment)
     (iss #1=(funcall (function (lambda (x) (1+ x))) 234)
-         (eval-expression '#1# environment))))
+         (eval-expression client '#1# environment))))
