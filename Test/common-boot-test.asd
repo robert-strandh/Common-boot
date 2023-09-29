@@ -7,6 +7,7 @@
   :serial t
   :components
   ((:file "packages")
+   (:file "configuration")
    (:file "utilities")
    (:file "quote")
    (:file "application")
