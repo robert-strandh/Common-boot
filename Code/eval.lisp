@@ -19,9 +19,8 @@
          (client (make-instance 'trucler-reference:client)))
     (cst-to-ast client cst environment)))
 
-(defun eval-expression (expression environment)
-  (let ((client (make-instance 'trucler-reference:client)))
-    (apply #'values
-           (eval-cst client
-                     (cst:cst-from-expression expression)
-                     environment))))
+(defun eval-expression (client expression environment)
+  (apply #'values
+         (eval-cst client
+                   (cst:cst-from-expression expression)
+                   environment)))
