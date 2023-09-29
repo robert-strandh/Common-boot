@@ -32,5 +32,5 @@
        (multiple-value-list ,form1)
        (multiple-value-list ,form2)))
 
-(defun eval-expression (expression environment)
-  (cb:eval-expression expression environment))
+(defun eval-expression (client expression environment)
+  (cb:eval-expression client expression environment))
