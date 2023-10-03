@@ -12,4 +12,5 @@
            #:ast-to-cps
            #:eval-expression
            #:import-host-function
-           #:symbol-value))
+           #:symbol-value
+           #:*dynamic-environment*))
