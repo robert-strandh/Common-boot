@@ -11,4 +11,5 @@
   (:export #:eval-ast
            #:ast-to-cps
            #:eval-expression
-           #:import-host-function))
+           #:import-host-function
+           #:symbol-value))
