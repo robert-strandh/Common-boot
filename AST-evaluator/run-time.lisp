@@ -76,7 +76,7 @@
     :reader name)
    (%value
     :initarg :value
-    :reader value)))
+    :accessor value)))
 
 (defparameter *arguments* nil)
 
@@ -109,3 +109,11 @@
         finally (if (clostrum-sys:variable-cell-boundp client cell)
                     (return (clostrum-sys:variable-cell-value client cell))
                     (error "unbound variable ~s" name))))
+
+(defun (setf symbol-value) (value client name cell dynamic-environment)
+  (loop for entry in dynamic-environment
+        do (when (and (typep entry 'special-variable-entry)
+                      (eq name (name entry)))
+             (setf (value entry) value))
+        finally (setf (clostrum-sys:variable-cell-value client cell)
+                      value)))
