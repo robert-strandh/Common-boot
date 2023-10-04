@@ -115,5 +115,5 @@
         do (when (and (typep entry 'special-variable-entry)
                       (eq name (name entry)))
              (setf (value entry) value))
-        finally (setf (clostrum-sys:variable-cell-value client cell)
-                      value)))
+        finally (return (setf (clostrum-sys:variable-cell-value client cell)
+                              value))))
