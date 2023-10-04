@@ -4,14 +4,27 @@
     (client tempc tempb tempa value-asts variable-reference-asts)
   (loop for value-ast in value-asts
         for variable-reference-ast in variable-reference-asts
-        for variable-definition-ast
-          = (ico:variable-definition-ast variable-reference-ast)
-        for host-variable = (lookup variable-definition-ast)
         collect
-        `(,tempc (lambda (&rest ,tempa)
-                   (setq ,tempa (car ,tempa))
-                   (setf (car ,host-variable) ,tempa)
-                   (step (list ,tempa) ,tempc)))
+        (if (typep variable-reference-ast 'ico:special-variable-reference-ast)
+            `(,tempc (lambda (&rest ,tempa)
+                       (setq ,tempa (car ,tempa))
+                       (setf (symbol-value
+                              client
+                              ',(ico:name variable-reference-ast)
+                              (clostrum-sys:variable-cell
+                               client
+                               environment
+                               ',(ico:name variable-reference-ast))
+                              dynamic-environment)
+                             ,tempa)
+                       (step (list ,tempa) ,tempc)))
+            (let* ((variable-definition-ast
+                     (ico:variable-definition-ast variable-reference-ast))
+                   (host-variable (lookup variable-definition-ast)))
+              `(,tempc (lambda (&rest ,tempa)
+                         (setq ,tempa (car ,tempa))
+                         (setf (car ,host-variable) ,tempa)
+                         (step (list ,tempa) ,tempc)))))
         collect
         `(,tempc (lambda (&rest ,tempb)
                    (declare (ignore ,tempb))
