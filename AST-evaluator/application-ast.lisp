@@ -50,7 +50,6 @@
            (loop for argument-ast in argument-asts
                  collect (gensym "ARG-")))
          (name (gensym "C-")))
-    (print (ico:function-name-ast ast))
     `(let ,(cons function-variable argument-variables)
        (let* ((,name
                 (lambda (&rest ignore)
