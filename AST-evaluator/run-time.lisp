@@ -117,3 +117,10 @@
              (setf (value entry) value))
         finally (return (setf (clostrum-sys:variable-cell-value client cell)
                               value))))
+
+(defun call-function (function arguments)
+  (if (typep function 'cps-function)
+      (step arguments function)
+      (progn (setf *arguments*
+                   (multiple-value-list (apply function arguments)))
+             (pop-stack))))
