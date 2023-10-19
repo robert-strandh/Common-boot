@@ -22,6 +22,8 @@
      (cbae:import-host-function
       ,client-variable '1+ ,global-environment-variable)
      (cbae:import-host-function
+      ,client-variable '> ,global-environment-variable)
+     (cbae:import-host-function
       ,client-variable 'floor ,global-environment-variable)
      (cbae:import-host-function
       ,client-variable 'funcall ,global-environment-variable)
