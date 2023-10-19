@@ -38,3 +38,18 @@
           (setq *arguments* arguments)
           (loop (evaluator-step)))))
      result))
+
+(defclass continuation (closer-mop:funcallable-standard-object)
+  ((%origin :initarg :origin :reader origin)
+   (%next-continuation :initarg :next-continuation :reader next-continuation))
+  (:metaclass closer-mop:funcallable-standard-class))
+
+(defmacro make-continuation ((ast next-continuation lambda-list) &body body)
+  (let ((result-variable (gensym)))
+    `(let ((,result-variable
+             (make-instance 'continuation
+               :origin (ico:origin ,ast)
+               :next-continuation ,next-continuation)))
+       (closer-mop:set-funcallable-instance-function
+        ,result-variable
+        (lambda ,lambda-list ,@body)))))
