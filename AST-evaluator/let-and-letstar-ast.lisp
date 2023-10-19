@@ -15,21 +15,22 @@
           for variable-name-ast = (ico:variable-name-ast binding-ast)
           for variable-name = (lookup variable-name-ast)
           for form-ast = (ico:form-ast binding-ast)
+          for continuation-variable = (gensym "C-")
           do (setf action
-                   (cps client
-                        form-ast
-                        `(lambda (&rest ,variable-name)
-                           (setf ,variable-name
-                                 ;; The CAR is because the &REST will
-                                 ;; give us a list of arguments.  The
-                                 ;; LIST is because of assignment
-                                 ;; conversion, whereby every host
-                                 ;; variable representing a target
-                                 ;; variable contains a CONS cell
-                                 ;; where the taget variable is the
-                                 ;; CAR of that CONS cell.
-                                 (list (car ,variable-name)))
-                           ,action))))
+                   `(let ((,continuation-variable
+                            (lambda (&rest ,variable-name)
+                              (setf ,variable-name
+                                    ;; The CAR is because the &REST will
+                                    ;; give us a list of arguments.  The
+                                    ;; LIST is because of assignment
+                                    ;; conversion, whereby every host
+                                    ;; variable representing a target
+                                    ;; variable contains a CONS cell
+                                    ;; where the taget variable is the
+                                    ;; CAR of that CONS cell.
+                                    (list (car ,variable-name)))
+                              ,action)))
+                      ,(cps client form-ast continuation-variable))))
     action))
 
 (defmethod cps (client (ast ico:let*-ast) continuation)
