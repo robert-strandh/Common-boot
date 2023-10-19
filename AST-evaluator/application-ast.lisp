@@ -52,7 +52,7 @@
          (name (gensym "C-")))
     `(let ,(cons function-variable argument-variables)
        (let* ((,name
-                (lambda (&rest ignore)
+                (make-continuation (,ast ,continuation (&rest ignore))
                   (declare (ignore ignore))
                   (call-function ,function-variable (list ,@argument-variables))))
               ,@(loop for argument-ast in (reverse argument-asts)
@@ -62,22 +62,26 @@
                         (let* ((definition-ast
                                  (ico:variable-definition-ast argument-ast))
                                (host-variable (lookup definition-ast)))
-                          `(,name (lambda (&rest ignore)
+                          `(,name (make-continuation
+                                      (,argument-ast ,name (&rest ignore))
                                     (declare (ignore ignore))
                                     (setq ,argument-variable
                                           (car ,host-variable))
                                     (step nil ,name))))
                       unless (typep argument-ast 'ico:variable-reference-ast)
-                        collect `(,name (lambda (&rest var)
+                        collect `(,name (make-continuation
+                                            (,argument-ast ,name (&rest var))
                                           (setq ,argument-variable (car var))
                                           (step nil ,name)))
                       unless (typep argument-ast 'ico:variable-reference-ast)
-                        collect `(,name (lambda (&rest ignore)
+                        collect `(,name (make-continuation
+                                            (,argument-ast ,name (&rest ignore))
                                           (declare (ignore ignore))
                                           ,(cps client
                                                 argument-ast
                                                 name))))
-              (,name (lambda (&rest var)
+              (,name (make-continuation
+                         (,(ico:function-name-ast ast),name (&rest var))
                        (setf ,function-variable (car var))
                        (step nil ,name))))
          (setq *dynamic-environment* dynamic-environment)
