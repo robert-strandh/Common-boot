@@ -6,7 +6,8 @@
          (variable-name (make-symbol "ARGUMENTS"))
          (variable-ast
            (make-instance 'ico:variable-definition-ast :name variable-name))
-         (temp (make-symbol "TEMP")))
+         (temp (make-symbol "TEMP"))
+         (continuation-variable (gensym "C-")))
     (cm:with-ast-origin lambda-list-ast
       (cm:destructure-lambda-list lambda-list-ast variable-ast let*-ast))
     (reinitialize-instance let*-ast
@@ -23,11 +24,11 @@
                              (setf *dynamic-environment* nil))))
                      (declare (ignorable dynamic-environment))
                      (setq ,variable-name (list ,variable-name))
-                     ,(cps client
-                           let*-ast
-                           `(lambda (&rest ,temp)
-                              (declare (ignore ,temp))
-                              ,(pop-stack-operation client))))))
+                     (let ((,continuation-variable
+                             (lambda (&rest ,temp)
+                               (declare (ignore ,temp))
+                               ,(pop-stack-operation client))))
+                       ,(cps client let*-ast continuation-variable)))))
            ,continuation)))
 
 (defun cps-flet-and-labels (client ast continuation)
