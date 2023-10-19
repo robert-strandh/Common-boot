@@ -8,9 +8,9 @@
                       (ico:else-ast ast))))
     (cps client
          (ico:test-ast ast)
-         `(lambda (&rest ,temp)
-            (setq ,temp (car ,temp))
-            (let ((,new-continuation ,continuation))
+         `(let ((,new-continuation ,continuation))
+            (lambda (&rest ,temp)
+              (setq ,temp (car ,temp))
               (if (null ,temp)
                   ,(cps client
                         else-ast
