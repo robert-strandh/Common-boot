@@ -5,6 +5,7 @@
   (let* ((values-temp (make-symbol "VALUES"))
          (function-temp (make-symbol "FUNCTION"))
          (arguments-temp (make-symbol "ARGUMENTS"))
+         (continuation-variable (gensym "C-"))
          (action `(if (typep ,function-temp 'cps-function)
                       (progn (setf *continuation* ,continuation)
                              ,(push-stack-operation client)
@@ -17,17 +18,16 @@
                              (pop-stack)))))
     (loop for form-ast in (reverse (ico:form-asts ast))
           do (setf action
-                   (cps client
-                        form-ast
-                        `(lambda (&rest ,values-temp)
-                           (setf ,arguments-temp
-                                 (append ,arguments-temp ,values-temp))
-                           ,action))))
-    (cps client
-         (ico:name-ast (ico:function-ast ast))
-         `(lambda (&rest ,function-temp)
-            (setf ,function-temp (car ,function-temp))
-            (let ((,arguments-temp '()))
-              ,action)))))
-
+                   `(let ((,continuation-variable
+                            (lambda (&rest ,values-temp)
+                              (setf ,arguments-temp
+                                    (append ,arguments-temp ,values-temp))
+                              ,action)))
+                      ,(cps client form-ast continuation-variable))))
+    `(let ((,continuation-variable
+             (lambda (&rest ,function-temp)
+               (setf ,function-temp (car ,function-temp))
+               (let ((,arguments-temp '()))
+                 ,action))))
+       ,(cps client (ico:name-ast (ico:function-ast ast)) continuation-variable))))
     

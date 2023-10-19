@@ -4,11 +4,14 @@
   (let* ((form-ast (ico:form-ast ast))
          (block-name-ast (ico:name-ast ast))
          (name (lookup (ico:block-name-definition-ast block-name-ast)))
+         (continuation-variable (gensym "C-"))
          (temp (gensym)))
-    (cps client
-         (if (null form-ast)
-             (make-instance 'ico:literal-ast :literal nil)
-             form-ast)
-         `(lambda (&rest ,temp)
-            (declare (ignore ,temp))
-            (do-return-from ',name dynamic-environment)))))
+    `(let ((,continuation-variable
+             (lambda (&rest ,temp)
+               (declare (ignore ,temp))
+               (do-return-from ',name dynamic-environment))))
+       ,(cps client
+             (if (null form-ast)
+                 (make-instance 'ico:literal-ast :literal nil)
+                 form-ast)
+             continuation-variable))))
