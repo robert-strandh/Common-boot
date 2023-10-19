@@ -12,7 +12,7 @@
   (let* ((expansion (trucler:expansion description))
          (expander (symbol-macro-expander expansion))
          (expanded-form
-           (expand-macro expander cst environment))
+           (funcall expander (cst:raw cst) environment))
          (expanded-cst
            (cst:reconstruct client expanded-form cst)))
     (setf (cst:source expanded-cst) (cst:source cst))
@@ -62,7 +62,7 @@
      environment)
   (let* ((expander (trucler:expander description))
          (expanded-form
-           (expand-macro expander cst environment))
+           (funcall expander (cst:raw cst) environment))
          (expanded-cst
            (cst:reconstruct client expanded-form cst)))
     (setf (cst:source expanded-cst) (cst:source cst))
@@ -85,7 +85,7 @@
           ;; There is no compiler macro, so we just apply the macro
           ;; expander, and then convert the resulting form.
           (let* ((expanded-form
-                   (expand-macro expander cst environment))
+                   (funcall expander (cst:raw cst) environment))
                  (expanded-cst
                    (cst:reconstruct client expanded-form cst)))
             (setf (cst:source expanded-cst) (cst:source cst))
@@ -101,7 +101,7 @@
                 ;; then convert the resulting form, just like we did
                 ;; when there was no compiler macro present.
                 (let* ((expanded-form
-                         (expand-macro expander cst environment))
+                         (funcall expander (cst:raw cst) environment))
                        (expanded-cst
                          (cst:reconstruct client expanded-form cst)))
                   (setf (cst:source expanded-cst)
