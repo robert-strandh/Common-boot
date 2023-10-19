@@ -19,3 +19,16 @@
   (with-default-parameters (client environment global-environment)
     (iss #1=(let ((x 10)) (tagbody (go out) (setq x 20) out) x)
          (eval-expression client '#1# environment))))
+
+(define-test tagbody-and-go-one-loop
+  :parent tagbody-and-go
+  (with-default-parameters (client environment global-environment)
+    (iss #1=(let ((x 10))
+              (tagbody
+               again
+                 (if (> x 15) (go out))
+                 (setq x (1+ x))
+                 (go again)
+               out)
+              x)
+         (eval-expression client '#1# environment))))
