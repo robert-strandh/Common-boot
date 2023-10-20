@@ -16,7 +16,9 @@
   (let* ((transformed-ast (simplify-ast ast))
          (global-environment (trucler:global-environment client environment))
          (cps (ast-to-cps client transformed-ast environment))
-         (initial-continuation (compile nil cps)))
+         (initial-continuation
+           (let (#+sbcl(sb-ext:*evaluator-mode* :interpret))
+             (eval cps))))
     (setq *dynamic-environment* '())
     (setq *continuation*
           (lambda (&rest arguments)
