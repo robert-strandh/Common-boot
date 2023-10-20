@@ -8,15 +8,18 @@
           sum 1
           and do (setf (lookup tag-ast) segment-name)))
 
-(defun push-tag-entries-forms (segment-asts segment-names)
-  (loop for segment-ast in segment-asts
-        for segment-name in segment-names
-        unless (null (ico:tag-ast segment-ast))
-          collect `(push (make-instance 'tag-entry
-                           :stack *stack*
-                           :name ',segment-name
-                           :continuation ,segment-name)
-                         dynamic-environment)))
+(defun push-tagbody-entry-form (segment-asts segment-names)
+  `(let ((entry (make-instance 'tagbody-entry
+                  :stack *stack*
+                  :tag-entries
+                  (list 
+                   ,@(loop for segment-ast in segment-asts
+                           for segment-name in segment-names
+                           unless (null (ico:tag-ast segment-ast))
+                             collect `(make-instance 'tag-entry
+                                        :name ',segment-name
+                                        :continuation ,segment-name))))))
+     (push entry dynamic-environment)))
 
 (defmethod cps (client (ast ico:tagbody-ast) continuation)
   (when (null (ico:segment-asts ast))
@@ -47,5 +50,5 @@
                 ,@(reverse (mapcar #'list
                                   segment-names segment-continuations)))
            (declare (ignorable dynamic-environment))
-           ,@(push-tag-entries-forms segment-asts segment-names)
+           ,(push-tagbody-entry-form segment-asts segment-names)
            (step '() ,(first segment-names)))))))
