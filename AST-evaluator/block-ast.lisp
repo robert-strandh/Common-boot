@@ -2,7 +2,8 @@
 
 (defmethod cps (client (ast ico:block-ast) continuation)
   (let ((name (gensym "BLOCK"))
-        (temp (gensym)))
+        (temp (gensym))
+        (continuation-variable (gensym "C-")))
     (setf (lookup (ico:name-ast ast)) name)
     `(let ((dynamic-environment dynamic-environment))
        (push (make-instance 'block-entry
@@ -10,9 +11,8 @@
                :stack *stack*
                :name ',name)
              dynamic-environment)
-       ,(cps-implicit-progn
-                client
-                (ico:form-asts ast)
-                `(lambda (&rest ,temp)
-                   (pop-stack)
-                   ,continuation)))))
+       (let ((,continuation-variable
+               (lambda (&rest ,temp)
+                 (pop-stack)
+                 ,continuation)))
+         ,(cps-implicit-progn client (ico:form-asts ast) continuation-variable)))))
