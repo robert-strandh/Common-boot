@@ -1,5 +1,8 @@
 (cl:in-package #:common-boot-ast-evaluator)
 
+;;; FIXME: rewrite so that CPS is always passed a variable (i.e., a
+;;; symbol) as the CONTINUATION argument.
+
 (defmethod cps (client (ast ico:progv-ast) continuation)
   (let ((symbols-temp (make-symbol "SYMBOLS"))
         (values-temp (make-symbol "VALUES"))
