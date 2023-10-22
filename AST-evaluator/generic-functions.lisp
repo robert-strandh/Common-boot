@@ -10,5 +10,5 @@
 
 (defmethod cps :around (client ast continuation)
   `(progn
-     (potential-breakpoint client ,(ico:origin ast))
+     (potential-breakpoint client ',(ico:origin ast))
      ,(call-next-method)))
