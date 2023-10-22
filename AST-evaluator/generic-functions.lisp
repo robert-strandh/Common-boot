@@ -7,3 +7,8 @@
 ;;; expression. 
 (defmethod cps :before (client ast continuation)
   (assert (symbolp continuation)))
+
+(defmethod cps :around (client ast continuation)
+  `(progn
+     (potential-breakpoint client ,(ico:origin ast))
+     ,(call-next-method)))
