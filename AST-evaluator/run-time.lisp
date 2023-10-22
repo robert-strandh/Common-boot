@@ -186,3 +186,8 @@
       (progn (setf *arguments*
                    (multiple-value-list (apply function arguments)))
              (pop-stack))))
+
+(defgeneric potential-breakpoint (client origin))
+
+(defmethod potential-breakpoint (client origin)
+  nil)
