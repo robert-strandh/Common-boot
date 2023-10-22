@@ -13,5 +13,5 @@
 (defun convert-constant (client cst environment)
   (declare (ignore client environment))
   (make-instance 'ico:literal-ast
-    :origin (cst:source cst)
+    :origin cst
     :literal (cst:raw cst)))

@@ -187,7 +187,7 @@
      environment)
   (make-instance 'ico:special-variable-reference-ast
     :name (trucler:name description)
-    :origin (cst:source cst)))
+    :origin cst))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -200,7 +200,7 @@
      environment)
   (let* ((variable-definition-ast (trucler:identity description))
          (result (make-instance 'ico:variable-reference-ast
-                   :origin (cst:source cst)
+                   :origin cst
                    :name (trucler:name description)
                    :variable-definition-ast variable-definition-ast)))
     (reinitialize-instance variable-definition-ast
