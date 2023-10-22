@@ -13,4 +13,5 @@
            #:eval-expression
            #:import-host-function
            #:symbol-value
-           #:*dynamic-environment*))
+           #:*dynamic-environment*
+           #:potential-breakpoint))
