@@ -23,6 +23,7 @@
                    :name (gensym)))
                (function-name-reference-ast
                  (make-instance 'ico:function-reference-ast
+                   :name (ico:name function-name-definition-ast)
                    :local-function-name-definition-ast
                    function-name-definition-ast)))
           (reinitialize-instance function-name-definition-ast
