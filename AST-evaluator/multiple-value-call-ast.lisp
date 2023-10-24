@@ -29,5 +29,5 @@
                (setf ,function-temp (car ,function-temp))
                (let ((,arguments-temp '()))
                  ,action))))
-       ,(cps client (ico:name-ast (ico:function-ast ast)) continuation-variable))))
+       ,(cps client (ico:function-ast ast) continuation-variable))))
     
