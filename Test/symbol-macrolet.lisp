@@ -1,0 +1,9 @@
+(cl:in-package #:common-boot-test)
+
+(define-test symbol-macrolet)
+
+(define-test symbol-macrolet-one-expansion
+  :parent symbol-macrolet
+  (with-default-parameters (client environment global-environment)
+    (iss #1=(symbol-macrolet ((x (+ y 10))) (let ((y 20)) x))
+         (eval-expression client '#1# environment))))

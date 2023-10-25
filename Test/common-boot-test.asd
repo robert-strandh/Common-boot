@@ -25,4 +25,5 @@
    (:file "setq")
    (:file "multiple-value-prog1")
    (:file "function")
-   (:file "tagbody-and-go")))
+   (:file "tagbody-and-go")
+   (:file "symbol-macrolet")))
