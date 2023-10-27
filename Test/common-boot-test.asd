@@ -26,5 +26,6 @@
    (:file "multiple-value-prog1")
    (:file "function")
    (:file "tagbody-and-go")
+   (:file "progv")
    (:file "macrolet")
    (:file "symbol-macrolet")))
