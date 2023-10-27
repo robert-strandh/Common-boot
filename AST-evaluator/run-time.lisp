@@ -167,7 +167,9 @@
   (loop for entry in dynamic-environment
         do (when (and (typep entry 'special-variable-entry)
                       (eq name (name entry)))
-             (return (value entry)))
+             (if (slot-boundp entry '%value)
+                 (return (value entry))
+                 (error "unbound variable ~s" name)))
         finally (if (clostrum-sys:variable-cell-boundp client cell)
                     (return (clostrum-sys:variable-cell-value client cell))
                     (error "unbound variable ~s" name))))
