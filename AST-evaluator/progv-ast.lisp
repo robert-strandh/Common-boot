@@ -42,4 +42,4 @@
                 ,(cps client
                       (ico:values-ast ast)
                       continuation-variable))))
-       (cps client (ico:symbols-ast ast) continuation-variable))))
+       ,(cps client (ico:symbols-ast ast) continuation-variable))))
