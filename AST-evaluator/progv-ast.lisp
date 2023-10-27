@@ -5,8 +5,7 @@
 
 (defmethod cps (client (ast ico:progv-ast) continuation)
   (let ((symbols-temp (make-symbol "SYMBOLS"))
-        (values-temp (make-symbol "VALUES"))
-        (ignore-temp (make-symbol "IGNORE")))
+        (values-temp (make-symbol "VALUES")))
     (cps client
          (ico:symbols-ast ast)
          `(lambda (&rest ,symbols-temp)
@@ -24,7 +23,4 @@
                      ,(cps-implicit-progn
                        client
                        (ico:form-asts ast)
-                       `(lambda (&rest ,ignore-temp)
-                          (declare (ignore ,ignore-temp))
-                          (setq *continuation*
-                                ,continuation)))))))))
+                       continuation)))))))
