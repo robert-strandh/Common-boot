@@ -1,26 +1,30 @@
 (cl:in-package #:common-boot-ast-evaluator)
 
-;;; FIXME: rewrite so that CPS is always passed a variable (i.e., a
-;;; symbol) as the CONTINUATION argument.
-
 (defmethod cps (client (ast ico:progv-ast) continuation)
   (let ((symbols-temp (make-symbol "SYMBOLS"))
-        (values-temp (make-symbol "VALUES")))
-    (cps client
-         (ico:symbols-ast ast)
-         `(lambda (&rest ,symbols-temp)
-            (setq ,symbols-temp (car ,symbols-temp))
-            ,(cps client
-                  (ico:values-ast ast)
-                  `(lambda (&rest ,values-temp)
-                     (setq ,values-temp (car ,values-temp))
-                     (loop for symbol in ,symbols-temp
-                           for value in ,values-temp
-                           do (push (make-instance 'special-variable-entry
-                                      :name symbol
-                                      :value value)
-                                    *dynamic-environment*))
-                     ,(cps-implicit-progn
-                       client
-                       (ico:form-asts ast)
-                       continuation)))))))
+        (values-temp (make-symbol "VALUES"))
+        (continuation-variable (gensym "C-")))
+    `(let* ((,symbols-temp nil)
+            (,values-temp nil)
+            (,continuation-variable
+              ,(cps-implicit-progn
+                client
+                (ico:form-asts ast)
+                continuation))
+            (,continuation-variable
+              (lambda (&rest temp)
+                (setq ,values-temp (car temp))
+                (loop for symbol in ,symbols-temp
+                      for value in ,values-temp
+                      do (push (make-instance 'special-variable-entry
+                                 :name symbol
+                                 :value value)
+                               *dynamic-environment*))
+                ,continuation-variable))
+            (,continuation-variable
+              (lambda (&rest temp)
+                (setq ,symbols-temp (car temp))
+                ,(cps client
+                      (ico:values-ast ast)
+                      continuation-variable))))
+       (cps client (ico:symbols-ast ast) continuation-variable))))
