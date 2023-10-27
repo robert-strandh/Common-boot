@@ -27,6 +27,8 @@
       ,client-variable 'floor ,global-environment-variable)
      (cbae:import-host-function
       ,client-variable 'funcall ,global-environment-variable)
+     (cbae:import-host-function
+      ,client-variable 'values ,global-environment-variable)
      ,@body))
 
 (defmacro iss (form1 form2)
