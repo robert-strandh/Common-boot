@@ -7,6 +7,7 @@
     `(let* ((,symbols-temp nil)
             (,continuation-variable
               (lambda (&rest ,values-temp)
+                (setq ,values-temp (car ,values-temp))
                 ;; The parameter contains all the values from them
                 ;; evaluation of the VALUES-AST, and we need to pair
                 ;; them up with the symbols in the list.  The problem
