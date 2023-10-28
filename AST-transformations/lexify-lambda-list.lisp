@@ -96,11 +96,22 @@
     (loop for ast in (ico:parameter-asts optional-section-ast)
           always (optional-or-key-parameter-ast-lexified-p ast))))
 
+(defun rest-section-lexified-p (rest-section-ast)
+  (or
+    (null rest-section-ast)
+    (typep (ico:parameter-ast rest-section-ast)
+           'ico:variable-definition-ast)))
+
 (defun key-section-lexified-p (key-section-ast)
   (or
     (null key-section-ast)
     (loop for ast in (ico:parameter-asts key-section-ast)
           always (optional-or-key-parameter-ast-lexified-p ast))))
+
+(defun aux-section-lexified-p (aux-section-ast)
+  (or
+    (null aux-section-ast)
+    (null (ico:parameter-asts aux-section-ast))))
 
 (defun lambda-list-lexified-p (lambda-list-ast)
   (and
