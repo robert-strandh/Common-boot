@@ -121,6 +121,15 @@
     (key-section-lexified-p (ico:key-section-ast lambda-list-ast))
     (aux-section-lexified-p (ico:aux-section-ast lambda-list-ast))))
 
+(defun create-lexical-variable-pair ()
+  (let* ((definition (make-instance 'ico:variable-definition-ast
+                       :name (gensym)))
+         (reference (make-instance 'ico:variable-reference-ast
+                      :variable-definition-ast definition)))
+    (reinitialize-instance definition
+      :variable-reference-asts (list reference))
+    (values definition reference)))
+
 (defun ensure-lambda-list-lexified (ast)
   nil)
 
