@@ -121,7 +121,7 @@
     (key-section-lexified-p (ico:key-section-ast lambda-list-ast))
     (aux-section-lexified-p (ico:aux-section-ast lambda-list-ast))))
 
-(defun lexify-lambda-list-of-ast (ast)
+(defun ensure-lambda-list-lexified (ast)
   nil)
 
 (defmethod cbaw:walk-ast-node :around
@@ -130,7 +130,7 @@
   (call-next-method)
   (let ((operator-ast (ico:function-name-ast ast)))
     (when (typep operator-ast 'ico:lambda-expression-ast)
-      (lexify-lambda-list-of-ast operator-ast)))
+      (ensure-lambda-list-lexified operator-ast)))
   ast)
 
 (defmethod cbaw:walk-ast-node :around
@@ -138,7 +138,7 @@
   ;; Start by converting any children of this AST node.
   (call-next-method)
   (loop for local-function-ast in (ico:binding-asts ast)
-        do (lexify-lambda-list-of-ast local-function-ast))
+        do (ensure-lambda-list-lexified local-function-ast))
   ast)
 
 (defmethod cbaw:walk-ast-node :around
@@ -146,7 +146,7 @@
   ;; Start by converting any children of this AST node.
   (call-next-method)
   (loop for local-function-ast in (ico:binding-asts ast)
-        do (lexify-lambda-list-of-ast local-function-ast))
+        do (ensure-lambda-list-lexified local-function-ast))
   ast)
 
 (defmethod cbaw:walk-ast-node :around
@@ -155,7 +155,7 @@
   (call-next-method)
   (let ((operator-ast (ico:function-name-ast ast)))
     (when (typep operator-ast 'ico:lambda-expression-ast)
-      (lexify-lambda-list-of-ast operator-ast)))
+      (ensure-lambda-list-lexified operator-ast)))
   ast)
                   
 (defun lexify-lambda-list (ast)
