@@ -132,6 +132,14 @@
     (when (typep operator-ast 'ico:lambda-expression-ast)
       (lexify-lambda-list-of-ast operator-ast)))
   ast)
+
+(defmethod cbaw:walk-ast-node :around
+    ((client lexify-lambda-list-client) (ast ico:flet-ast))
+  ;; Start by converting any children of this AST node.
+  (call-next-method)
+  (loop for local-function-ast in (ico:binding-asts ast)
+        do (lexify-lambda-list-of-ast local-function-ast))
+  ast)
                   
 (defun lexify-lambda-list (ast)
   (let ((client (make-instance 'lexify-lambda-list-client)))
