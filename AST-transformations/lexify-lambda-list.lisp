@@ -121,6 +121,20 @@
     (key-section-lexified-p (ico:key-section-ast lambda-list-ast))
     (aux-section-lexified-p (ico:aux-section-ast lambda-list-ast))))
 
+(defun lexify-required-parameter-ast (required-parameter-ast)
+  (let ((existing-name-ast (ico:name-ast required-parameter-ast)))
+    (multiple-value-bind (definition-ast reference-ast)
+        (create-lexical-variable-pair)
+      (reinitialize-instance required-parameter-ast
+        :name-ast definition-ast)
+      (make-instance 'ico:variable-binding-ast
+        :variable-name-ast existing-name-ast
+        :form-ast reference-ast))))
+
+(defun lexify-required-section-ast (required-section-ast)
+  (loop for parameter-ast in (ico:parameter-asts required-section-ast)
+        collect (lexify-required-parameter-ast parameter-ast)))
+
 (defun create-lexical-variable-pair ()
   (let* ((definition (make-instance 'ico:variable-definition-ast
                        :name (gensym)))
