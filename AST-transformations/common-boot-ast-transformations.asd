@@ -12,4 +12,5 @@
    (:file "flet-to-labels")
    (:file "let-to-labels")
    (:file "letstar-to-labels")
-   (:file "eliminate-special-declarations")))
+   (:file "eliminate-special-declarations")
+   (:file "lexify-lambda-list")))
