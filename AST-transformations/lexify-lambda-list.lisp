@@ -135,6 +135,39 @@
   (loop for parameter-ast in (ico:parameter-asts required-section-ast)
         collect (lexify-required-parameter-ast parameter-ast)))
 
+(defun lexify-optional-parameter-ast (optional-parameter-ast)
+  (let* ((existing-parameter-ast (ico:parameter-ast optional-parameter-ast))
+         (existing-name-ast (ico:name-ast existing-parameter-ast))
+         (init-form-ast (ico:init-form-ast optional-parameter-ast))
+         (existing-supplied-p-ast
+           (ico:supplied-p-parameter-ast optional-parameter-ast))
+         (existing-supplied-p-name-ast
+           (if (null existing-supplied-p-ast)
+               nil
+               (ico:name-ast existing-supplied-p-ast))))
+    (multiple-value-bind (definition-1-ast reference-1-ast)
+        (create-lexical-variable-pair)
+      (multiple-value-bind (definition-2-ast reference-2-ast)
+          (create-lexical-variable-pair)
+        (reinitialize-instance existing-parameter-ast
+          :name-ast definition-1-ast)
+        (reinitialize-instance optional-parameter-ast
+          :init-form-ast (make-instance 'ico:literal-ast :literal 'nil))
+        (reinitialize-instance existing-supplied-p-ast
+          :name-ast definition-2-ast)
+        (list* (list existing-name-ast
+                     (make-instance 'ico:if-ast
+                       :test-ast reference-2-ast
+                       :then-ast reference-1-ast
+                       :else-ast
+                       (if (null init-form-ast)
+                           (make-instance 'ico:literal-ast :literal 'nil)
+                           init-form-ast)))
+               (if (null existing-supplied-p-ast)
+                   '()
+                   (list (list existing-supplied-p-name-ast
+                               reference-2-ast))))))))
+
 (defun create-lexical-variable-pair ()
   (let* ((definition (make-instance 'ico:variable-definition-ast
                        :name (gensym)))
