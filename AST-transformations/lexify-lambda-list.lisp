@@ -121,6 +121,15 @@
     (key-section-lexified-p (ico:key-section-ast lambda-list-ast))
     (aux-section-lexified-p (ico:aux-section-ast lambda-list-ast))))
 
+(defun create-lexical-variable-pair ()
+  (let* ((definition (make-instance 'ico:variable-definition-ast
+                       :name (gensym)))
+         (reference (make-instance 'ico:variable-reference-ast
+                      :variable-definition-ast definition)))
+    (reinitialize-instance definition
+      :variable-reference-asts (list reference))
+    (values definition reference)))
+
 (defun lexify-required-parameter-ast (required-parameter-ast)
   (let ((existing-name-ast (ico:name-ast required-parameter-ast)))
     (multiple-value-bind (definition-ast reference-ast)
@@ -171,15 +180,6 @@
 (defun lexify-optional-section-ast (optional-section-ast)
   (loop for parameter-ast in (ico:parameter-asts optional-section-ast)
         append (lexify-optional-parameter-ast parameter-ast)))
-
-(defun create-lexical-variable-pair ()
-  (let* ((definition (make-instance 'ico:variable-definition-ast
-                       :name (gensym)))
-         (reference (make-instance 'ico:variable-reference-ast
-                      :variable-definition-ast definition)))
-    (reinitialize-instance definition
-      :variable-reference-asts (list reference))
-    (values definition reference)))
 
 (defun ensure-lambda-list-lexified (ast)
   nil)
