@@ -181,8 +181,114 @@
   (loop for parameter-ast in (ico:parameter-asts optional-section-ast)
         append (lexify-optional-parameter-ast parameter-ast)))
 
+(defun lexify-rest-parameter-ast (rest-parameter-ast)
+  (let ((existing-name-ast (ico:name-ast rest-parameter-ast)))
+    (multiple-value-bind (definition-ast reference-ast)
+        (create-lexical-variable-pair)
+      (reinitialize-instance rest-parameter-ast
+        :name-ast definition-ast)
+      (make-instance 'ico:variable-binding-ast
+        :variable-name-ast existing-name-ast
+        :form-ast reference-ast))))
+
+(defun lexify-rest-section-ast (rest-section-ast)
+  (list (lexify-rest-parameter-ast (ico:parameter-ast rest-section-ast))))
+
+(defun lexify-key-parameter-ast (key-parameter-ast)
+  (let* ((existing-parameter-ast (ico:parameter-ast key-parameter-ast))
+         (existing-name-ast (ico:name-ast existing-parameter-ast))
+         (init-form-ast (ico:init-form-ast key-parameter-ast))
+         (existing-supplied-p-ast
+           (ico:supplied-p-parameter-ast key-parameter-ast))
+         (existing-supplied-p-name-ast
+           (if (null existing-supplied-p-ast)
+               nil
+               (ico:name-ast existing-supplied-p-ast)))
+         (keyword-ast (ico:keyword-ast key-parameter-ast)))
+    ;; Make sure the keyword is given explicitly, since we are about
+    ;; to change the main parameter.
+    (when (null keyword-ast)
+      (reinitialize-instance key-parameter-ast
+        :keyword-ast
+        (make-instance 'ico:literal-ast
+          :literal (intern (ico:name existing-name-ast) "KEYWORD"))))
+    (multiple-value-bind (definition-1-ast reference-1-ast)
+        (create-lexical-variable-pair)
+      (multiple-value-bind (definition-2-ast reference-2-ast)
+          (create-lexical-variable-pair)
+        (reinitialize-instance existing-parameter-ast
+          :name-ast definition-1-ast)
+        (reinitialize-instance key-parameter-ast
+          :init-form-ast (make-instance 'ico:literal-ast :literal 'nil))
+        (reinitialize-instance existing-supplied-p-ast
+          :name-ast definition-2-ast)
+        (list* (list existing-name-ast
+                     (make-instance 'ico:if-ast
+                       :test-ast reference-2-ast
+                       :then-ast reference-1-ast
+                       :else-ast
+                       (if (null init-form-ast)
+                           (make-instance 'ico:literal-ast :literal 'nil)
+                           init-form-ast)))
+               (if (null existing-supplied-p-ast)
+                   '()
+                   (list (list existing-supplied-p-name-ast
+                               reference-2-ast))))))))
+
+(defun lexify-key-section-ast (key-section-ast)
+  (loop for parameter-ast in (ico:parameter-asts key-section-ast)
+        append (lexify-key-parameter-ast parameter-ast)))
+
+(defun lexify-aux-parameter-ast (aux-parameter-ast)
+  (let ((parameter-ast (ico:parameter-ast aux-parameter-ast))
+        (init-form-ast (ico:init-form-ast aux-parameter-ast)))
+    (make-instance 'ico:variable-binding-ast
+      :variable-name-ast (ico:name-ast parameter-ast)
+      :form-ast (if (null init-form-ast)
+                    (make-instance 'ico:literal-ast :literal 'nil)
+                    init-form-ast))))
+
+(defun lexify-aux-section-ast (aux-section-ast)
+  (prog1 (loop for parameter-ast in (ico:parameter-asts aux-section-ast)
+               collect (lexify-aux-parameter-ast parameter-ast))
+    (reinitialize-instance aux-section-ast
+      :parameter-asts '())))
+
 (defun ensure-lambda-list-lexified (ast)
-  nil)
+  (let ((lambda-list-ast (ico:lambda-list-ast ast)))
+    (unless (lambda-list-lexified-p lambda-list-ast)
+      (let ((required-section-ast (ico:required-section-ast lambda-list-ast))
+            (optional-section-ast (ico:optional-section-ast lambda-list-ast))
+            (rest-section-ast (ico:rest-section-ast lambda-list-ast))
+            (key-section-ast (ico:key-section-ast lambda-list-ast))
+            (aux-section-ast (ico:aux-section-ast lambda-list-ast)))
+        (let* ((binding-asts
+                 (append
+                  (if (null required-section-ast)
+                      '()
+                      (lexify-required-section-ast required-section-ast))
+                  (if (null optional-section-ast)
+                      '()
+                      (lexify-optional-section-ast optional-section-ast))
+                  (if (null rest-section-ast)
+                      '()
+                      (lexify-rest-section-ast rest-section-ast))
+                  (if (null key-section-ast)
+                      '()
+                      (lexify-key-section-ast key-section-ast))
+                  (if (null aux-section-ast)
+                      '()
+                      (lexify-aux-section-ast aux-section-ast))))
+               (let*-ast
+                 (make-instance 'ico:let*-ast
+                   :binding-asts binding-asts
+                   :declaration-asts (ico:declaration-asts ast)
+                   :form-asts (ico:form-asts ast)
+                   :origin (ico:origin lambda-list-ast))))
+          (reinitialize-instance ast
+            :declaration-asts '()
+            :form-asts (list let*-ast))))))
+  ast)
 
 (defmethod cbaw:walk-ast-node :around
     ((client lexify-lambda-list-client) (ast ico:application-ast))
