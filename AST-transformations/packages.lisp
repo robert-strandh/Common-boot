@@ -13,4 +13,5 @@
    #:flet-to-labels
    #:let-to-labels
    #:let*-to-labels
-   #:eliminate-special-declarations))
+   #:eliminate-special-declarations
+   #:lexify-lambda-list))
