@@ -168,6 +168,10 @@
                    (list (list existing-supplied-p-name-ast
                                reference-2-ast))))))))
 
+(defun lexify-optional-section-ast (optional-section-ast)
+  (loop for parameter-ast in (ico:parameter-asts optional-section-ast)
+        append (lexify-optional-parameter-ast parameter-ast)))
+
 (defun create-lexical-variable-pair ()
   (let* ((definition (make-instance 'ico:variable-definition-ast
                        :name (gensym)))
