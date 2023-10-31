@@ -26,6 +26,7 @@
                       (eql form1 form2))
                      ((and (consp form1) (consp form2))
                       (and (aux (car form1) (car form2))
-                           (aux (cdr form1) (cdr form2)))))))
+                           (aux (cdr form1) (cdr form2))))
+                     (t nil))))
       (aux form1 form2))))
          
