@@ -122,9 +122,11 @@
     (aux-section-lexified-p (ico:aux-section-ast lambda-list-ast))))
 
 (defun create-lexical-variable-pair ()
-  (let* ((definition (make-instance 'ico:variable-definition-ast
-                       :name (gensym)))
+  (let* ((name (gensym))
+         (definition (make-instance 'ico:variable-definition-ast
+                       :name name))
          (reference (make-instance 'ico:variable-reference-ast
+                      :name name
                       :variable-definition-ast definition)))
     (reinitialize-instance definition
       :variable-reference-asts (list reference))
@@ -159,18 +161,21 @@
           :init-form-ast (make-instance 'ico:literal-ast :literal 'nil))
         (reinitialize-instance optional-parameter-ast
           :supplied-p-parameter-ast definition-2-ast)
-        (list* (list existing-name-ast
-                     (make-instance 'ico:if-ast
-                       :test-ast reference-2-ast
-                       :then-ast reference-1-ast
-                       :else-ast
-                       (if (null init-form-ast)
-                           (make-instance 'ico:literal-ast :literal 'nil)
-                           init-form-ast)))
+        (list* (make-instance 'ico:variable-binding-ast
+                 :variable-name-ast existing-name-ast
+                 :form-ast (make-instance 'ico:if-ast
+                             :test-ast reference-2-ast
+                             :then-ast reference-1-ast
+                             :else-ast
+                             (if (null init-form-ast)
+                                 (make-instance 'ico:literal-ast
+                                   :literal 'nil)
+                                 init-form-ast)))
                (if (null existing-supplied-p-ast)
                    '()
-                   (list (list existing-supplied-p-ast
-                               reference-2-ast))))))))
+                   (list (make-instance 'ico:variable-binding-ast
+                           :variable-name-ast existing-supplied-p-ast
+                           :form-ast reference-2-ast))))))))
 
 (defun lexify-optional-section-ast (optional-section-ast)
   (loop for parameter-ast in (ico:parameter-asts optional-section-ast)
