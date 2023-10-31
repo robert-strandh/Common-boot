@@ -19,3 +19,11 @@
   (is #'equal
       (parse-lexify-and-unparse '((lambda (&optional (x nil x-p)) 234)))
       '((lambda (&optional (x nil x-p)) 234))))
+
+(define-test lexify-lambda-list-not-lexified-one-optional-parameter
+  :parent lexify-lambda-list
+  (is #'forms-similar-p
+      (parse-lexify-and-unparse '((lambda (&optional x) 234)))
+      '((lambda (&optional (#1=#:a nil #2=#:a-p))
+          (let* ((x (if #2# #1# nil)))
+            234)))))
