@@ -77,11 +77,11 @@
           always (required-parameter-ast-lexified-p parameter-ast))))
           
 (defun optional-or-key-parameter-ast-lexified-p (ast)
-  (let ((parameter-ast (ico:parameter-ast ast))
+  (let ((name-ast (ico:name-ast ast))
         (supplied-p-parameter-ast (ico:supplied-p-parameter-ast ast))
         (init-form-ast (ico:init-form-ast ast)))
     (and
-      (typep (ico:name-ast parameter-ast) 'ico:variable-definition-ast)
+      (typep name-ast 'ico:variable-definition-ast)
       (or
         (null init-form-ast)
         (and
@@ -145,25 +145,20 @@
         collect (lexify-required-parameter-ast parameter-ast)))
 
 (defun lexify-optional-parameter-ast (optional-parameter-ast)
-  (let* ((existing-parameter-ast (ico:parameter-ast optional-parameter-ast))
-         (existing-name-ast (ico:name-ast existing-parameter-ast))
+  (let* ((existing-name-ast (ico:name-ast optional-parameter-ast))
          (init-form-ast (ico:init-form-ast optional-parameter-ast))
          (existing-supplied-p-ast
-           (ico:supplied-p-parameter-ast optional-parameter-ast))
-         (existing-supplied-p-name-ast
-           (if (null existing-supplied-p-ast)
-               nil
-               (ico:name-ast existing-supplied-p-ast))))
+           (ico:supplied-p-parameter-ast optional-parameter-ast)))
     (multiple-value-bind (definition-1-ast reference-1-ast)
         (create-lexical-variable-pair)
       (multiple-value-bind (definition-2-ast reference-2-ast)
           (create-lexical-variable-pair)
-        (reinitialize-instance existing-parameter-ast
+        (reinitialize-instance optional-parameter-ast
           :name-ast definition-1-ast)
         (reinitialize-instance optional-parameter-ast
           :init-form-ast (make-instance 'ico:literal-ast :literal 'nil))
-        (reinitialize-instance existing-supplied-p-ast
-          :name-ast definition-2-ast)
+        (reinitialize-instance optional-parameter-ast
+          :supplied-p-parameter-ast definition-2-ast)
         (list* (list existing-name-ast
                      (make-instance 'ico:if-ast
                        :test-ast reference-2-ast
@@ -174,7 +169,7 @@
                            init-form-ast)))
                (if (null existing-supplied-p-ast)
                    '()
-                   (list (list existing-supplied-p-name-ast
+                   (list (list existing-supplied-p-ast
                                reference-2-ast))))))))
 
 (defun lexify-optional-section-ast (optional-section-ast)
@@ -291,37 +286,17 @@
   ast)
 
 (defmethod cbaw:walk-ast-node :around
-    ((client lexify-lambda-list-client) (ast ico:application-ast))
+    ((client lexify-lambda-list-client) (ast ico:lambda-expression-ast))
   ;; Start by converting any children of this AST node.
   (call-next-method)
-  (let ((operator-ast (ico:function-name-ast ast)))
-    (when (typep operator-ast 'ico:lambda-expression-ast)
-      (ensure-lambda-list-lexified operator-ast)))
+  (ensure-lambda-list-lexified ast)
   ast)
 
 (defmethod cbaw:walk-ast-node :around
-    ((client lexify-lambda-list-client) (ast ico:flet-ast))
+    ((client lexify-lambda-list-client) (ast ico:local-function-ast))
   ;; Start by converting any children of this AST node.
   (call-next-method)
-  (loop for local-function-ast in (ico:binding-asts ast)
-        do (ensure-lambda-list-lexified local-function-ast))
-  ast)
-
-(defmethod cbaw:walk-ast-node :around
-    ((client lexify-lambda-list-client) (ast ico:labels-ast))
-  ;; Start by converting any children of this AST node.
-  (call-next-method)
-  (loop for local-function-ast in (ico:binding-asts ast)
-        do (ensure-lambda-list-lexified local-function-ast))
-  ast)
-
-(defmethod cbaw:walk-ast-node :around
-    ((client lexify-lambda-list-client) (ast ico:application-ast))
-  ;; Start by converting any children of this AST node.
-  (call-next-method)
-  (let ((operator-ast (ico:function-name-ast ast)))
-    (when (typep operator-ast 'ico:lambda-expression-ast)
-      (ensure-lambda-list-lexified operator-ast)))
+  (ensure-lambda-list-lexified ast)
   ast)
                   
 (defun lexify-lambda-list (ast)
