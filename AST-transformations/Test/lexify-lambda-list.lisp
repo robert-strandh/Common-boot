@@ -5,5 +5,5 @@
 (define-test lexify-lambda-list-already-lexified-no-parameters
   :parent lexify-lambda-list
   (is #'equal
-      (parse-lexify-and-unparse '(function (lambda () 234)))
-      '(function (lambda () 234))))
+      (parse-lexify-and-unparse '((lambda () 234)))
+      '((lambda () 234))))
