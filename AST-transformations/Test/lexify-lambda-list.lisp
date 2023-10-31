@@ -2,6 +2,13 @@
 
 (define-test lexify-lambda-list)
 
+(define-test lexify-lambda-list-one-required-special
+  :parent lexify-lambda-list
+  (is #'forms-similar-p
+      (parse-lexify-and-unparse '((lambda (x) (declare (special x)) 234)))
+      `((lambda (#1=:a)
+          (let* ((x #1#)) (declare (special x)) 234)))))
+
 (define-test lexify-lambda-list-already-lexified-no-parameters
   :parent lexify-lambda-list
   (is #'equal
