@@ -9,6 +9,19 @@
           (let* ((x #1#)) (declare (special x)) 234)))
       (parse-lexify-and-unparse '((lambda (x) (declare (special x)) 234)))))
 
+(define-test lexify-lambda-list-one-optional-special
+  :parent lexify-lambda-list
+  (is #'forms-similar-p
+      `((lambda (&optional (#1=#:a nil #2=#:a-p))
+          (let* ((x (if #2# #1# nil))
+                 (x-p #2#))
+            (declare (special x))
+            234)))
+      (parse-lexify-and-unparse
+       '((lambda (&optional (x nil x-p))
+           (declare (special x))
+           234)))))
+
 (define-test lexify-lambda-list-already-lexified-no-parameters
   :parent lexify-lambda-list
   (is #'equal
