@@ -6,7 +6,9 @@
       (if (typep name-ast 'ico:lambda-expression-ast)
           (let ((body-environment
                   (finalize-lambda-list
-                   client environment (ico:lambda-list-ast name-ast))))
+                   client environment
+                   (ico:lambda-list-ast name-ast)
+                   (ico:declaration-asts name-ast))))
             (reinitialize-instance name-ast
               :form-asts
               (loop for form-ast in (ico:form-asts name-ast)

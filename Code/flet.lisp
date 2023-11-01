@@ -7,7 +7,9 @@
                 'ico:local-function-name-definition-ast)
   (let ((body-environment
           (finalize-lambda-list
-           client environment (ico:lambda-list-ast ast))))
+           client environment
+           (ico:lambda-list-ast ast)
+           (ico:declaration-asts ast))))
     (reinitialize-instance ast
       :form-asts
       (loop for form-ast in (ico:form-asts ast)

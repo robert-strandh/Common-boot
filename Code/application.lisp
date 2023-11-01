@@ -6,7 +6,9 @@
       (if (typep operator-ast 'ico:lambda-expression-ast)
           (let* ((new-environment
                    (finalize-lambda-list
-                    client environment (ico:lambda-list-ast operator-ast)))
+                    client environment
+                    (ico:lambda-list-ast operator-ast)
+                    (ico:declaration-asts operator-ast)))
                  (new-builder (make-builder client new-environment)))
             (reinitialize-instance operator-ast
               :form-asts
