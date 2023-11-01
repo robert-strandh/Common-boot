@@ -76,6 +76,14 @@
         :init-form-ast
         (convert-ast-in-environment client init-form-ast environment)))))
 
+(defmethod finalize-parameter :before
+    (client (parameter-ast ico:aux-parameter-ast) environment)
+  (let ((form-ast (ico:form-ast parameter-ast)))
+    (unless (null form-ast)
+      (reinitialize-instance parameter-ast
+        :form-ast
+        (convert-ast-in-environment client form-ast environment)))))
+
 (defmethod finalize-section
     (client (section-ast ico:single-parameter-section-ast) environment)
   (finalize-parameter client (ico:parameter-ast section-ast) environment))
