@@ -238,19 +238,17 @@
         append (lexify-key-parameter-ast parameter-ast)))
 
 (defun lexify-aux-parameter-ast (aux-parameter-ast)
-  (let ((parameter-ast (ico:parameter-ast aux-parameter-ast))
-        (init-form-ast (ico:init-form-ast aux-parameter-ast)))
+  (let ((name-ast (ico:name-ast aux-parameter-ast))
+        (form-ast (ico:form-ast aux-parameter-ast)))
     (make-instance 'ico:variable-binding-ast
-      :variable-name-ast (ico:name-ast parameter-ast)
-      :form-ast (if (null init-form-ast)
+      :variable-name-ast name-ast
+      :form-ast (if (null form-ast)
                     (make-instance 'ico:literal-ast :literal 'nil)
-                    init-form-ast))))
+                    form-ast))))
 
 (defun lexify-aux-section-ast (aux-section-ast)
-  (prog1 (loop for parameter-ast in (ico:parameter-asts aux-section-ast)
-               collect (lexify-aux-parameter-ast parameter-ast))
-    (reinitialize-instance aux-section-ast
-      :parameter-asts '())))
+  (loop for parameter-ast in (ico:parameter-asts aux-section-ast)
+        collect (lexify-aux-parameter-ast parameter-ast)))
 
 (defun ensure-lambda-list-lexified (ast)
   (let ((lambda-list-ast (ico:lambda-list-ast ast)))
@@ -276,7 +274,9 @@
                       (lexify-key-section-ast key-section-ast))
                   (if (null aux-section-ast)
                       '()
-                      (lexify-aux-section-ast aux-section-ast))))
+                      (prog1 (lexify-aux-section-ast aux-section-ast)
+                        (reinitialize-instance lambda-list-ast
+                          :aux-section-ast nil)))))
                (let*-ast
                  (make-instance 'ico:let*-ast
                    :binding-asts binding-asts
