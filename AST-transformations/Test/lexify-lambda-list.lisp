@@ -40,3 +40,9 @@
   (is #'equal
       (parse-lexify-and-unparse '((lambda (&key (x nil x-p)) 234)))
       '((lambda (&key (x nil x-p)) 234))))
+
+(define-test lexify-lambda-list-one-aux-parameter
+  :parent lexify-lambda-list
+  (is #'equal
+      (parse-lexify-and-unparse '((lambda (&aux (x 123)) 234)))
+      '((lambda () (let* ((x 123)) 234)))))
