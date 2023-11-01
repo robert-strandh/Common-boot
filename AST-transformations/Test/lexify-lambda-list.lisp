@@ -34,3 +34,9 @@
       '((lambda (&optional (#1=#:a nil #2=#:a-p))
           (let* ((x (if #2# #1# nil)))
             234)))))
+
+(define-test lexify-lambda-list-already-lexified-one-key-parameter
+  :parent lexify-lambda-list
+  (is #'equal
+      (parse-lexify-and-unparse '((lambda (&key (x nil x-p)) 234)))
+      '((lambda (&key (x nil x-p)) 234))))
