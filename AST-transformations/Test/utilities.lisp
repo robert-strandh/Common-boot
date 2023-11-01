@@ -13,6 +13,12 @@
          (transformed-ast (cbat:lexify-lambda-list ast)))
     (ses:unparse builder t transformed-ast)))
 
+;;; The problem that is solved by this function is that the
+;;; transformation will introduce symbols using GENSYM, and we don't
+;;; know what they will be.  So we just make sure that a symbol
+;;; without a package in FORM1 corresponds to a symbol without a
+;;; packate in FORM2, and that the correspondance is the same for
+;;; every such pair of occurrences.
 (defun forms-similar-p (form1 form2)
   (let ((table (make-hash-table :test #'eq)))
     (labels ((aux (form1 form2)
@@ -20,7 +26,14 @@
                            (symbolp form2) (null (symbol-package form2)))
                       (let ((other (gethash form1 table)))
                         (if (null other)
+                            ;; This is the first time we see the
+                            ;; symbol in FORM1, so we enter the
+                            ;; corresponding symbol in FORM2 in the
+                            ;; table, and return true.
                             (progn (setf (gethash form1 table) form2) t)
+                            ;; We have seen the symbol in FORM1
+                            ;; before, so the symbol in FORM2 had
+                            ;; better correspond to the table entry.
                             (eq form2 other))))
                      ((and (atom form1) (atom form2))
                       (eql form1 form2))
