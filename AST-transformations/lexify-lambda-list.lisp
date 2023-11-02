@@ -206,7 +206,7 @@
       (reinitialize-instance key-parameter-ast
         :keyword-ast
         (make-instance 'ico:literal-ast
-          :literal (intern (ico:name existing-name-ast) "KEYWORD"))))
+          :literal (intern (string (ico:name existing-name-ast)) "KEYWORD"))))
     (multiple-value-bind (definition-1-ast reference-1-ast)
         (create-lexical-variable-pair)
       (multiple-value-bind (definition-2-ast reference-2-ast)
