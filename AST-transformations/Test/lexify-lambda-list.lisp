@@ -61,6 +61,18 @@
            (declare (special x-p))
            234)))))
 
+(define-test lexify-lambda-list-rest-special
+  :parent lexify-lambda-list
+  (is #'forms-similar-p
+      `((lambda (&rest #1=#:a)
+          (let* ((x #1#))
+            (declare (special x))
+            234)))
+      (parse-lexify-and-unparse
+       '((lambda (&rest x)
+           (declare (special x))
+           234)))))
+
 (define-test lexify-lambda-list-already-lexified-no-parameters
   :parent lexify-lambda-list
   (is #'equal
