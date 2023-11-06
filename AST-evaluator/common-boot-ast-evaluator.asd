@@ -41,7 +41,7 @@
 
 (defsystem #:common-boot-ast-evaluator
   :depends-on (#:closer-mop
-               #:common-boot-ast-transformations)
+               #:iconoclast-ast-transformations)
   :serial t
   :components
   ((:file "packages")

@@ -8,10 +8,10 @@
   *arguments*)
 
 (defun simplify-ast (ast)
-  (let* ((ast (cbat:let-to-labels ast))
-         (ast (cbat:let*-to-labels ast))
-         (ast (cbat:application-lambda-to-labels ast))
-         (ast (cbat:function-lambda-to-labels ast)))
+  (let* ((ast (iat:let-to-labels ast))
+         (ast (iat:let*-to-labels ast))
+         (ast (iat:application-lambda-to-labels ast))
+         (ast (iat:function-lambda-to-labels ast)))
     ast))
 
 (defun eval-ast (client ast environment)
