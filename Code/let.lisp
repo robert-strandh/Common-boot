@@ -42,6 +42,8 @@
                       new-environment
                       variable-name-ast
                       (ico:declaration-asts ast))))
+      (finalize-declaration-asts
+       client (ico:declaration-asts ast) new-environment)
       (let ((new-builder (make-builder client new-environment)))
         (reinitialize-instance ast
           :form-asts (convert-asts new-builder (ico:form-asts ast)))))))
