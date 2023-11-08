@@ -80,3 +80,123 @@
                           (change-class
                            name-ast
                            'ico:special-variable-reference-ast))))))
+
+(defgeneric finalize-variable-name-ast-using-description
+    (description variable-name-ast))
+
+(defmethod finalize-variable-name-ast-using-description
+    ((description trucler:lexical-variable-description) variable-name-ast)
+  (let* ((variable-definition-ast (trucler:identity description))
+         (result (make-instance 'ico:variable-reference-ast
+                   :name (ico:name variable-name-ast)
+                   :origin (ico:origin variable-name-ast)
+                   :variable-definition-ast variable-definition-ast)))
+    (reinitialize-instance variable-definition-ast
+      :variable-reference-asts
+      (append (ico:variable-reference-asts variable-definition-ast)
+              (list result)))
+    result))
+
+(defmethod finalize-variable-name-ast-using-description
+    ((description trucler:special-variable-description) variable-name-ast)
+  (make-instance 'ico:special-variable-reference-ast
+    :name (ico:name variable-name-ast)
+    :origin (ico:origin variable-name-ast)))
+
+(defgeneric finalize-function-name-ast-using-description
+    (description function-name-ast))
+
+(defmethod finalize-function-name-ast-using-description
+    ((description trucler:local-function-description) function-name-ast)
+  (let* ((function-definition-ast (trucler:identity description))
+         (result (make-instance 'ico:function-reference-ast
+                   :local-function-name-definition-ast
+                   function-definition-ast
+                   :name (ico:name function-name-ast)
+                   :origin (ico:origin function-name-ast))))
+    (reinitialize-instance function-definition-ast
+      :local-function-name-reference-asts
+      (append (ico:local-function-name-reference-asts
+               function-definition-ast)
+              (list result)))
+    result))
+
+(defmethod finalize-function-name-ast-using-description
+    ((description trucler:global-function-description)
+     function-name-ast)
+  (make-instance 'ico:global-function-name-reference-ast
+    :name (ico:name function-name-ast)
+    :origin (ico:origin function-name-ast)))
+
+(defgeneric finalize-name-ast (client name-ast environment))
+
+(defmethod finalize-name-ast
+    (client (name-ast ico:variable-name-ast) environment)
+  (let* ((name (ico:name name-ast))
+         (description (trucler:describe-variable client environment name)))
+    (finalize-variable-name-ast-using-description
+     description name-ast)))
+
+(defmethod finalize-name-ast
+    (client (name-ast ico:function-name-ast) environment)
+  (let* ((name (ico:name name-ast))
+         (description (trucler:describe-function client environment name)))
+    (finalize-function-name-ast-using-description
+     description name-ast)))
+  
+(defun finalize-simple-declaration-specifier-ast
+    (client declaration-specifier-ast environment)
+  (reinitialize-instance declaration-specifier-ast
+    :name-asts
+    (loop for name-ast in (ico:name-asts declaration-specifier-ast)
+          collect (finalize-name-ast client name-ast environment))))
+
+(defgeneric finalize-declaration-specifier-ast
+    (client declaration-specifier-ast environment))
+
+(defmethod finalize-declaration-specifier-ast
+    (client (declaration-specifier-ast ico:dynamic-extent-ast) environment)
+  (finalize-simple-declaration-specifier-ast
+   client declaration-specifier-ast environment))
+
+(defmethod finalize-declaration-specifier-ast
+    (client (declaration-specifier-ast ico:ignore-ast) environment)
+  (finalize-simple-declaration-specifier-ast
+   client declaration-specifier-ast environment))
+
+(defmethod finalize-declaration-specifier-ast
+    (client (declaration-specifier-ast ico:ignorable-ast) environment)
+  (finalize-simple-declaration-specifier-ast
+   client declaration-specifier-ast environment))
+
+(defmethod finalize-declaration-specifier-ast
+    (client (declaration-specifier-ast ico:inline-ast) environment)
+  (finalize-simple-declaration-specifier-ast
+   client declaration-specifier-ast environment))
+
+(defmethod finalize-declaration-specifier-ast
+    (client (declaration-specifier-ast ico:notinline-ast) environment)
+  (finalize-simple-declaration-specifier-ast
+   client declaration-specifier-ast environment))
+
+(defmethod finalize-declaration-specifier-ast
+    (client (declaration-specifier-ast ico:special-ast) environment)
+  (finalize-simple-declaration-specifier-ast
+   client declaration-specifier-ast environment))
+
+(defmethod finalize-declaration-specifier-ast
+    (client (declaration-specifier-ast ico:optimize-ast) environment)
+  declaration-specifier-ast)
+
+;;; FIXME: add methods on FINALIZE-DECLARATION-SPECIFIER-AST for TYPE
+;;; and FTYPE once we know how to handle those.
+
+(defun finalize-declaration-ast (client declaration-ast environment)
+  (loop for declaration-specifier-ast
+          in (ico:declaration-specifier-asts declaration-ast)
+        do (finalize-declaration-specifier-ast
+            client declaration-specifier-ast environment)))
+
+(defun finalize-declaration-asts (client declaration-asts environment)
+  (loop for declaration-ast in declaration-asts
+        do (finalize-declaration-ast client declaration-ast environment)))
