@@ -42,6 +42,10 @@
                       new-environment
                       variable-name-ast
                       (ico:declaration-asts ast))))
+      ;; FIXME: this is not quite correct.  We need to traverse the
+      ;; declarations in order to find free SPECIAL declaration
+      ;; specifiers, and augment the environment with that information
+      ;; before the body forms are converted.
       (finalize-declaration-asts
        client (ico:declaration-asts ast) new-environment)
       (let ((new-builder (make-builder client new-environment)))
