@@ -9,8 +9,7 @@
 
 (defun simplify-ast (ast)
   (let* ((ast (iat:let-to-labels ast))
-         (ast (iat:let*-to-labels ast))
-         (ast (iat:function-lambda-to-labels-everywhere ast)))
+         (ast (iat:let*-to-labels ast)))
     ast))
 
 (defun eval-ast (client ast environment)
