@@ -6,6 +6,7 @@
                     (#:clo #:clostrum)
                     (#:ico #:iconoclast)
                     (#:bld #:iconoclast-builder)
+                    (#:iat #:iconoclast-ast-transformations)
                     (#:cm #:common-macros)
                     (#:cmd #:common-macro-definitions)
                     (#:ses #:s-expression-syntax)
