@@ -4,16 +4,8 @@
   (let ((operator-ast (ico:function-name-ast ast)))
     (with-builder-components (builder client environment)
       (if (typep operator-ast 'ico:lambda-expression-ast)
-          (let* ((new-environment
-                   (finalize-lambda-list
-                    client environment
-                    (ico:lambda-list-ast operator-ast)
-                    (ico:declaration-asts operator-ast)))
-                 (new-builder (make-builder client new-environment)))
-            (reinitialize-instance operator-ast
-              :form-asts
-              (loop for body-ast in (ico:form-asts operator-ast)
-                    collect (convert-ast new-builder body-ast))))
+          (let ((labels-ast (iat:application-lambda-to-labels ast)))
+            (finish-labels-ast builder labels-ast))
           (finalize-function-name-ast-from-environment
            client operator-ast environment))))
   ;; We assume that each argument is an unparsed form.
