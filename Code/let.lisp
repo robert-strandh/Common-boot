@@ -27,6 +27,9 @@
     ((builder builder)
      (kind t)
      (ast ico:let-ast))
+  ;; FIXME: This call is a temporary simplification to allow us to
+  ;; make progress.  It keeps only SPECIAL declarations.
+  (trim-declaration-asts (ico:declaration-asts ast))
   (with-builder-components (builder client environment)
     (let ((new-environment environment))
       (loop for binding-ast in (ico:binding-asts ast)
