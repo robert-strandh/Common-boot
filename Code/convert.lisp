@@ -65,16 +65,22 @@
                       (convert-with-description
                        client cst d environment))))))
           (t
-           ;; The form must be a compound form where the CAR is a lambda
-           ;; expression.  Evaluating such a form might have some
-           ;; compile-time side effects, so we must check whether we are
-           ;; in COMPILE-TIME-TOO mode, in which case we must evaluate
-           ;; the form as well.
-           (when (and *current-form-is-top-level-p* *compile-time-too*)
-             (eval-cst client cst environment))
-           (let ((builder (make-builder client environment))
-                 (syntax (ses:find-syntax 'ses:application)))
-             (ses:parse builder syntax cst))))))
+           ;; The form must be a compound form where the CAR is a
+           ;; lambda expression.  We use the s-expression-syntax
+           ;; library to check the syntax of the form, but we do not
+           ;; use the result.  Instead, we turn the CST into a LABELS
+           ;; and then convert the resulting CST instead.
+           (let ((syntax (ses:find-syntax 'ses:application)))
+             (ses:parse 'list syntax cst))
+           (let* ((name (gensym))
+                  (lambda-expression (first form))
+                  (arguments (rest form))
+                  (lambda-list (second lambda-expression))
+                  (body (rest (rest lambda-expression)))
+                  (new-form `(labels ((,name ,lambda-list ,@body))
+                               (,name ,@arguments)))
+                  (new-cst (cst:reconstruct client new-form cst)))
+             (convert client new-cst environment))))))
 
 (defmethod convert :around (client cst environment)
   #+sbcl(declare (sb-ext:muffle-conditions sb-ext:compiler-note))
