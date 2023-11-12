@@ -1,10 +1,12 @@
 (cl:in-package #:common-boot)
 
-;;; FIXME: handle more declarations
 (defmethod abp:finish-node
     ((builder builder)
      (kind t)
      (ast ico:let*-ast))
+  ;; FIXME: This call is a temporary simplification to allow us to
+  ;; make progress.  It keeps only SPECIAL declarations.
+  (trim-declaration-asts (ico:declaration-asts ast))
   (let ((new-builder builder))
     (loop for binding-ast in (ico:binding-asts ast)
           for variable-name-ast = (ico:variable-name-ast binding-ast)
