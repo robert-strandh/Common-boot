@@ -151,7 +151,7 @@
            declaration-specifier-asts))
     new-environment))
     
-;;; Finalize the unparsed parts of an ordinary lambda list AST and
+;;; Finalize the unparsed parts of a specialized lambda list AST and
 ;;; return a new environment resulting from the introduced variables.
 (defmethod finalize-lambda-list
     (client environment (ast ico:specialized-lambda-list-ast)
