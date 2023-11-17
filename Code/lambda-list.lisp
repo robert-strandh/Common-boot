@@ -189,6 +189,20 @@
           (extract-variable-asts-in-section
            (ico:aux-section-ast ast))))
 
+;;; We account for the possibility of the lambda list to contain
+;;; duplicate variables, just like a LET* can.  So the variable
+;;; referred to by some SPECIAL declaration is the rightmost one with
+;;; that name in the lambda list.  Therefore, we traverse the list of
+;;; variables in the lambda list in reverse order.
+(defun mark-variable-ast-as-special (lambda-list-ast variable-name-ast)
+  (let* ((variable-asts
+           (extract-variable-asts-in-lambda-list lambda-list-ast)))
+    (loop for variable-ast in (reverse variable-asts)
+          do (when (eq (ico:name variable-ast)
+                       (ico:name variable-name-ast))
+               (change-class variable-ast 'ico:special-variable-bound-ast)
+               (return)))))
+
 ;;; FIXME: handle declarations. 
 
 (defgeneric finalize-lambda-list
