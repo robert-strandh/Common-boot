@@ -27,11 +27,25 @@
     ((builder builder)
      (kind t)
      (ast ico:let-ast))
-  ;; FIXME: This call is a temporary simplification to allow us to
-  ;; make progress.  It keeps only SPECIAL declarations.
-  (trim-declaration-asts (ico:declaration-asts ast))
   (with-builder-components (builder client environment)
-    (let ((new-environment environment))
+    (let* ((new-environment environment)
+           (declaration-asts (ico:declaration-asts ast))
+           (special-declared-variable-asts
+             (iat:extract-special-declared-variable-asts declaration-asts))
+           (variable-name-asts
+             (loop for binding-ast in (ico:binding-asts ast)
+                   collect (ico:variable-name-ast binding-ast))))
+      ;; FIXME: This call is a temporary simplification to allow us to
+      ;; make progress.  It keeps only SPECIAL declarations.
+      (trim-declaration-asts declaration-asts)
+      (loop for special-declared-variable-ast
+              in special-declared-variable-asts
+            do (loop for variable-name-ast in variable-name-asts
+                     do (when (eq (ico:name special-declared-variable-ast)
+                                  (ico:name variable-name-ast))
+                          (change-class variable-name-ast
+                                        'ico:special-variable-bound-ast)
+                          (return))))
       (loop for binding-ast in (ico:binding-asts ast)
             for variable-name-ast = (ico:variable-name-ast binding-ast)
             for form-ast = (ico:form-ast binding-ast)
@@ -40,17 +54,18 @@
                                nil
                                (convert-ast builder form-ast)))
                (setf new-environment
-                     (augment-environment-with-binding-variable
-                      client
-                      new-environment
-                      variable-name-ast
-                      (ico:declaration-asts ast))))
-      ;; FIXME: this is not quite correct.  We need to traverse the
-      ;; declarations in order to find free SPECIAL declaration
-      ;; specifiers, and augment the environment with that information
-      ;; before the body forms are converted.
-      (finalize-declaration-asts
-       client (ico:declaration-asts ast) new-environment)
+                     (finalize-parameter-variable
+                      client variable-name-ast new-environment)))
+      (loop for special-declared-variable-ast
+              in special-declared-variable-asts
+            for name = (ico:name special-declared-variable-ast)
+            for description
+              = (trucler:describe-variable client new-environment name)
+            unless (typep description 'trucler:special-variable-description)
+              do (setf new-environment
+                       (trucler:add-local-special-variable
+                        client new-environment name)))
+      (finalize-declaration-asts client declaration-asts new-environment)
       (let ((new-builder (make-builder client new-environment)))
         (reinitialize-instance ast
           :form-asts (convert-asts new-builder (ico:form-asts ast)))))))
