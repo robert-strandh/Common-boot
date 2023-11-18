@@ -165,29 +165,25 @@
 
 (defmethod extract-variable-asts-in-lambda-list
     ((ast ico:ordinary-lambda-list-ast))
-  (append (extract-variable-asts-in-section
-           (ico:required-section-ast ast))
-          (extract-variable-asts-in-section
-           (ico:optional-section-ast ast))
-          (extract-variable-asts-in-section
-           (ico:rest-section-ast ast))
-          (extract-variable-asts-in-section
-           (ico:key-section-ast ast))
-          (extract-variable-asts-in-section
-           (ico:aux-section-ast ast))))
+  (loop for accessor
+          in (list #'ico:required-section-ast
+                   #'ico:optional-section-ast
+                   #'ico:rest-section-ast
+                   #'ico:key-section-ast
+                   #'ico:aux-section-ast)
+        append (extract-variable-asts-in-section
+                (funcall accessor ast))))
 
 (defmethod extract-variable-asts-in-lambda-list
     ((ast ico:specialized-lambda-list-ast))
-  (append (extract-variable-asts-in-section
-           (ico:required-section-ast ast))
-          (extract-variable-asts-in-section
-           (ico:optional-section-ast ast))
-          (extract-variable-asts-in-section
-           (ico:rest-section-ast ast))
-          (extract-variable-asts-in-section
-           (ico:key-section-ast ast))
-          (extract-variable-asts-in-section
-           (ico:aux-section-ast ast))))
+  (loop for accessor
+          in (list #'ico:required-section-ast
+                   #'ico:optional-section-ast
+                   #'ico:rest-section-ast
+                   #'ico:key-section-ast
+                   #'ico:aux-section-ast)
+        append (extract-variable-asts-in-section
+                (funcall accessor ast))))
 
 ;;; We account for the possibility of the lambda list to contain
 ;;; duplicate variables, just like a LET* can.  So the variable
