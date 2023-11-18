@@ -202,7 +202,7 @@
     (loop for special-declared-variable-ast in special-declared-variable-asts
           for name = (ico:name special-declared-variable-ast)
           for description
-            = (trucler:describe-variable client environment name)
+            = (trucler:describe-variable client new-environment name)
           unless (typep description 'trucler:special-variable-description)
             do (setf new-environment
                      (trucler:add-local-special-variable
@@ -230,7 +230,7 @@
     (loop for special-declared-variable-ast in special-declared-variable-asts
           for name = (ico:name special-declared-variable-ast)
           for description
-            = (trucler:describe-variable client environment name)
+            = (trucler:describe-variable client new-environment name)
           unless (typep description 'trucler:special-variable-description)
             do (setf new-environment
                      (trucler:add-local-special-variable
