@@ -199,6 +199,10 @@
                (change-class variable-ast 'ico:special-variable-bound-ast)
                (return)))))
 
+(defun mark-variable-asts-as-special (lambda-list-ast variable-name-asts)
+  (loop for variable-name-ast in variable-name-asts
+        do (mark-variable-ast-as-special lambda-list-ast variable-name-ast)))
+
 ;;; FIXME: handle declarations. 
 
 (defgeneric finalize-lambda-list
