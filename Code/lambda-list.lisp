@@ -212,26 +212,16 @@
         (declaration-specifier-asts
           (loop for declaration-ast in declaration-asts
                 append (ico:declaration-specifier-asts declaration-ast))))
-    (setf new-environment
-          (finalize-section
-           client (ico:required-section-ast ast) new-environment
-           declaration-specifier-asts))
-    (setf new-environment
-          (finalize-section
-           client (ico:optional-section-ast ast) new-environment
-           declaration-specifier-asts))
-    (setf new-environment
-          (finalize-section
-           client (ico:rest-section-ast ast) new-environment
-           declaration-specifier-asts))
-    (setf new-environment
-          (finalize-section
-           client (ico:key-section-ast ast) new-environment
-           declaration-specifier-asts))
-    (setf new-environment
-          (finalize-section
-           client (ico:aux-section-ast ast) new-environment
-           declaration-specifier-asts))
+    (loop for accessor
+            in (list #'ico:required-section-ast
+                     #'ico:optional-section-ast
+                     #'ico:rest-section-ast
+                     #'ico:key-section-ast
+                     #'ico:aux-section-ast)
+          do (setf new-environment
+                   (finalize-section
+                    client (funcall accessor ast)
+                    new-environment declaration-specifier-asts)))
     new-environment))
     
 ;;; Finalize the unparsed parts of a specialized lambda list AST and
@@ -243,24 +233,14 @@
         (declaration-specifier-asts
           (loop for declaration-ast in declaration-asts
                 append (ico:declaration-specifier-asts declaration-ast))))
-    (setf new-environment
-          (finalize-section
-           client (ico:required-section-ast ast) new-environment
-           declaration-specifier-asts))
-    (setf new-environment
-          (finalize-section
-           client (ico:optional-section-ast ast) new-environment
-           declaration-specifier-asts))
-    (setf new-environment
-          (finalize-section
-           client (ico:rest-section-ast ast) new-environment
-           declaration-specifier-asts))
-    (setf new-environment
-          (finalize-section
-           client (ico:key-section-ast ast) new-environment
-           declaration-specifier-asts))
-    (setf new-environment
-          (finalize-section
-           client (ico:aux-section-ast ast) new-environment
-           declaration-specifier-asts))
+    (loop for accessor
+            in (list #'ico:required-section-ast
+                     #'ico:optional-section-ast
+                     #'ico:rest-section-ast
+                     #'ico:key-section-ast
+                     #'ico:aux-section-ast)
+          do (setf new-environment
+                   (finalize-section
+                    client (funcall accessor ast)
+                    new-environment declaration-specifier-asts)))
     new-environment))
