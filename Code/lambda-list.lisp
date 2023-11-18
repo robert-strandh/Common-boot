@@ -1,90 +1,69 @@
 (cl:in-package #:common-boot)
 
-(defgeneric finalize-section
-    (client section-ast environment declaration-asts))
+(defgeneric finalize-section (client section-ast environment))
 
-(defmethod finalize-section
-    (client (section-ast null) environment declaration-asts)
+(defmethod finalize-section (client (section-ast null) environment )
   environment)
 
-(defgeneric finalize-parameter
-    (client parameter-ast environment declaration-asts))
+(defgeneric finalize-parameter (client parameter-ast environment))
 
-(defun finalize-parameter-variable
-    (client variable-name-ast environment declaration-asts)
-  (let ((variable-name (ico:name variable-name-ast)))
-    (multiple-value-bind (special-p globally-special-p)
-        (variable-is-special-p
-         client
-         variable-name-ast
-         declaration-asts
-         environment)
-      (change-class variable-name-ast
-                    (if special-p
-                        'ico:special-variable-bound-ast
-                        'ico:variable-definition-ast))
-      (if special-p
-          (unless globally-special-p
-            (trucler:add-local-special-variable
-             client environment variable-name))
-          (trucler:add-lexical-variable
-           client environment variable-name variable-name-ast)))))
+(defun finalize-parameter-variable (client variable-name-ast environment)
+  (let ((name (ico:name variable-name-ast)))
+    (cond ((typep (trucler:describe-variable client environment name)
+                  'trucler:global-special-variable-description)
+           (change-class variable-name-ast
+                         'ico:special-variable-bound-ast)
+           environment)
+          ((typep variable-name-ast 'ico:special-variable-bound-ast)
+           (trucler:add-local-special-variable client environment name))
+          (t
+           (trucler:add-lexical-variable
+            client environment name variable-name-ast)))))
 
 (defmethod finalize-parameter
-    (client (parameter-ast ico:required-parameter-ast) environment
-     declaration-asts)
+    (client (parameter-ast ico:required-parameter-ast) environment)
   (finalize-parameter-variable
-   client (ico:name-ast parameter-ast) environment declaration-asts))
+   client (ico:name-ast parameter-ast) environment))
 
 (defmethod finalize-parameter
-    (client (parameter-ast ico:rest-parameter-ast) environment
-     declaration-asts)
+    (client (parameter-ast ico:rest-parameter-ast) environment)
   (finalize-parameter-variable
-   client (ico:name-ast parameter-ast) environment declaration-asts))
+   client (ico:name-ast parameter-ast) environment))
 
 (defmethod finalize-parameter
-    (client (parameter-ast ico:optional-parameter-ast) environment
-     declaration-asts)
+    (client (parameter-ast ico:optional-parameter-ast) environment)
   (let ((new-environment environment)
         (name-ast (ico:name-ast parameter-ast))
         (supplied-p-ast (ico:supplied-p-parameter-ast parameter-ast)))
     (setf new-environment
-          (finalize-parameter-variable
-           client name-ast environment declaration-asts))
+          (finalize-parameter-variable client name-ast environment))
     (unless (null supplied-p-ast)
       (setf new-environment
-            (finalize-parameter-variable
-             client supplied-p-ast environment declaration-asts)))
+            (finalize-parameter-variable client supplied-p-ast environment)))
     new-environment))
 
 (defmethod finalize-parameter
-    (client (parameter-ast ico:key-parameter-ast) environment
-     declaration-asts)
+    (client (parameter-ast ico:key-parameter-ast) environment)
   (let ((new-environment environment)
         (name-ast (ico:name-ast parameter-ast))
         (supplied-p-ast (ico:supplied-p-parameter-ast parameter-ast)))
     (setf new-environment
-          (finalize-parameter-variable
-           client name-ast environment declaration-asts))
+          (finalize-parameter-variable client name-ast environment))
     (unless (null supplied-p-ast)
       (setf new-environment
-            (finalize-parameter-variable
-             client supplied-p-ast environment declaration-asts)))
+            (finalize-parameter-variable client supplied-p-ast environment)))
     new-environment))
 
 (defmethod finalize-parameter
-    (client (parameter-ast ico:aux-parameter-ast) environment
-     declaration-asts)
+    (client (parameter-ast ico:aux-parameter-ast) environment)
   (let ((new-environment environment)
         (name-ast (ico:name-ast parameter-ast)))
     (setf new-environment
-          (finalize-parameter-variable
-           client name-ast environment declaration-asts))
+          (finalize-parameter-variable client name-ast environment))
     new-environment))
 
 (defmethod finalize-parameter :before
-    (client (parameter-ast ico:supplied-p-parameter-ast-mixin) environment
-     declaration-asts)
+    (client (parameter-ast ico:supplied-p-parameter-ast-mixin) environment)
   (let ((init-form-ast (ico:init-form-ast parameter-ast)))
     (unless (null init-form-ast)
       (reinitialize-instance parameter-ast
@@ -92,8 +71,7 @@
         (convert-ast-in-environment client init-form-ast environment)))))
 
 (defmethod finalize-parameter :before
-    (client (parameter-ast ico:aux-parameter-ast) environment
-     declaration-asts)
+    (client (parameter-ast ico:aux-parameter-ast) environment)
   (let ((form-ast (ico:form-ast parameter-ast)))
     (unless (null form-ast)
       (reinitialize-instance parameter-ast
@@ -101,19 +79,16 @@
         (convert-ast-in-environment client form-ast environment)))))
 
 (defmethod finalize-section
-    (client (section-ast ico:single-parameter-section-ast) environment
-     declaration-asts)
-  (finalize-parameter
-   client (ico:parameter-ast section-ast) environment declaration-asts))
+    (client (section-ast ico:single-parameter-section-ast) environment)
+  (finalize-parameter client (ico:parameter-ast section-ast) environment))
 
 (defmethod finalize-section
-    (client (section-ast ico:multi-parameter-section-ast) environment
-     declaration-asts)
+    (client (section-ast ico:multi-parameter-section-ast) environment)
   (let ((new-environment environment))
     (loop for parameter-ast in (ico:parameter-asts section-ast)
           do (setf new-environment
                    (finalize-parameter
-                    client parameter-ast new-environment declaration-asts)))
+                    client parameter-ast new-environment)))
     new-environment))
 
 (defgeneric extract-variable-asts-in-parameter (parameter-ast))
@@ -213,11 +188,9 @@
 (defmethod finalize-lambda-list
     (client environment (ast ico:ordinary-lambda-list-ast) declaration-asts)
   (let ((new-environment environment)
-        (declaration-specifier-asts
-          (loop for declaration-ast in declaration-asts
-                append (ico:declaration-specifier-asts declaration-ast)))
-        (variable-asts (extract-variable-asts-in-lambda-list ast)))
-    (mark-variable-asts-as-special ast variable-asts)
+        (special-declared-variable-asts
+          (iat:extract-special-declared-variable-asts declaration-asts)))
+    (mark-variable-asts-as-special ast special-declared-variable-asts)
     (loop for accessor
             in (list #'ico:required-section-ast
                      #'ico:optional-section-ast
@@ -226,8 +199,7 @@
                      #'ico:aux-section-ast)
           do (setf new-environment
                    (finalize-section
-                    client (funcall accessor ast)
-                    new-environment declaration-specifier-asts)))
+                    client (funcall accessor ast) new-environment)))
     new-environment))
     
 ;;; Finalize the unparsed parts of a specialized lambda list AST and
@@ -236,11 +208,9 @@
     (client environment (ast ico:specialized-lambda-list-ast)
      declaration-asts)
   (let ((new-environment environment)
-        (declaration-specifier-asts
-          (loop for declaration-ast in declaration-asts
-                append (ico:declaration-specifier-asts declaration-ast)))
-        (variable-asts (extract-variable-asts-in-lambda-list ast)))
-    (mark-variable-asts-as-special ast variable-asts)
+        (special-declared-variable-asts
+          (iat:extract-special-declared-variable-asts declaration-asts)))
+    (mark-variable-asts-as-special ast special-declared-variable-asts)
     (loop for accessor
             in (list #'ico:required-section-ast
                      #'ico:optional-section-ast
@@ -249,6 +219,5 @@
                      #'ico:aux-section-ast)
           do (setf new-environment
                    (finalize-section
-                    client (funcall accessor ast)
-                    new-environment declaration-specifier-asts)))
+                    client (funcall accessor ast) new-environment)))
     new-environment))
