@@ -17,6 +17,7 @@
           ((typep variable-name-ast 'ico:special-variable-bound-ast)
            (trucler:add-local-special-variable client environment name))
           (t
+           (change-class variable-name-ast 'ico:variable-definition-ast)
            (trucler:add-lexical-variable
             client environment name variable-name-ast)))))
 
