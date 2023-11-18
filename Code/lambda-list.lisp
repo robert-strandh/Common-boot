@@ -215,7 +215,9 @@
   (let ((new-environment environment)
         (declaration-specifier-asts
           (loop for declaration-ast in declaration-asts
-                append (ico:declaration-specifier-asts declaration-ast))))
+                append (ico:declaration-specifier-asts declaration-ast)))
+        (variable-asts (extract-variable-asts-in-lambda-list ast)))
+    (mark-variable-asts-as-special ast variable-asts)
     (loop for accessor
             in (list #'ico:required-section-ast
                      #'ico:optional-section-ast
@@ -236,7 +238,9 @@
   (let ((new-environment environment)
         (declaration-specifier-asts
           (loop for declaration-ast in declaration-asts
-                append (ico:declaration-specifier-asts declaration-ast))))
+                append (ico:declaration-specifier-asts declaration-ast)))
+        (variable-asts (extract-variable-asts-in-lambda-list ast)))
+    (mark-variable-asts-as-special ast variable-asts)
     (loop for accessor
             in (list #'ico:required-section-ast
                      #'ico:optional-section-ast
