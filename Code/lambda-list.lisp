@@ -179,8 +179,6 @@
   (loop for variable-name-ast in variable-name-asts
         do (mark-variable-ast-as-special lambda-list-ast variable-name-ast)))
 
-;;; FIXME: handle declarations. 
-
 (defgeneric finalize-lambda-list
     (client environment lambda-list-ast declaration-asts))
 
@@ -201,6 +199,14 @@
           do (setf new-environment
                    (finalize-section
                     client (funcall accessor ast) new-environment)))
+    (loop for special-declared-variable-ast in special-declared-variable-asts
+          for name = (ico:name special-declared-variable-ast)
+          for description
+            = (trucler:describe-variable client environment name)
+          unless (typep description 'trucler:special-variable-description)
+            do (setf new-environment
+                     (trucler:add-local-special-variable
+                      client new-environment name)))
     new-environment))
     
 ;;; Finalize the unparsed parts of a specialized lambda list AST and
@@ -221,4 +227,12 @@
           do (setf new-environment
                    (finalize-section
                     client (funcall accessor ast) new-environment)))
+    (loop for special-declared-variable-ast in special-declared-variable-asts
+          for name = (ico:name special-declared-variable-ast)
+          for description
+            = (trucler:describe-variable client environment name)
+          unless (typep description 'trucler:special-variable-description)
+            do (setf new-environment
+                     (trucler:add-local-special-variable
+                      client new-environment name)))
     new-environment))
