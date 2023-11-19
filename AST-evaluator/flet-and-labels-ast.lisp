@@ -6,35 +6,30 @@
           (common-boot::extract-variable-asts-in-lambda-list
            lambda-list-ast)))
     (loop for lambda-list-variable-ast in lambda-list-variable-asts
-          do (setf (lookup lambda-list-variable-ast) (gensym))))
-  (let* ((let*-ast (make-instance 'ico:let*-ast))
-         (variable-name (make-symbol "ARGUMENTS"))
-         (variable-ast
-           (make-instance 'ico:variable-definition-ast :name variable-name))
-         (temp (make-symbol "TEMP"))
-         (continuation-variable (gensym "C-")))
-    (cm:with-ast-origin lambda-list-ast
-      (cm:destructure-lambda-list lambda-list-ast variable-ast let*-ast))
-    (reinitialize-instance let*-ast
-      :form-asts form-asts)
-    (setf (lookup variable-ast) variable-name)
-    `(step (list (xlambda (&rest ,variable-name)
-                   ;; We need to wrap the argument list in LIST
-                   ;; because of assignment conversion.  The argument
-                   ;; list is going to be processed by
-                   ;; VARIABLE-REFERENCE-ASTs and those assume that
-                   ;; the variable is wrapped that way.
-                   (let ((dynamic-environment
-                           (prog1 *dynamic-environment*
-                             (setf *dynamic-environment* nil))))
-                     (declare (ignorable dynamic-environment))
-                     (setq ,variable-name (list ,variable-name))
-                     (let ((,continuation-variable
-                             (lambda (&rest ,temp)
-                               (declare (ignore ,temp))
-                               ,(pop-stack-operation client))))
-                       ,(cps client let*-ast continuation-variable)))))
-           ,continuation)))
+          do (setf (lookup lambda-list-variable-ast) (gensym)))
+    (let* ((host-lambda-list
+             (host-lambda-list-from-lambda-list-ast lambda-list-ast))
+           (temp (make-symbol "TEMP"))
+           (continuation-variable (gensym "C-")))
+      `(step (list (xlambda ,host-lambda-list
+                     ;; We need to wrap each lambda-list variable in
+                     ;; LIST because of assignment conversion.
+                     (setq ,@(loop for lambda-list-variable-ast
+                                     in lambda-list-variable-asts
+                                   for name = (lookup lambda-list-variable-ast)
+                                   collect name
+                                   collect `(list ,name)))
+                     (let ((dynamic-environment
+                             (prog1 *dynamic-environment*
+                               (setf *dynamic-environment* nil))))
+                       (declare (ignorable dynamic-environment))
+                       (let ((,continuation-variable
+                               (lambda (&rest ,temp)
+                                 (declare (ignore ,temp))
+                                 ,(pop-stack-operation client))))
+                         ,(cps-implicit-progn
+                           client form-asts continuation-variable)))))
+             ,continuation))))
 
 (defun cps-flet-and-labels (client ast continuation)
   ;; First enter all the local-function-names into the host mapping.
