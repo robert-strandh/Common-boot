@@ -75,5 +75,6 @@
    (:file "setq-ast")
    (:file "multiple-value-prog1-ast")
    (:file "function-ast")
+   (:file "special-variable-bind-ast")
    (:file "ast-to-cps")
    (:file "evaluator")))
