@@ -2,6 +2,11 @@
 
 (defun cps-function-ast
     (client lambda-list-ast form-asts continuation)
+  (let ((lambda-list-variable-asts
+          (common-boot::extract-variable-asts-in-lambda-list
+           lambda-list-ast)))
+    (loop for lambda-list-variable-ast in lambda-list-variable-asts
+          do (setf (lookup lambda-list-variable-ast) (gensym))))
   (let* ((let*-ast (make-instance 'ico:let*-ast))
          (variable-name (make-symbol "ARGUMENTS"))
          (variable-ast
