@@ -56,7 +56,6 @@
    (:file "progn-ast")
    (:file "eval-when")
    (:file "if-ast")
-   (:file "let-and-letstar-ast")
    (:file "locally-ast")
    (:file "block-ast")
    (:file "return-from-ast")
