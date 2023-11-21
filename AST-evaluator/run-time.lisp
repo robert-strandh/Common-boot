@@ -37,26 +37,6 @@
 ;;; the dynamic environment to its value.
 (defparameter *dynamic-environment* '())
 
-(defun unwind (name dynamic-environment entry-type entry-name)
-  (loop for rest on dynamic-environment
-        for entry = (first rest)
-        do (when (and (typep entry entry-type)
-                      (eq name (name entry)))
-             (if (valid-p entry)
-                 ;; FIXME: handle UNWIND-PROTECT.
-                 (progn 
-                   (loop for entry-to-invalidate in dynamic-environment
-                         until (eq entry-to-invalidate entry)
-                         do (setf (valid-p entry-to-invalidate) nil))
-                   (setf *continuation* (continuation entry))
-                   (setf *stack* (stack entry))
-                   (return))
-                 ;; For now, signal a host error.  It would be better
-                 ;; to call the target function ERROR.
-                 (error "Attempt to use an expired entry ~s~%"
-                        entry)))
-        finally (error "No valid ~a entry for ~s" entry-name name)))
-
 (defun do-return-from (name dynamic-environment)
   (loop for rest on dynamic-environment
         for entry = (first rest)
@@ -127,7 +107,24 @@
   ((%name :initarg :name :reader name)))
 
 (defun do-throw (name dynamic-environment)
-  (unwind name dynamic-environment 'catch-entry "catch"))
+  (loop for rest on dynamic-environment
+        for entry = (first rest)
+        do (when (and (typep entry 'catch-entry)
+                      (eq name (name entry)))
+             (if (valid-p entry)
+                 ;; FIXME: handle UNWIND-PROTECT.
+                 (progn 
+                   (loop for entry-to-invalidate in dynamic-environment
+                         until (eq entry-to-invalidate entry)
+                         do (setf (valid-p entry-to-invalidate) nil))
+                   (setf *continuation* (continuation entry))
+                   (setf *stack* (stack entry))
+                   (return))
+                 ;; For now, signal a host error.  It would be better
+                 ;; to call the target function ERROR.
+                 (error "Attempt to use an expired entry ~s~%"
+                        entry)))
+        finally (error "No valid catch entry for ~s" name)))
 
 (defclass unwind-protect-entry (dynamic-environment-entry)
   ())
