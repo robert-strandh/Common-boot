@@ -47,6 +47,33 @@
 ;;; the dynamic environment to its value.
 (defparameter *dynamic-environment* '())
 
+;;; Unwind the dynamic environment up to, but not including ENTRY.  If
+;;; this function was called as a result of a RETURN-FROM or a THROW,
+;;; the caller must then pop off ENTRY, whereas if this function was
+;;; called as a result of a GO, then ENTRY is kept.  ENTRY is
+;;; invalidated by this function if and only if INVALIDATE-ENTRY-P is
+;;; true.  So if this function is called as a result of a RETURN-FROM
+;;; or a THROW, then INVALIDATE-ENTRY-P is true, but if it is called
+;;; as a result of a GO, then INVALIDATE-ENTRY-P is false.
+(defun unwind (entry dynamic-environment invalidate-entry-p)
+  ;; Start by invalidating every entry before but not including ENTRY.
+  (loop for entry-to-invalidate in dynamic-environment
+        until (eq entry-to-invalidate entry)
+        do (invalidate-entry entry-to-invalidate))
+  ;; Then invalidate ENTRY if and only if INVALIDATE-ENTRY-P is true.
+  (when invalidate-entry-p
+    (invalidate-entry entry))
+  ;; Unwind the dynamic environment by executing any UNWIND-PROTECT
+  ;; that precedes ENTRY.
+  (loop for tail on dynamic-environment
+        for (maybe-unwind-protect-entry . rest) = tail
+        until (eq maybe-unwind-protect-entry entry)
+        when (typep maybe-unwind-protect-entry 'unwind-protect-entry)
+          do (funcall (closure maybe-unwind-protect-entry))
+             ;; Finally return the dynamic environment with ENTRY on
+             ;; top, so that the caller can set CONTINUATION.
+        finally (return tail)))
+
 (defun do-return-from (name dynamic-environment)
   (loop for rest on dynamic-environment
         for entry = (first rest)
