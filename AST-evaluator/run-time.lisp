@@ -87,7 +87,6 @@
         do (when (and (typep entry 'block-entry)
                       (eq name (name entry)))
              (if (valid-p entry)
-                 ;; FIXME: handle UNWIND-PROTECT.
                  (progn 
                    (unwind entry dynamic-environment t)
                    (setf *continuation* (continuation entry))
@@ -121,7 +120,6 @@
                       (member-if (lambda (e) (eq (name e) name))
                                  (tag-entries entry)))
              (if (valid-p entry)
-                 ;; FIXME: handle UNWIND-PROTECT.
                  (progn 
                    (unwind entry dynamic-environment nil)
                    (let ((tag-entry (find-if (lambda (e) (eq (name e) name))
@@ -145,11 +143,8 @@
         do (when (and (typep entry 'catch-entry)
                       (eq name (name entry)))
              (if (valid-p entry)
-                 ;; FIXME: handle UNWIND-PROTECT.
                  (progn 
-                   (loop for entry-to-invalidate in dynamic-environment
-                         until (eq entry-to-invalidate entry)
-                         do (invalidate-entry entry-to-invalidate))
+                   (unwind entry dynamic-environment t)
                    (setf *continuation* (continuation entry))
                    (setf *stack* (stack entry))
                    (return))
