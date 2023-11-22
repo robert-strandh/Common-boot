@@ -50,10 +50,7 @@
 ;;; the dynamic environment to its value.
 (defparameter *dynamic-environment* '())
 
-;;; Unwind the dynamic environment up to, but not including ENTRY.  If
-;;; this function was called as a result of a RETURN-FROM or a THROW,
-;;; the caller must then invalidate ENTRY, whereas if this function
-;;; was called as a result of a GO, then ENTRY is kept as it is.
+;;; Unwind the dynamic environment up to, but not including ENTRY.
 ;;; ENTRY is invalidated by this function if and only if
 ;;; INVALIDATE-ENTRY-P is true.  So if this function is called as a
 ;;; result of a RETURN-FROM or a THROW, then INVALIDATE-ENTRY-P should
@@ -82,10 +79,7 @@
              ;; entry in case there is a non-local control transfer in
              ;; the UNWIND-PROTECT closure.
              (let ((*dynamic-environment* rest))
-               (funcall (closure maybe-unwind-protect-entry)))
-             ;; Finally return the dynamic environment with ENTRY on
-             ;; top, so that the caller can set CONTINUATION.
-        finally (return tail)))
+               (funcall (closure maybe-unwind-protect-entry)))))
 
 (defun do-return-from (name dynamic-environment)
   (loop for rest on dynamic-environment
