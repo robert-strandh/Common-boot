@@ -57,10 +57,10 @@
                  (progn 
                    (loop for entry-to-invalidate in dynamic-environment
                          until (eq entry-to-invalidate entry)
-                         do (setf (valid-p entry-to-invalidate) nil))
+                         do (invalidate-entry entry-to-invalidate))
                    ;; for RETURN-FROM, we also want to invalidate the
                    ;; entry representing the associated BLOCK.
-                   (setf (valid-p entry) nil)
+                   (invalidate-entry entry)
                    (setf *continuation* (continuation entry))
                    (setf *stack* (stack entry))
                    (return))
@@ -96,7 +96,7 @@
                  (progn 
                    (loop for entry-to-invalidate in dynamic-environment
                          until (eq entry-to-invalidate entry)
-                         do (setf (valid-p entry-to-invalidate) nil))
+                         do (invalidate-entry entry-to-invalidate))
                    ;; Contrary to the BLOCK entry, we do not want to
                    ;; invalidate the TAGBODY-ENTRY, as it will be used
                    ;; several times.  It is invalidated after the last
@@ -126,7 +126,7 @@
                  (progn 
                    (loop for entry-to-invalidate in dynamic-environment
                          until (eq entry-to-invalidate entry)
-                         do (setf (valid-p entry-to-invalidate) nil))
+                         do (invalidate-entry entry-to-invalidate))
                    (setf *continuation* (continuation entry))
                    (setf *stack* (stack entry))
                    (return))
