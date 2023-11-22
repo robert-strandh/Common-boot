@@ -145,20 +145,17 @@
          (eq name (name entry)))))
 
 (defun do-throw (name dynamic-environment)
-  (loop for entry in dynamic-environment
-        do (when (and (typep entry 'catch-entry)
-                      (eq name (name entry)))
-             (if (valid-p entry)
-                 (progn 
-                   (unwind entry dynamic-environment t)
-                   (setf *continuation* (continuation entry))
-                   (setf *stack* (stack entry))
-                   (return))
-                 ;; For now, signal a host error.  It would be better
-                 ;; to call the target function ERROR.
-                 (error "Attempt to use an expired entry ~s~%"
-                        entry)))
-        finally (error "No valid catch entry for ~s" name)))
+  (let ((entry (find-if (catch-entry-predicate name) dynamic-environment)))
+    (cond ((null entry)
+           (error "No valid catch entry for ~s" name))
+          ((not (valid-p entry))
+           ;; For now, signal a host error.  It would be better to
+           ;; call the target function ERROR.
+           (error "Attempt to use an expired entry ~s~%" entry))
+          (t
+           (unwind entry dynamic-environment t)
+           (setf *continuation* (continuation entry))
+           (setf *stack* (stack entry))))))
 
 (defclass special-variable-entry (dynamic-environment-entry)
   ((%name
