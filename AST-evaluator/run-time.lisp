@@ -114,6 +114,12 @@
     (format stream "valid-p: ~s tag-entries ~s"
             (valid-p object) (tag-entries object))))
 
+(defun tagbody-entry-predicate (name)
+  (lambda (entry)
+    (and (typep entry 'tagbody-entry)
+      (member-if (lambda (e) (eq (name e) name))
+                 (tag-entries entry)))))
+
 (defun do-go (name dynamic-environment)
   (loop for entry in dynamic-environment
         do (when (and (typep entry 'tagbody-entry)
