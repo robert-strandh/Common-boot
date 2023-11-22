@@ -81,21 +81,23 @@
              (let ((*dynamic-environment* rest))
                (funcall (closure maybe-unwind-protect-entry)))))
 
+(defun block-entry-predicate (name)
+  (lambda (entry)
+    (and (typep entry 'block-entry)
+         (eq name (name entry)))))
+
 (defun do-return-from (name dynamic-environment)
-  (loop for entry in dynamic-environment
-        do (when (and (typep entry 'block-entry)
-                      (eq name (name entry)))
-             (if (valid-p entry)
-                 (progn 
-                   (unwind entry dynamic-environment t)
-                   (setf *continuation* (continuation entry))
-                   (setf *stack* (stack entry))
-                   (return))
-                 ;; For now, signal a host error.  It would be better
-                 ;; to call the target function ERROR.
-                 (error "Attempt to use an expired entry ~s~%"
-                        entry)))
-        finally (error "No valid BLOCK entry for ~s" name)))
+  (let ((entry (find-if (block-entry-predicate name) dynamic-environment)))
+    (cond ((null entry)
+           (error "No valid BLOCK entry for ~s" name))
+          ((not (valid-p entry))
+           ;; For now, signal a host error.  It would be better to
+           ;; call the target function ERROR.
+           (error "Attempt to use an expired entry ~s~%" entry))
+          (t 
+           (unwind entry dynamic-environment t)
+           (setf *continuation* (continuation entry))
+           (setf *stack* (stack entry))))))
 
 (defclass tag-entry (continuation-entry-mixin)
   ((%name :initarg :name :reader name)))
