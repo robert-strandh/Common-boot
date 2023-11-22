@@ -139,6 +139,11 @@
     (dynamic-environment-entry continuation-entry-mixin valid-p-mixin)
   ((%name :initarg :name :reader name)))
 
+(defun catch-entry-predicate (name)
+  (lambda (entry)
+    (and (typep entry 'catch-entry)
+         (eq name (name entry)))))
+
 (defun do-throw (name dynamic-environment)
   (loop for entry in dynamic-environment
         do (when (and (typep entry 'catch-entry)
