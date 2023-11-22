@@ -89,12 +89,7 @@
              (if (valid-p entry)
                  ;; FIXME: handle UNWIND-PROTECT.
                  (progn 
-                   (loop for entry-to-invalidate in dynamic-environment
-                         until (eq entry-to-invalidate entry)
-                         do (invalidate-entry entry-to-invalidate))
-                   ;; for RETURN-FROM, we also want to invalidate the
-                   ;; entry representing the associated BLOCK.
-                   (invalidate-entry entry)
+                   (unwind entry dynamic-environment t)
                    (setf *continuation* (continuation entry))
                    (setf *stack* (stack entry))
                    (return))
