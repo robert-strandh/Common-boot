@@ -72,7 +72,16 @@
         for (maybe-unwind-protect-entry . rest) = tail
         until (eq maybe-unwind-protect-entry entry)
         when (typep maybe-unwind-protect-entry 'unwind-protect-entry)
-          do (funcall (closure maybe-unwind-protect-entry))
+          do ;; The closure in the UNWIND-PROTECT entry is an ordinary
+             ;; function with no parameters, so it sets its private
+             ;; variable DYNAMIC-ENVIRONMENT from
+             ;; *DYNAMIC-ENVIRONMENT*.  We must therefore supply a
+             ;; value for *DYNAMIC-ENVIRONMENT*.  We must supply a
+             ;; dynamic environment that excludes the UNWIND-PROTECT
+             ;; entry in case there is a non-local control transfer in
+             ;; the UNWIND-PROTECT closure.
+             (let ((*dynamic-environment* rest))
+               (funcall (closure maybe-unwind-protect-entry)))
              ;; Finally return the dynamic environment with ENTRY on
              ;; top, so that the caller can set CONTINUATION.
         finally (return tail)))
