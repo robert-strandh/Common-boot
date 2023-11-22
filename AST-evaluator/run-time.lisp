@@ -82,8 +82,7 @@
                (funcall (closure maybe-unwind-protect-entry)))))
 
 (defun do-return-from (name dynamic-environment)
-  (loop for rest on dynamic-environment
-        for entry = (first rest)
+  (loop for entry in dynamic-environment
         do (when (and (typep entry 'block-entry)
                       (eq name (name entry)))
              (if (valid-p entry)
@@ -114,8 +113,7 @@
             (valid-p object) (tag-entries object))))
 
 (defun do-go (name dynamic-environment)
-  (loop for rest on dynamic-environment
-        for entry = (first rest)
+  (loop for entry in dynamic-environment
         do (when (and (typep entry 'tagbody-entry)
                       (member-if (lambda (e) (eq (name e) name))
                                  (tag-entries entry)))
@@ -138,8 +136,7 @@
   ((%name :initarg :name :reader name)))
 
 (defun do-throw (name dynamic-environment)
-  (loop for rest on dynamic-environment
-        for entry = (first rest)
+  (loop for entry in dynamic-environment
         do (when (and (typep entry 'catch-entry)
                       (eq name (name entry)))
              (if (valid-p entry)
