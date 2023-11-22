@@ -121,23 +121,19 @@
                  (tag-entries entry)))))
 
 (defun do-go (name dynamic-environment)
-  (loop for entry in dynamic-environment
-        do (when (and (typep entry 'tagbody-entry)
-                      (member-if (lambda (e) (eq (name e) name))
-                                 (tag-entries entry)))
-             (if (valid-p entry)
-                 (progn 
-                   (unwind entry dynamic-environment nil)
-                   (let ((tag-entry (find-if (lambda (e) (eq (name e) name))
-                                             (tag-entries entry))))
-                     (setf *continuation* (continuation tag-entry)))
-                   (setf *stack* (stack entry))
-                   (return))
-                 ;; For now, signal a host error.  It would be better
-                 ;; to call the target function ERROR.
-                 (error "Attempt to use an expired entry ~s~%"
-                        entry)))
-        finally (error "No valid TAG entry for ~s" name)))
+  (let ((entry (find-if (tagbody-entry-predicate name) dynamic-environment)))
+    (cond ((null entry)
+           (error "No valid TAG entry for ~s" name))
+          ((not (valid-p entry))
+           ;; For now, signal a host error.  It would be better to
+           ;; call the target function ERROR.
+           (error "Attempt to use an expired entry ~s~%" entry))
+          (t
+           (unwind entry dynamic-environment nil)
+           (let ((tag-entry (find-if (lambda (e) (eq (name e) name))
+                                     (tag-entries entry))))
+             (setf *continuation* (continuation tag-entry)))
+           (setf *stack* (stack entry))))))
 
 (defclass catch-entry
     (dynamic-environment-entry continuation-entry-mixin valid-p-mixin)
