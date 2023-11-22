@@ -41,6 +41,9 @@
     (format stream "name: ~s valid-p: ~s"
             (name object) (valid-p object))))
 
+(defclass unwind-protect-entry (dynamic-environment-entry)
+  ((%closure :initarg :closure :reader closure)))
+
 ;;; This variable is used only to pass the dynamic environment over a
 ;;; function call.  The caller assigns the current dynamic environment
 ;;; to it, and the callee initializes its own lexical variable holding
@@ -162,9 +165,6 @@
                  (error "Attempt to use an expired entry ~s~%"
                         entry)))
         finally (error "No valid catch entry for ~s" name)))
-
-(defclass unwind-protect-entry (dynamic-environment-entry)
-  ())
 
 (defclass special-variable-entry (dynamic-environment-entry)
   ((%name
