@@ -17,6 +17,16 @@
     :initform t
     :accessor valid-p)))
 
+(defgeneric invalidate-entry (entry))
+
+;;; The default method is invoked when ENTRY is not an instance of
+;;; VALID-P-MIXIN.
+(defmethod invalidate-entry (entry)
+  nil)
+
+(defmethod invalidate-entry ((entry valid-p-mixin))
+  (setf (valid-p entry) nil))
+
 (defclass continuation-entry-mixin ()
   ((%continuation
     :initarg :continuation
