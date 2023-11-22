@@ -123,13 +123,7 @@
              (if (valid-p entry)
                  ;; FIXME: handle UNWIND-PROTECT.
                  (progn 
-                   (loop for entry-to-invalidate in dynamic-environment
-                         until (eq entry-to-invalidate entry)
-                         do (invalidate-entry entry-to-invalidate))
-                   ;; Contrary to the BLOCK entry, we do not want to
-                   ;; invalidate the TAGBODY-ENTRY, as it will be used
-                   ;; several times.  It is invalidated after the last
-                   ;; form has been executed.
+                   (unwind entry dynamic-environment nil)
                    (let ((tag-entry (find-if (lambda (e) (eq (name e) name))
                                              (tag-entries entry))))
                      (setf *continuation* (continuation tag-entry)))
