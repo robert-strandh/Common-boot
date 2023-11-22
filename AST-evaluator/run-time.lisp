@@ -52,12 +52,13 @@
 
 ;;; Unwind the dynamic environment up to, but not including ENTRY.  If
 ;;; this function was called as a result of a RETURN-FROM or a THROW,
-;;; the caller must then pop off ENTRY, whereas if this function was
-;;; called as a result of a GO, then ENTRY is kept.  ENTRY is
-;;; invalidated by this function if and only if INVALIDATE-ENTRY-P is
-;;; true.  So if this function is called as a result of a RETURN-FROM
-;;; or a THROW, then INVALIDATE-ENTRY-P is true, but if it is called
-;;; as a result of a GO, then INVALIDATE-ENTRY-P is false.
+;;; the caller must then invalidate ENTRY, whereas if this function
+;;; was called as a result of a GO, then ENTRY is kept as it is.
+;;; ENTRY is invalidated by this function if and only if
+;;; INVALIDATE-ENTRY-P is true.  So if this function is called as a
+;;; result of a RETURN-FROM or a THROW, then INVALIDATE-ENTRY-P should
+;;; be true, but if it is called as a result of a GO, then
+;;; INVALIDATE-ENTRY-P should be false.
 (defun unwind (entry dynamic-environment invalidate-entry-p)
   ;; Start by invalidating every entry before but not including ENTRY.
   (loop for entry-to-invalidate in dynamic-environment
