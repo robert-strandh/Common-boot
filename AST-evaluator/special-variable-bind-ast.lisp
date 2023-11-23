@@ -1,6 +1,6 @@
 (cl:in-package #:common-boot-ast-evaluator)
 
-(defmethod cps (client (ast ico:special-variable-bind-ast) continuation)
+(defmethod cps (client environment (ast ico:special-variable-bind-ast) continuation)
   (let ((variable-name-ast (ico:variable-name-ast ast))
         (form-ast (ico:form-ast ast))
         (form-asts (ico:form-asts ast))
@@ -14,6 +14,6 @@
                          :name ,(ico:name variable-name-ast)
                          :value ,variable-name)
                        dynamic-environment)
-                 ,(cps-implicit-progn client form-asts continuation)))))
-       ,(cps client form-ast continuation-variable))))
+                 ,(cps-implicit-progn client environment form-asts continuation)))))
+       ,(cps client environment form-ast continuation-variable))))
 

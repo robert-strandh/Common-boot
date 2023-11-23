@@ -1,7 +1,7 @@
 (cl:in-package #:common-boot-ast-evaluator)
 
 (defun cps-function-ast
-    (client lambda-list-ast form-asts continuation)
+    (client environment lambda-list-ast form-asts continuation)
   (let ((lambda-list-variable-asts
           (iat:extract-variable-asts-in-lambda-list
            lambda-list-ast)))
@@ -28,10 +28,10 @@
                                  (declare (ignore ,temp))
                                  ,(pop-stack-operation client))))
                          ,(cps-implicit-progn
-                           client form-asts continuation-variable)))))
+                           client environment form-asts continuation-variable)))))
              ,continuation))))
 
-(defun cps-flet-and-labels (client ast continuation)
+(defun cps-flet-and-labels (client environment ast continuation)
   ;; First enter all the local-function-names into the host mapping.
   (loop for binding-ast in (ico:binding-asts ast)
         for name-ast = (ico:name-ast binding-ast)
@@ -39,7 +39,7 @@
                  (make-symbol (symbol-name (ico:name name-ast)))))
   ;; Next, compute the action of the body forms as an implicit PROGN.
   (let ((action (cps-implicit-progn
-                 client (ico:form-asts ast) continuation)))
+                 client environment (ico:form-asts ast) continuation)))
     ;; Finally compute-the actions of the binding forms.
     (loop for local-function-ast in (reverse (ico:binding-asts ast))
           for function-name-ast = (ico:name-ast local-function-ast)
@@ -48,7 +48,7 @@
           for form-asts = (ico:form-asts local-function-ast)
           do (setf action
                    (cps-function-ast
-                    client
+                    client environment
                     lambda-list-ast
                     form-asts
                     `(lambda (&rest ,function-name)
@@ -57,8 +57,8 @@
                        ,action))))
     action))
 
-(defmethod cps (client (ast ico:flet-ast) continuation)
-  (cps-flet-and-labels client ast continuation))
+(defmethod cps (client environment (ast ico:flet-ast) continuation)
+  (cps-flet-and-labels client environment ast continuation))
 
-(defmethod cps (client (ast ico:labels-ast) continuation)
-  (cps-flet-and-labels client ast continuation))
+(defmethod cps (client environment (ast ico:labels-ast) continuation)
+  (cps-flet-and-labels client environment ast continuation))

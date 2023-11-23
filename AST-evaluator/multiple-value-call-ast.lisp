@@ -1,7 +1,7 @@
 (cl:in-package #:common-boot-ast-evaluator)
 
 (defmethod cps
-    (client (ast ico:multiple-value-call-ast) continuation)
+    (client environment (ast ico:multiple-value-call-ast) continuation)
   (let* ((values-temp (make-symbol "VALUES"))
          (function-temp (make-symbol "FUNCTION"))
          (arguments-temp (make-symbol "ARGUMENTS"))
@@ -23,11 +23,11 @@
                               (setf ,arguments-temp
                                     (append ,arguments-temp ,values-temp))
                               ,action)))
-                      ,(cps client form-ast continuation-variable))))
+                      ,(cps client environment form-ast continuation-variable))))
     `(let ((,continuation-variable
              (lambda (&rest ,function-temp)
                (setf ,function-temp (car ,function-temp))
                (let ((,arguments-temp '()))
                  ,action))))
-       ,(cps client (ico:function-ast ast) continuation-variable))))
+       ,(cps client environment (ico:function-ast ast) continuation-variable))))
     

@@ -1,6 +1,6 @@
 (cl:in-package #:common-boot-ast-evaluator)
 
-(defmethod cps (client (ast ico:catch-ast) continuation)
+(defmethod cps (client environment (ast ico:catch-ast) continuation)
   (let ((temp (gensym))
         (continuation-variable (gensym "C-")))
     `(let ((,continuation-variable
@@ -13,5 +13,5 @@
                          :stack *stack*)
                        dynamic-environment)
                  ,(cps-implicit-progn
-                   client (ico:form-asts ast) continuation)))))
-       ,(cps client (ico:tag-ast ast) continuation-variable))))
+                   client environment (ico:form-asts ast) continuation)))))
+       ,(cps client environment (ico:tag-ast ast) continuation-variable))))

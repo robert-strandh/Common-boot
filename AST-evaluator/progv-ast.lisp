@@ -1,6 +1,6 @@
 (cl:in-package #:common-boot-ast-evaluator)
 
-(defmethod cps (client (ast ico:progv-ast) continuation)
+(defmethod cps (client environment (ast ico:progv-ast) continuation)
   (let ((symbols-temp (make-symbol "SYMBOLS"))
         (values-temp (make-symbol "VALUES"))
         (continuation-variable (gensym "C-")))
@@ -34,13 +34,13 @@
                                  :name symbol)
                                  dynamic-environment)))
                 ,(cps-implicit-progn
-                  client
+                  client environment
                   (ico:form-asts ast)
                   continuation)))
             (,continuation-variable
               (lambda (&rest temp)
                 (setq ,symbols-temp (car temp))
-                ,(cps client
+                ,(cps client environment
                       (ico:values-ast ast)
                       continuation-variable))))
-       ,(cps client (ico:symbols-ast ast) continuation-variable))))
+       ,(cps client environment (ico:symbols-ast ast) continuation-variable))))

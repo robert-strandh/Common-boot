@@ -1,6 +1,6 @@
 (cl:in-package #:common-boot-ast-evaluator)
 
-(defmethod cps (client (ast ico:multiple-value-prog1-ast) continuation)
+(defmethod cps (client environment (ast ico:multiple-value-prog1-ast) continuation)
   (let ((continuation-variable (gensym "C-"))
         (values-variable (gensym "V-")))
     `(let* ((,values-variable nil)
@@ -12,7 +12,7 @@
               (lambda (&rest values)
                 (setq ,values-variable values)
                 ,(cps-implicit-progn
-                  client
+                  client environment
                   (ico:form-asts ast)
                   continuation-variable))))
-       ,(cps client (ico:values-ast ast) continuation-variable))))
+       ,(cps client environment (ico:values-ast ast) continuation-variable))))

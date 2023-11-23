@@ -1,7 +1,7 @@
 (cl:in-package #:common-boot-ast-evaluator)
 
 (defun setq-iterations
-    (client tempc tempb tempa value-asts variable-reference-asts)
+    (client environment tempc tempb tempa value-asts variable-reference-asts)
   (loop for value-ast in value-asts
         for variable-reference-ast in variable-reference-asts
         collect
@@ -28,9 +28,9 @@
         collect
         `(,tempc (lambda (&rest ,tempb)
                    (declare (ignore ,tempb))
-                   ,(cps client value-ast tempc)))))
+                   ,(cps client environment value-ast tempc)))))
 
-(defmethod cps (client (ast ico:setq-ast) continuation)
+(defmethod cps (client environment (ast ico:setq-ast) continuation)
   (let ((value-asts (reverse (ico:value-asts ast)))
         (variable-reference-asts (reverse (ico:variable-name-asts ast)))
         (tempc (make-symbol "C"))
@@ -38,7 +38,7 @@
         (tempa (make-symbol "A")))
     `(let* ((,tempc ,continuation)
             ,@(setq-iterations
-                client tempc tempb tempa value-asts variable-reference-asts))
+                client environment tempc tempb tempa value-asts variable-reference-asts))
        (step (list nil) ,tempc))))
 
         

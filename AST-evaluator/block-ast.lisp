@@ -1,6 +1,6 @@
 (cl:in-package #:common-boot-ast-evaluator)
 
-(defmethod cps (client (ast ico:block-ast) continuation)
+(defmethod cps (client environment (ast ico:block-ast) continuation)
   (let ((name (gensym "BLOCK"))
         (temp (gensym))
         (continuation-variable (gensym "C-")))
@@ -15,4 +15,4 @@
                (lambda (&rest ,temp)
                  (pop-stack)
                  ,continuation)))
-         ,(cps-implicit-progn client (ico:form-asts ast) continuation-variable)))))
+         ,(cps-implicit-progn client environment (ico:form-asts ast) continuation-variable)))))

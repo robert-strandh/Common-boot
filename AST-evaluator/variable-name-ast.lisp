@@ -1,7 +1,7 @@
 (cl:in-package #:common-boot-ast-evaluator)
 
 (defmethod cps
-    (client (ast ico:variable-reference-ast) continuation)
+    (client environment (ast ico:variable-reference-ast) continuation)
   (let ((definition-ast (ico:variable-definition-ast ast)))
     `(step
       ;; The LIST is so that we the STEP can use APPLY to apply the
@@ -13,7 +13,7 @@
       ,continuation)))
 
 (defmethod cps
-    (client (ast ico:special-variable-reference-ast) continuation)
+    (client environment (ast ico:special-variable-reference-ast) continuation)
   `(step (list (symbol-value
                 client
                 ',(ico:name ast)

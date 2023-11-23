@@ -21,7 +21,7 @@
                                         :continuation ,segment-name))))))
      (push entry dynamic-environment)))
 
-(defmethod cps (client (ast ico:tagbody-ast) continuation)
+(defmethod cps (client environment (ast ico:tagbody-ast) continuation)
   (when (null (ico:segment-asts ast))
     (return-from cps
       `(step '(nil) ,continuation)))
@@ -42,7 +42,7 @@
                                      (list last-continuation-name)))
                   collect `(lambda (&rest ,ignore)
                              (declare (ignore ,ignore))
-                             ,(cps client
+                             ,(cps client environment
                                    segment-ast
                                    continuation-name)))))
       `(let ((,last-continuation-name ,last-continuation))

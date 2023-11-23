@@ -1,6 +1,6 @@
 (cl:in-package #:common-boot-ast-evaluator)
 
-(defun cps-implicit-progn (client form-asts continuation)
+(defun cps-implicit-progn (client environment form-asts continuation)
   (let ((asts (reverse form-asts)))
     (when (null asts)
       (setf asts
@@ -11,10 +11,10 @@
                       for ignore = (gensym "IGNORE")
                       collect `(,name (lambda (&rest ,ignore)
                                         (declare (ignore ,ignore))
-                                        ,(cps client
+                                        ,(cps client environment
                                               form-ast
                                               name)))))
          (step '() ,name)))))
 
-(defmethod cps (client (ast ico:progn-ast) continuation)
-  (cps-implicit-progn client (ico:form-asts ast) continuation))
+(defmethod cps (client environment (ast ico:progn-ast) continuation)
+  (cps-implicit-progn client environment (ico:form-asts ast) continuation))

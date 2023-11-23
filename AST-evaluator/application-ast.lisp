@@ -1,6 +1,6 @@
 (cl:in-package #:common-boot-ast-evaluator)
 
-(defun cps-application-optimized (client ast continuation)
+(defun cps-application-optimized (client environment ast continuation)
   (let* ((argument-asts (ico:argument-asts ast))
          (function-variable (gensym "FUN-"))
          (argument-variables
@@ -39,11 +39,11 @@
          (setq *dynamic-environment* dynamic-environment)
          (setq *continuation* ,continuation)
          (push-stack)
-         ,(cps client
+         ,(cps client environment
                (ico:function-name-ast ast)
                name)))))
   
-(defun cps-application-general (client ast continuation)
+(defun cps-application-general (client environment ast continuation)
   (let* ((argument-asts (ico:argument-asts ast))
          (function-variable (gensym "FUN-"))
          (argument-variables
@@ -74,7 +74,7 @@
                       unless (typep argument-ast 'ico:variable-reference-ast)
                         collect `(,name (lambda (&rest ignore)
                                           (declare (ignore ignore))
-                                          ,(cps client
+                                          ,(cps client environment
                                                 argument-ast
                                                 name))))
               (,name (lambda (&rest var)
@@ -83,13 +83,13 @@
          (setq *dynamic-environment* dynamic-environment)
          (setq *continuation* ,continuation)
          (push-stack)
-         ,(cps client
+         ,(cps client environment
                (ico:function-name-ast ast)
                name)))))
 
-(defmethod cps (client (ast ico:application-ast) continuation)
+(defmethod cps (client environment (ast ico:application-ast) continuation)
   (if (every (lambda (ast)
                (typep ast '(or ico:literal-ast ico:variable-reference-ast )))
              (ico:argument-asts ast))
-      (cps-application-optimized client ast continuation)
-      (cps-application-general client ast continuation)))
+      (cps-application-optimized client environment ast continuation)
+      (cps-application-general client environment ast continuation)))
