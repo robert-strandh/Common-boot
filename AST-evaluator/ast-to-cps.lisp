@@ -5,7 +5,7 @@
          (*host-names* (make-hash-table :test #'eq))
          (exit (gensym "EXIT"))
          (global-environment (trucler:global-environment client environment)))
-    `(lambda (client environment)
+    `(lambda (client)
        (declare (ignorable client environment))
        (let ((,exit (lambda (&rest ,variable)
                       (declare (ignore ,variable))
