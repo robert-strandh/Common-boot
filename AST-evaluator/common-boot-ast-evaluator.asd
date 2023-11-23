@@ -49,7 +49,6 @@
    (:file "run-time")
    (:file "utilities")
    (:file "host-lambda-list-from-lambda-list-ast")
-   (:file "convert")
    (:file "literal-ast")
    (:file "variable-name-ast")
    (:file "function-name-ast")
