@@ -9,7 +9,6 @@
             `(,tempc (lambda (&rest ,tempa)
                        (setq ,tempa (car ,tempa))
                        (setf (symbol-value
-                              client
                               ',(ico:name variable-reference-ast)
                               (clostrum-sys:variable-cell
                                client

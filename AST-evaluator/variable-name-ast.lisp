@@ -15,7 +15,6 @@
 (defmethod cps
     (client environment (ast ico:special-variable-reference-ast) continuation)
   `(step (list (symbol-value
-                client
                 ',(ico:name ast)
                 ',(clostrum-sys:variable-cell
                    client environment (ico:name ast))
