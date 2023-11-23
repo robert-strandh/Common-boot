@@ -10,7 +10,8 @@
             (,continuation-variable
               (lambda (&rest ,form)
                 (declare (ignore ,form))
-                (do-throw ,tag-variable dynamic-environment)))
+                (let ((entry (do-throw ,tag-variable dynamic-environment)))
+                  (setf continuation (continuation entry)))))
             (,continuation-variable
               (lambda (&rest ,tag)
                 (setq ,tag-variable (car ,tag))

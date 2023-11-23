@@ -25,18 +25,7 @@
   `(let* ((cps-entry-point (lambda ,lambda-list ,@body))
           (result (make-instance 'cps-function
                     :cps-entry-point cps-entry-point)))
-     (closer-mop:set-funcallable-instance-function
-      result
-      (lambda (&rest arguments)
-        (block nil
-          (setq *dynamic-environment* '())
-          (setq *continuation*
-                (lambda (&rest arguments)
-                  (return (apply #'values arguments))))
-          (push-stack)
-          (setq *continuation* cps-entry-point)
-          (setq *arguments* arguments)
-          (loop (evaluator-step)))))
+     (closer-mop:set-funcallable-instance-function result cps-entry-point)
      result))
 
 (defclass continuation (closer-mop:funcallable-standard-object)

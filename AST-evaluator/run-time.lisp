@@ -1,16 +1,7 @@
 (cl:in-package #:common-boot-ast-evaluator)
 
-(defclass stack-frame ()
-  ((%continuation
-    :initarg :continuation
-    :reader continuation)))
-
-(defparameter *continuation* nil)
-
-(defparameter *stack* '())
-
 (defclass dynamic-environment-entry ()
-  ((%stack :initarg :stack :reader stack)))
+  ())
 
 (defclass valid-p-mixin ()
   ((%valid-p
@@ -96,8 +87,7 @@
            (error "Attempt to use an expired entry ~s~%" entry))
           (t 
            (unwind entry dynamic-environment t)
-           (setf *continuation* (continuation entry))
-           (setf *stack* (stack entry))))))
+           entry))))
 
 (defclass tag-entry (continuation-entry-mixin)
   ((%name :initarg :name :reader name)))
@@ -130,10 +120,8 @@
            (error "Attempt to use an expired entry ~s~%" entry))
           (t
            (unwind entry dynamic-environment nil)
-           (let ((tag-entry (find-if (lambda (e) (eq (name e) name))
-                                     (tag-entries entry))))
-             (setf *continuation* (continuation tag-entry)))
-           (setf *stack* (stack entry))))))
+           (find-if (lambda (e) (eq (name e) name))
+                    (tag-entries entry))))))
 
 (defclass catch-entry
     (dynamic-environment-entry continuation-entry-mixin valid-p-mixin)
@@ -154,8 +142,7 @@
            (error "Attempt to use an expired entry ~s~%" entry))
           (t
            (unwind entry dynamic-environment t)
-           (setf *continuation* (continuation entry))
-           (setf *stack* (stack entry))))))
+           entry))))
 
 (defclass special-variable-entry (dynamic-environment-entry)
   ((%name
@@ -165,28 +152,9 @@
     :initarg :value
     :accessor value)))
 
-(defparameter *arguments* nil)
-
-(defun step (arguments continuation)
-  (setf *arguments* arguments
-        *continuation* continuation))
-
-(defun push-stack ()
-  (push (make-instance 'stack-frame
-          :continuation *continuation*)
-        *stack*))
-
-(defun pop-stack ()
-  (let ((frame (pop *stack*)))
-    (setf *continuation* (continuation frame))))
-
-(defun push-stack-operation (client)
-  (declare (ignore client))
-  `(push-stack))
-
-(defun pop-stack-operation (client)
-  (declare (ignore client))
-  `(pop-stack))
+(defmacro step (arguments continuation)
+  `(setf arguments ,arguments
+        continuation ,continuation))
 
 (defun symbol-value (name cell dynamic-environment)
   (loop for entry in dynamic-environment
@@ -205,10 +173,3 @@
                       (eq name (name entry)))
              (setf (value entry) value))
         finally (return (setf (car cell) value))))
-
-(defun call-function (function arguments)
-  (if (typep function 'cps-function)
-      (step arguments function)
-      (progn (setf *arguments*
-                   (multiple-value-list (apply function arguments)))
-             (pop-stack))))

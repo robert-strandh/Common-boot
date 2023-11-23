@@ -8,11 +8,10 @@
     `(let ((dynamic-environment dynamic-environment))
        (push (make-instance 'block-entry
                :continuation ,continuation
-               :stack *stack*
                :name ',name)
              dynamic-environment)
        (let ((,continuation-variable
                (lambda (&rest ,temp)
-                 (pop-stack)
-                 ,continuation)))
-         ,(cps-implicit-progn client environment (ico:form-asts ast) continuation-variable)))))
+                 (setf continuation ,continuation))))
+         ,(cps-implicit-progn
+           client environment (ico:form-asts ast) continuation-variable)))))

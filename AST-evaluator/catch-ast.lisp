@@ -9,8 +9,7 @@
                (let ((dynamic-environment dynamic-environment))
                  (push (make-instance 'catch-entry
                          :name ,temp
-                         :continuation ,continuation
-                         :stack *stack*)
+                         :continuation ,continuation)
                        dynamic-environment)
                  ,(cps-implicit-progn
                    client environment (ico:form-asts ast) continuation)))))

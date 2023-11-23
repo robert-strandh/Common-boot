@@ -10,25 +10,34 @@
     (let* ((host-lambda-list
              (host-lambda-list-from-lambda-list-ast lambda-list-ast))
            (temp (make-symbol "TEMP"))
-           (continuation-variable (gensym "C-")))
+           (block-variable (gensym))
+           (exit (gensym "C-")))
       `(step (list (xlambda ,host-lambda-list
-                     ;; We need to wrap each lambda-list variable in
-                     ;; LIST because of assignment conversion.
-                     (setq ,@(loop for lambda-list-variable-ast
-                                     in lambda-list-variable-asts
-                                   for name = (lookup lambda-list-variable-ast)
-                                   collect name
-                                   collect `(list ,name)))
-                     (let ((dynamic-environment
-                             (prog1 *dynamic-environment*
-                               (setf *dynamic-environment* nil))))
-                       (declare (ignorable dynamic-environment))
-                       (let ((,continuation-variable
-                               (lambda (&rest ,temp)
-                                 (declare (ignore ,temp))
-                                 ,(pop-stack-operation client))))
-                         ,(cps-implicit-progn
-                           client environment form-asts continuation-variable)))))
+                     (block ,block-variable
+                       ;; We need to wrap each lambda-list variable in
+                       ;; LIST because of assignment conversion.
+                       (setq ,@(loop for lambda-list-variable-ast
+                                       in lambda-list-variable-asts
+                                     for name = (lookup lambda-list-variable-ast)
+                                     collect name
+                                     collect `(list ,name)))
+                       (let ((dynamic-environment
+                               (prog1 *dynamic-environment*
+                                 (setf *dynamic-environment* nil)))
+                             continuation
+                             arguments)
+                         (declare (ignorable dynamic-environment))
+                         (let ((,exit
+                                 (lambda (&rest ,temp)
+                                   (declare (ignore ,temp))
+                                   (return-from ,block-variable
+                                     (apply #'values arguments)))))))
+                       (setf continuation
+                             (lambda ()
+                               ,(cps-implicit-progn
+                                 client environment form-asts exit))
+                             arguments '())
+                       (loop (apply continuation arguments)))))
              ,continuation))))
 
 (defun cps-flet-and-labels (client environment ast continuation)

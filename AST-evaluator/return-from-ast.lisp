@@ -9,7 +9,8 @@
     `(let ((,continuation-variable
              (lambda (&rest ,temp)
                (declare (ignore ,temp))
-               (do-return-from ',name dynamic-environment))))
+               (let ((entry (do-return-from ',name dynamic-environment)))
+                 (setf continuation (continuation entry))))))
        ,(cps client environment
              (if (null form-ast)
                  (make-instance 'ico:literal-ast :literal nil)

@@ -10,7 +10,6 @@
 
 (defun push-tagbody-entry-form (segment-asts segment-names)
   `(let ((entry (make-instance 'tagbody-entry
-                  :stack *stack*
                   :tag-entries
                   (list 
                    ,@(loop for segment-ast in segment-asts
