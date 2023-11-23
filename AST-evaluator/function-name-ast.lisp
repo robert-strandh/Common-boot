@@ -10,8 +10,6 @@
     (client environment
      (ast ico:global-function-name-reference-ast)
      continuation)
-  `(step (list (clostrum:fdefinition
-                client
-                (trucler:global-environment client environment)
-                ',(ico:name ast)))
+  `(step (list (car ',(clostrum-sys:operator-cell
+                       client environment (ico:name ast))))
          ,continuation))
