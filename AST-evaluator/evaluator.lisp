@@ -8,15 +8,13 @@
   *arguments*)
 
 (defun simplify-ast (ast)
-  (let* ((ast (iat:let-to-labels ast))
-         (ast (iat:let*-to-labels ast))
-         (ast (iat:lexify-lambda-list ast))
-         (ast (iat:split-let-or-let* ast)))
+  (let* ((ast (iat:lexify-lambda-list ast))
+         (ast (iat:split-let-or-let* ast))
+         (ast (iat:let-to-labels ast)))
     ast))
 
 (defun eval-ast (client ast environment)
   (let* ((transformed-ast (simplify-ast ast))
-         (global-environment (trucler:global-environment client environment))
          (cps (ast-to-cps client transformed-ast environment))
          (initial-continuation
            (let (#+sbcl(sb-ext:*evaluator-mode* :interpret))
@@ -27,5 +25,5 @@
             (return-from eval-ast (apply #'values arguments))))
     (push-stack)
     (setq *continuation* initial-continuation)
-    (setq *arguments* (list client global-environment))
+    (setq *arguments* (list client))
     (loop (evaluator-step))))
