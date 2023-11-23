@@ -25,5 +25,5 @@
             (return-from eval-ast (apply #'values arguments))))
     (push-stack)
     (setq *continuation* initial-continuation)
-    (setq *arguments* (list client))
+    (setq *arguments* '())
     (loop (evaluator-step))))
