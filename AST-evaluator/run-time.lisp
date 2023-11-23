@@ -188,24 +188,23 @@
   (declare (ignore client))
   `(pop-stack))
 
-(defun symbol-value (client name cell dynamic-environment)
+(defun symbol-value (name cell dynamic-environment)
   (loop for entry in dynamic-environment
         do (when (and (typep entry 'special-variable-entry)
                       (eq name (name entry)))
              (if (slot-boundp entry '%value)
                  (return (value entry))
                  (error "unbound variable ~s" name)))
-        finally (if (clostrum-sys:variable-cell-boundp client cell)
-                    (return (clostrum-sys:variable-cell-value client cell))
-                    (error "unbound variable ~s" name))))
+        finally (if (eq (car cell) (cdr cell))
+                    (error "unbound variable ~s" name)
+                    (return (car cell)))))
 
-(defun (setf symbol-value) (value client name cell dynamic-environment)
+(defun (setf symbol-value) (value name cell dynamic-environment)
   (loop for entry in dynamic-environment
         do (when (and (typep entry 'special-variable-entry)
                       (eq name (name entry)))
              (setf (value entry) value))
-        finally (return (setf (clostrum-sys:variable-cell-value client cell)
-                              value))))
+        finally (return (setf (car cell) value))))
 
 (defun call-function (function arguments)
   (if (typep function 'cps-function)
