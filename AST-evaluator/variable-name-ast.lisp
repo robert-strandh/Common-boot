@@ -17,7 +17,7 @@
   `(step (list (symbol-value
                 client
                 ',(ico:name ast)
-                (clostrum-sys:variable-cell
-                 client environment ',(ico:name ast))
+                ',(clostrum-sys:variable-cell
+                   client environment (ico:name ast))
                 dynamic-environment))
          ,continuation))
