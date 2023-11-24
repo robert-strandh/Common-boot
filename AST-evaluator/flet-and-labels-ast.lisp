@@ -21,22 +21,43 @@
                                      for name = (lookup lambda-list-variable-ast)
                                      collect name
                                      collect `(list ,name)))
-                       (let ((dynamic-environment
+                       (let ((;; The dynamic environment is
+                              ;; transmitted across function calls in
+                              ;; the host special variable
+                              ;; *DYNAMIC-ENVIRONMENT*.  The host
+                              ;; variable DYNAMIC-ENVIRONMENT is
+                              ;; referred to by CPS-translated code
+                              ;; for access to the target dynamic
+                              ;; environment.
+                              dynamic-environment
                                (prog1 *dynamic-environment*
                                  (setf *dynamic-environment* nil)))
+                             (;; The CPS translation of FORM* is done
+                              ;; in this continuation.  So when the
+                              ;; evaluation of FORM* finishes
+                              ;; normally, the values produced are
+                              ;; passed to this continuation.
+                              ,exit
+                               (lambda (&rest ,temp)
+                                 (return-from ,block-variable
+                                   (apply #'values ,temp))))
+                             ;; The function-wide variable used by
+                             ;; CPS-translated code to hold the
+                             ;; current continuation.  We dont
+                             ;; initialize it, because what it is
+                             ;; initialized to contains references to
+                             ;; it, so we use SETF leter on instead.
                              continuation
+                             ;; The function-wide variable used by
+                             ;; CPS-translated code to hold arguments
+                             ;; to transmit to CONTINUATION.
                              arguments)
                          (declare (ignorable dynamic-environment))
-                         (let ((,exit
-                                 (lambda (&rest ,temp)
-                                   (declare (ignore ,temp))
-                                   (return-from ,block-variable
-                                     (apply #'values arguments)))))
-                           (setf continuation
-                                 (lambda ()
-                                   ,(cps-implicit-progn
-                                     client environment form-asts exit))
-                                 arguments '()))
+                         (setf continuation
+                               (lambda ()
+                                 ,(cps-implicit-progn
+                                   client environment form-asts exit))
+                               arguments '())
                          (trampoline-loop)))))
              ,continuation))))
 
