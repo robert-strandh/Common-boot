@@ -12,12 +12,16 @@
                continuation
                arguments)
            (declare (ignorable dynamic-environment))
-           (let ((,exit (lambda (&rest ,variable)
-                          (declare (ignore ,variable))
-                          (return-from ,block-variable
-                            (apply #'values arguments)))))
-             (setf continuation
-                   (lambda ()
-                     ,(cps client global-environment ast exit))
-                   arguments '())
+           (let ((,exit (make-continuation
+                         (lambda (&rest ,variable)
+                           (declare (ignore ,variable))
+                           (return-from ,block-variable
+                             (apply #'values arguments)))
+                         :origin ',(ico:origin ast))))
+             (step '()
+                   (make-continuation
+                    (lambda ()
+                      ,(cps client global-environment ast exit))
+                    :origin ',(ico:origin ast)
+                    :next ,exit))
              (trampoline-loop)))))))
