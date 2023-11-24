@@ -181,3 +181,7 @@
     (format *debug-io* "Break at: ~s~%" origin)
     (finish-output *debug-io*)
     (read *debug-io*)))
+
+(defmethod cps :around (client environment ast continuation)
+  `(progn (breakpoint ',(ico:origin ast))
+          ,(call-next-method)))
