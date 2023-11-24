@@ -20,4 +20,4 @@
                    (lambda ()
                      ,(cps client global-environment ast exit))
                    arguments '())
-             (loop (apply continuation arguments))))))))
+             (trampoline-loop)))))))
