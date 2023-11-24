@@ -9,12 +9,15 @@
          (name (gensym "C-")))
     `(let ,(cons function-variable argument-variables)
        (let* ((,name
-                (lambda (&rest ignore)
-                  (declare (ignore ignore))
-                  (step (multiple-value-list
-                         (apply ,function-variable
-                                (list ,@argument-variables)))
-                        ,continuation)))
+                (make-continuation
+                 (lambda (&rest ignore)
+                   (declare (ignore ignore))
+                   (step (multiple-value-list
+                          (apply ,function-variable
+                                 (list ,@argument-variables)))
+                         ,continuation))
+                 :origin ',(ico:origin ast)
+                 :next ,continuation))
               ,@(loop for argument-ast in (reverse argument-asts)
                       for argument-variable in (reverse argument-variables)
                       when (typep argument-ast 'ico:variable-reference-ast)
@@ -22,24 +25,35 @@
                         (let* ((definition-ast
                                  (ico:variable-definition-ast argument-ast))
                                (host-variable (lookup definition-ast)))
-                          `(,name (lambda (&rest ignore)
-                                    (declare (ignore ignore))
-                                    (setq ,argument-variable
-                                          (car ,host-variable))
-                                    (step nil ,name))))
+                          `(,name (make-continuation 
+                                   (lambda (&rest ignore)
+                                     (declare (ignore ignore))
+                                     (setq ,argument-variable
+                                           (car ,host-variable))
+                                     (step nil ,name))
+                                   :origin ',(ico:origin argument-ast))))
                       unless (typep argument-ast 'ico:variable-reference-ast)
-                        collect `(,name (lambda (&rest var)
-                                          (setq ,argument-variable (car var))
-                                          (step nil ,name)))
+                        collect `(,name (make-continuation
+                                         (lambda (&rest var)
+                                           (setq ,argument-variable (car var))
+                                           (step nil ,name))
+                                         :origin ',(ico:origin argument-ast)
+                                         :next ,name))
                       unless (typep argument-ast 'ico:variable-reference-ast)
-                        collect `(,name (lambda (&rest ignore)
-                                          (declare (ignore ignore))
-                                          ,(cps client environment
-                                                argument-ast
-                                                name))))
-              (,name (lambda (&rest var)
-                       (setf ,function-variable (car var))
-                       (step nil ,name))))
+                        collect `(,name (make-continuation
+                                         (lambda (&rest ignore)
+                                           (declare (ignore ignore))
+                                           ,(cps client environment
+                                                 argument-ast
+                                                 name))
+                                         :origin ',(ico:origin argument-ast)
+                                         :next ,name)))
+              (,name (make-continuation
+                      (lambda (&rest var)
+                        (setf ,function-variable (car var))
+                        (step nil ,name))
+                      :origin ',(ico:origin (ico:function-name-ast ast))
+                      :next ,name)))
          (setq *dynamic-environment* dynamic-environment)
          ,(cps client environment
                (ico:function-name-ast ast)
