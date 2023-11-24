@@ -31,13 +31,13 @@
                                  (lambda (&rest ,temp)
                                    (declare (ignore ,temp))
                                    (return-from ,block-variable
-                                     (apply #'values arguments))))))
-                         (setf continuation
-                               (lambda ()
-                                 ,(cps-implicit-progn
-                                   client environment form-asts exit))
-                               arguments '()))
-                       (loop (apply continuation arguments)))))
+                                     (apply #'values arguments)))))
+                           (setf continuation
+                                 (lambda ()
+                                   ,(cps-implicit-progn
+                                     client environment form-asts exit))
+                                 arguments '()))
+                         (trampoline-loop)))))
              ,continuation))))
 
 (defun cps-flet-and-labels (client environment ast continuation)
