@@ -173,3 +173,11 @@
                       (eq name (name entry)))
              (setf (value entry) value))
         finally (return (setf (car cell) value))))
+
+(defparameter *debug* nil)
+
+(defun breakpoint (origin)
+  (when *debug*
+    (format *debug-io* "Break at: ~s~%" origin)
+    (finish-output *debug-io*)
+    (read *debug-io*)))
