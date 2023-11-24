@@ -9,11 +9,14 @@
       `(let* ((,name ,continuation)
               ,@(loop for form-ast in asts
                       for ignore = (gensym "IGNORE")
-                      collect `(,name (lambda (&rest ,ignore)
-                                        (declare (ignore ,ignore))
-                                        ,(cps client environment
-                                              form-ast
-                                              name)))))
+                      collect `(,name (make-continuation
+                                       (lambda (&rest ,ignore)
+                                         (declare (ignore ,ignore))
+                                         ,(cps client environment
+                                               form-ast
+                                               name))
+                                       :origin ',(ico:origin form-ast)
+                                       :next ,name))))
          (step '() ,name)))))
 
 (defmethod cps (client environment (ast ico:progn-ast) continuation)

@@ -27,9 +27,12 @@
   (let* ((segment-asts (ico:segment-asts ast))
          (ignore (gensym))
          (last-continuation
-           `(lambda (&rest ,ignore)
-              (declare (ignore ,ignore))
-              (step '(nil) ,continuation)))
+           `(make-continuation
+             (lambda (&rest ,ignore)
+               (declare (ignore ,ignore))
+               (step '(nil) ,continuation))
+             :origin ',(ico:origin ast)
+             :next ,continuation))
          (last-continuation-name (gensym))
          (segment-names
            (loop for segment-ast in segment-asts collect (gensym))))
@@ -39,11 +42,14 @@
                   for continuation-name
                     in (rest (append segment-names
                                      (list last-continuation-name)))
-                  collect `(lambda (&rest ,ignore)
-                             (declare (ignore ,ignore))
-                             ,(cps client environment
-                                   segment-ast
-                                   continuation-name)))))
+                  collect `(make-continuation
+                            (lambda (&rest ,ignore)
+                              (declare (ignore ,ignore))
+                              ,(cps client environment
+                                    segment-ast
+                                    continuation-name))
+                            :origin ',(ico:origin segment-ast)
+                            :next ,continuation-name))))
       `(let ((,last-continuation-name ,last-continuation))
          (let* ((dynamic-environment dynamic-environment)
                 ,@(reverse (mapcar #'list

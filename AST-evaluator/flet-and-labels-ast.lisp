@@ -39,9 +39,10 @@
                               ;; passed to this continuation resulting
                               ;; in a return from this function.
                               ,exit
-                               (lambda (&rest ,temp)
-                                 (return-from ,block-variable
-                                   (apply #'values ,temp))))
+                               (make-continuation
+                                (lambda (&rest ,temp)
+                                  (return-from ,block-variable
+                                    (apply #'values ,temp)))))
                              ;; The function-wide variable used by
                              ;; CPS-translated code to hold the
                              ;; current continuation.  We dont
@@ -55,9 +56,11 @@
                              arguments)
                          (declare (ignorable dynamic-environment))
                          (step '()
-                               (lambda ()
-                                 ,(cps-implicit-progn
-                                   client environment form-asts exit)))
+                               (make-continuation
+                                (lambda ()
+                                  ,(cps-implicit-progn
+                                    client environment form-asts exit))
+                                :next ,exit))
                          (trampoline-loop)))))
              ,continuation))))
 
@@ -81,10 +84,12 @@
                     client environment
                     lambda-list-ast
                     form-asts
-                    `(lambda (&rest ,function-name)
-                       (setf ,function-name
-                             (car ,function-name))
-                       ,action))))
+                    `(make-continuation
+                      (lambda (&rest ,function-name)
+                        (setf ,function-name
+                              (car ,function-name))
+                        ,action)
+                      :origin ',(ico:origin function-name-ast)))))
     action))
 
 (defmethod cps (client environment (ast ico:flet-ast) continuation)

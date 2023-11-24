@@ -11,7 +11,10 @@
                :name ',name)
              dynamic-environment)
        (let ((,continuation-variable
-               (lambda (&rest ,temp)
-                 (setf continuation ,continuation))))
+               (make-continuation
+                (lambda (&rest ,temp)
+                  (setf continuation ,continuation))
+                :origin ',(ico:origin ast)
+                :next ,continuation)))
          ,(cps-implicit-progn
            client environment (ico:form-asts ast) continuation-variable)))))

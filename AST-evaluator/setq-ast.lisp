@@ -6,28 +6,37 @@
         for variable-reference-ast in variable-reference-asts
         collect
         (if (typep variable-reference-ast 'ico:special-variable-reference-ast)
-            `(,tempc (lambda (&rest ,tempa)
-                       (setq ,tempa (car ,tempa))
-                       (setf (symbol-value
-                              ',(ico:name variable-reference-ast)
-                              (clostrum-sys:variable-cell
-                               client
-                               environment
-                               ',(ico:name variable-reference-ast))
-                              dynamic-environment)
-                             ,tempa)
-                       (step (list ,tempa) ,tempc)))
+            `(,tempc (make-continuation
+                      (lambda (&rest ,tempa)
+                        (setq ,tempa (car ,tempa))
+                        (setf (symbol-value
+                               ',(ico:name variable-reference-ast)
+                               (clostrum-sys:variable-cell
+                                client
+                                environment
+                                ',(ico:name variable-reference-ast))
+                               dynamic-environment)
+                              ,tempa)
+                        (step (list ,tempa) ,tempc))
+                      :origin ',(ico:origin variable-reference-ast)
+                      :next ,tempc))
             (let* ((variable-definition-ast
                      (ico:variable-definition-ast variable-reference-ast))
                    (host-variable (lookup variable-definition-ast)))
-              `(,tempc (lambda (&rest ,tempa)
-                         (setq ,tempa (car ,tempa))
-                         (setf (car ,host-variable) ,tempa)
-                         (step (list ,tempa) ,tempc)))))
+              `(,tempc (make-continuation
+                        (lambda (&rest ,tempa)
+                          (setq ,tempa (car ,tempa))
+                          (setf (car ,host-variable) ,tempa)
+                          (step (list ,tempa) ,tempc))
+                        :origin ',(ico:origin value-ast)
+                        :next ,tempc))))
         collect
-        `(,tempc (lambda (&rest ,tempb)
-                   (declare (ignore ,tempb))
-                   ,(cps client environment value-ast tempc)))))
+        `(,tempc (make-continuation
+                  (lambda (&rest ,tempb)
+                    (declare (ignore ,tempb))
+                    ,(cps client environment value-ast tempc))
+                  :origin ',(ico:origin value-ast)
+                  :next ,tempc))))
 
 (defmethod cps (client environment (ast ico:setq-ast) continuation)
   (let ((value-asts (reverse (ico:value-asts ast)))

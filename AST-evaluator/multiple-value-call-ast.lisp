@@ -14,15 +14,18 @@
     (loop for form-ast in (reverse (ico:form-asts ast))
           do (setf action
                    `(let ((,continuation-variable
-                            (lambda (&rest ,values-temp)
-                              (setf ,arguments-temp
-                                    (append ,arguments-temp ,values-temp))
-                              ,action)))
+                            (make-continuation
+                             (lambda (&rest ,values-temp)
+                               (setf ,arguments-temp
+                                     (append ,arguments-temp ,values-temp))
+                               ,action)
+                             :origin '(ico:origin form-ast))))
                       ,(cps client environment form-ast continuation-variable))))
     `(let ((,continuation-variable
-             (lambda (&rest ,function-temp)
-               (setf ,function-temp (car ,function-temp))
-               (let ((,arguments-temp '()))
-                 ,action))))
+             (make-continuation
+              (lambda (&rest ,function-temp)
+                (setf ,function-temp (car ,function-temp))
+                (let ((,arguments-temp '()))
+                  ,action)))))
        ,(cps client environment (ico:function-ast ast) continuation-variable))))
     

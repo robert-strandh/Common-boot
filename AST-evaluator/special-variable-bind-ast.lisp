@@ -7,13 +7,17 @@
         (variable-name (gensym))
         (continuation-variable (gensym "C-")))
     `(let ((,continuation-variable
-             (lambda (&rest ,variable-name)
-               (setf ,variable-name (car ,variable-name))
-               (let ((dynamic-environment dynamic-environment))
-                 (push (make-instance 'special-variable-entry
-                         :name ,(ico:name variable-name-ast)
-                         :value ,variable-name)
-                       dynamic-environment)
-                 ,(cps-implicit-progn client environment form-asts continuation)))))
+             (make-continuation
+              (lambda (&rest ,variable-name)
+                (setf ,variable-name (car ,variable-name))
+                (let ((dynamic-environment dynamic-environment))
+                  (push (make-instance 'special-variable-entry
+                          :name ,(ico:name variable-name-ast)
+                          :value ,variable-name)
+                        dynamic-environment)
+                  ,(cps-implicit-progn
+                    client environment form-asts continuation)))
+              :origin ',(ico:origin ast)
+              :next ,continuation)))
        ,(cps client environment form-ast continuation-variable))))
 
