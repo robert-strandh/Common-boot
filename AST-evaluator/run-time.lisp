@@ -174,10 +174,10 @@
              (setf (value entry) value))
         finally (return (setf (car cell) value))))
 
-(defparameter *debug* nil)
+(defparameter *debug-breakpoints* nil)
 
 (defun breakpoint (origin)
-  (when *debug*
+  (when *debug-breakpoints*
     (format *debug-io* "Break at: ~s~%" origin)
     (finish-output *debug-io*)
     (read *debug-io*)))
@@ -186,8 +186,10 @@
   `(progn (breakpoint ',(ico:origin ast))
           ,(call-next-method)))
 
+(defparameter *debug-trampoline-iterations* nil)
+
 (defun trampoline-iteration (continuation arguments)
-  (when *debug*
+  (when *debug-trampoline-iterations*
     (format *debug-io*
             "Trampoline: Continuation: ~s Arguments: ~s~%"
             continuation arguments)
