@@ -17,6 +17,6 @@
                     ,(cps client environment
                           (ico:then-ast ast)
                           continuation)))
-              :origin ,(ico:origin ast)
+              :origin ',(ico:origin ast)
               :next ,continuation)))
        ,(cps client environment (ico:test-ast ast) continuation-variable))))
