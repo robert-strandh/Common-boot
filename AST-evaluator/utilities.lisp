@@ -32,3 +32,10 @@
   ((%origin :initarg :origin :reader origin)
    (%next-continuation :initarg :next-continuation :reader next-continuation))
   (:metaclass closer-mop:funcallable-standard-class))
+
+(defun make-continuation (function &key origin next)
+  (let ((result (make-instance 'continuation
+                  :origin origin
+                  :next-continuation next)))
+    (closer-mop:set-funcallable-instance-function result function)
+    result))
