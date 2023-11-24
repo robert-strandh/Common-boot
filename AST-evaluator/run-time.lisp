@@ -185,3 +185,16 @@
 (defmethod cps :around (client environment ast continuation)
   `(progn (breakpoint ',(ico:origin ast))
           ,(call-next-method)))
+
+(defun trampoline-iteration (continuation arguments)
+  (when *debug*
+    (format *debug-io*
+            "Trampoline: Continuation: ~s Arguments: ~s~%"
+            continuation arguments)
+    (finish-output *debug-io*)
+    (read *debug-io*)))
+
+(defmacro trampoline-loop ()
+  `(loop (progn (trampoline-iteration continuation arguments)
+                (apply continuation arguments))))
+
