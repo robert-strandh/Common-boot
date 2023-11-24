@@ -53,11 +53,10 @@
                              ;; to transmit to CONTINUATION.
                              arguments)
                          (declare (ignorable dynamic-environment))
-                         (setf continuation
+                         (step '()
                                (lambda ()
                                  ,(cps-implicit-progn
-                                   client environment form-asts exit))
-                               arguments '())
+                                   client environment form-asts exit)))
                          (trampoline-loop)))))
              ,continuation))))
 
