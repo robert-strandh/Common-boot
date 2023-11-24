@@ -6,15 +6,11 @@
          (function-temp (make-symbol "FUNCTION"))
          (arguments-temp (make-symbol "ARGUMENTS"))
          (continuation-variable (gensym "C-"))
-         (action `(if (typep ,function-temp 'cps-function)
-                      (progn (setf continuation ,continuation)
-                             (step ,arguments-temp
-                                   ,function-temp))
-                      (setf arguments
-                            (multiple-value-list
-                             (apply ,function-temp
-                                    ,arguments-temp)))
-                      (setf continuation ,continuation))))
+         (action `(progn (setf arguments
+                               (multiple-value-list
+                                (apply ,function-temp
+                                       ,arguments-temp)))
+                         (setf continuation ,continuation))))
     (loop for form-ast in (reverse (ico:form-asts ast))
           do (setf action
                    `(let ((,continuation-variable
