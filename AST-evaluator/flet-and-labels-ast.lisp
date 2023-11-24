@@ -36,7 +36,8 @@
                               ;; in this continuation.  So when the
                               ;; evaluation of FORM* finishes
                               ;; normally, the values produced are
-                              ;; passed to this continuation.
+                              ;; passed to this continuation resulting
+                              ;; in a return from this function.
                               ,exit
                                (lambda (&rest ,temp)
                                  (return-from ,block-variable
