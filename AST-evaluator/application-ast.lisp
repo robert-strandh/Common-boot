@@ -11,11 +11,10 @@
        (let* ((,name
                 (lambda (&rest ignore)
                   (declare (ignore ignore))
-                  (setf arguments
-                        (multiple-value-list
+                  (step (multiple-value-list
                          (apply ,function-variable
-                                (list ,@argument-variables))))
-                  (setq continuation ,continuation)))
+                                (list ,@argument-variables)))
+                        ,continuation)))
               ,@(loop for argument-ast in (reverse argument-asts)
                       for argument-variable in (reverse argument-variables)
                       when (typep argument-ast 'ico:variable-reference-ast)
