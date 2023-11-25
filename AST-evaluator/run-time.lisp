@@ -23,8 +23,16 @@
     :initarg :continuation
     :reader continuation)))
 
+(defclass catch-tag-mixin ()
+  ((%catch-tag
+    :initarg :catch-tag
+    :reader catch-tag)))
+
 (defclass block-entry
-    (dynamic-environment-entry continuation-entry-mixin valid-p-mixin)
+    (dynamic-environment-entry
+     continuation-entry-mixin
+     catch-tag-mixin
+     valid-p-mixin)
   ((%name :initarg :name :reader name)))
 
 (defmethod print-object ((object block-entry) stream)
@@ -96,7 +104,8 @@
   (print-unreadable-object (object stream :type t)
     (format stream "name: ~s" (name object))))
 
-(defclass tagbody-entry (dynamic-environment-entry valid-p-mixin)
+(defclass tagbody-entry
+    (dynamic-environment-entry catch-tag-mixin valid-p-mixin)
   ((%tag-entries :initarg :tag-entries :initform '() :reader tag-entries)))
 
 (defmethod print-object ((object tagbody-entry) stream)
