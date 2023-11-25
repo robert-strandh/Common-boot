@@ -8,8 +8,9 @@
           sum 1
           and do (setf (lookup tag-ast) segment-name)))
 
-(defun push-tagbody-entry-form (segment-asts segment-names)
+(defun push-tagbody-entry-form (segment-asts segment-names catch-tag)
   `(let ((entry (make-instance 'tagbody-entry
+                  :catch-tag ',catch-tag
                   :tag-entries
                   (list 
                    ,@(loop for segment-ast in segment-asts
@@ -37,7 +38,8 @@
          (segment-names
            (loop for segment-ast in segment-asts collect (gensym))))
     (add-tags-to-host-table segment-asts segment-names)
-    (let ((segment-continuations
+    (let ((catch-tag (gensym))
+          (segment-continuations
             (loop for segment-ast in segment-asts
                   for continuation-name
                     in (rest (append segment-names
@@ -55,5 +57,5 @@
                 ,@(reverse (mapcar #'list
                                   segment-names segment-continuations)))
            (declare (ignorable dynamic-environment))
-           ,(push-tagbody-entry-form segment-asts segment-names)
+           ,(push-tagbody-entry-form segment-asts segment-names catch-tag)
            (step '() ,(first segment-names)))))))
