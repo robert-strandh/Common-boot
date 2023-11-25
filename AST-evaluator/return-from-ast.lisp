@@ -8,9 +8,10 @@
          (temp (gensym)))
     `(let ((,continuation-variable
              (lambda (&rest ,temp)
-               (declare (ignore ,temp))
+               (setf arguments ,temp)
                (let ((entry (do-return-from ',name dynamic-environment)))
-                 (setf continuation (continuation entry))))))
+                 (setf continuation (continuation entry))
+                 (throw (catch-tag entry) nil)))))
        ,(cps client environment
              (if (null form-ast)
                  (make-instance 'ico:literal-ast :literal nil)
