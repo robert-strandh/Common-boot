@@ -11,6 +11,7 @@
                (setf arguments ,temp)
                (let ((entry (do-return-from ',name dynamic-environment)))
                  (setf continuation (continuation entry))
+                 (invalidate-entry entry)
                  (throw (catch-tag entry) nil)))))
        ,(cps client environment
              (if (null form-ast)
