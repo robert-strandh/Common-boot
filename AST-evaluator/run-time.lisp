@@ -188,8 +188,12 @@
 (defun trampoline-iteration (continuation arguments)
   (when *debug-trampoline-iterations*
     (format *debug-io*
-            "Trampoline: Continuation: ~s Arguments: ~s~%"
-            continuation arguments)
+            "Origin: ~s~%Arguments: ~s~%"
+            (let ((origin (origin continuation)))
+              (if (typep origin 'cst:cst)
+                  (cst:raw origin)
+                  'unknown))
+            arguments)
     (finish-output *debug-io*)
     (read *debug-io*)))
 
