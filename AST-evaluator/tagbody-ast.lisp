@@ -39,6 +39,7 @@
            (loop for segment-ast in segment-asts collect (gensym))))
     (add-tags-to-host-table segment-asts segment-names)
     (let ((catch-tag (gensym))
+          (block (gensym))
           (segment-continuations
             (loop for segment-ast in segment-asts
                   for continuation-name
@@ -52,10 +53,11 @@
                                     continuation-name))
                             :origin ',(ico:origin segment-ast)
                             :next ,continuation-name))))
-      `(let ((,last-continuation-name ,last-continuation))
-         (let* ((dynamic-environment dynamic-environment)
-                ,@(reverse (mapcar #'list
-                                  segment-names segment-continuations)))
-           (declare (ignorable dynamic-environment))
-           ,(push-tagbody-entry-form segment-asts segment-names catch-tag)
-           (step '() ,(first segment-names)))))))
+      `(block ,block
+         (let ((,last-continuation-name ,last-continuation))
+           (let* ((dynamic-environment dynamic-environment)
+                  ,@(reverse (mapcar #'list
+                                     segment-names segment-continuations)))
+             (declare (ignorable dynamic-environment))
+             ,(push-tagbody-entry-form segment-asts segment-names catch-tag)
+             (step '() ,(first segment-names))))))))
