@@ -33,5 +33,7 @@
             (,test-continuation
               (make-continuation
                (lambda ()
-                 ,(cps client environment test-ast temp-continuation)))))
+                 ,(cps client environment test-ast temp-continuation))
+               :origin ',(ico:origin test-ast)
+               :next ,temp-continuation)))
        (step '() ,test-continuation))))
