@@ -162,8 +162,14 @@
     :accessor value)))
 
 (defmacro step (arguments continuation)
-  `(setf arguments ,arguments
-        continuation ,continuation))
+  (let ((a (gensym))
+        (c (gensym)))
+    `(let ((,a ,arguments)
+           (,c ,continuation))
+       (setf arguments ,a
+             continuation ,c)
+       (when (typep ,c 'after-continuation)
+         (setf (results ,c) ,a)))))
 
 (defun symbol-value (name cell dynamic-environment)
   (loop for entry in dynamic-environment
@@ -210,8 +216,6 @@
     (results (continuation after-continuation))
   (setf (results-valid-p continuation) t))
 
-(defvar *continuation*)
-
 (defun make-before-continuation (function &key origin next)
   (let ((result (make-instance 'before-continuation
                   :origin origin
@@ -223,11 +227,7 @@
   (let ((result (make-instance 'after-continuation
                   :origin origin
                   :next-continuation next)))
-    (closer-mop:set-funcallable-instance-function
-     result
-     (lambda (&rest arguments)
-       (let ((*continuation* result))
-         (apply function arguments))))
+    (closer-mop:set-funcallable-instance-function result function)
     result))
 
 (defparameter *debug-trampoline-iterations* nil)
@@ -252,7 +252,7 @@
   (format *debug-io* "After~%")
   (when (results-valid-p continuation)
     (format *debug-io*
-            "%Values: ~s~%"
+            "Values: ~s~%"
             (results continuation))))
 
 (defun trampoline-iteration (continuation)

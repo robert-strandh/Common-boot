@@ -26,15 +26,10 @@
             (,test-after-continuation
               (make-after-continuation
                (lambda (&rest ,temp)
-                 (setf (results *continuation*) ,temp)
                  (setq ,temp (car ,temp))
                  (if (null ,temp)
-                     (progn (setf (next-continuation *continuation*)
-                                  ,else-continuation)
-                            (step '() ,else-continuation))
-                     (progn (setf (next-continuation *continuation*)
-                                  ,then-continuation)
-                            (step '() ,then-continuation))))
+                     (step '() ,else-continuation)
+                     (step '() ,then-continuation)))
                :origin ',(ico:origin test-ast)
                :next ,continuation))
             (,test-before-continuation
