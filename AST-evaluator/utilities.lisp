@@ -27,23 +27,3 @@
                     :cps-entry-point cps-entry-point)))
      (closer-mop:set-funcallable-instance-function result cps-entry-point)
      result))
-
-(defclass continuation (closer-mop:funcallable-standard-object)
-  ((%origin :initarg :origin :reader origin)
-   (%next-continuation :initarg :next-continuation :reader next-continuation))
-  (:metaclass closer-mop:funcallable-standard-class))
-
-(defclass before-continuation (continuation)
-  ()
-  (:metaclass closer-mop:funcallable-standard-class))
-
-(defclass after-continuation (continuation)
-  ((%results :initarg :results :reader results))
-  (:metaclass closer-mop:funcallable-standard-class))
-
-(defun make-before-continuation (function &key origin next)
-  (let ((result (make-instance 'continuation
-                  :origin origin
-                  :next-continuation next)))
-    (closer-mop:set-funcallable-instance-function result function)
-    result))
