@@ -9,7 +9,7 @@
       `(let* ((,name ,continuation)
               ,@(loop for form-ast in asts
                       for ignore = (gensym "IGNORE")
-                      collect `(,name (make-continuation
+                      collect `(,name (make-before-continuation
                                        (lambda (&rest ,ignore)
                                          (declare (ignore ,ignore))
                                          ,(cps client environment

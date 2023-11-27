@@ -21,7 +21,7 @@
                  ;; finishes normally, the values produced are passed
                  ;; to this continuation.
                 ,end-condtinuation-variable
-                 (make-continuation
+                 (make-before-continuation
                   (lambda (&rest ,temp)
                     ;; Invalidate the top entry of the dynamic
                     ;; environment.  That entry was put there as a
@@ -42,7 +42,7 @@
                    :name ',name)
                  dynamic-environment)
            (step '()
-                 (make-continuation
+                 (make-before-continuation
                   (lambda ()
                     ,(cps-implicit-progn
                       client environment

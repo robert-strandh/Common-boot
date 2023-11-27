@@ -39,7 +39,7 @@
                               ;; passed to this continuation resulting
                               ;; in a return from this function.
                               ,exit
-                               (make-continuation
+                               (make-before-continuation
                                 (lambda (&rest ,temp)
                                   (return-from ,block-variable
                                     (apply #'values ,temp)))))
@@ -56,7 +56,7 @@
                              arguments)
                          (declare (ignorable dynamic-environment))
                          (step '()
-                               (make-continuation
+                               (make-before-continuation
                                 (lambda ()
                                   ,(cps-implicit-progn
                                     client environment form-asts exit))
@@ -84,7 +84,7 @@
                     client environment
                     lambda-list-ast
                     form-asts
-                    `(make-continuation
+                    `(make-before-continuation
                       (lambda (&rest ,function-name)
                         (setf ,function-name
                               (car ,function-name))

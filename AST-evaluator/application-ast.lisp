@@ -9,7 +9,7 @@
          (name (gensym "C-")))
     `(let ,(cons function-variable argument-variables)
        (let* ((,name
-                (make-continuation
+                (make-before-continuation
                  (lambda (&rest ignore)
                    (declare (ignore ignore))
                    (step (multiple-value-list
@@ -25,7 +25,7 @@
                         (let* ((definition-ast
                                  (ico:variable-definition-ast argument-ast))
                                (host-variable (lookup definition-ast)))
-                          `(,name (make-continuation 
+                          `(,name (make-before-continuation 
                                    (lambda (&rest ignore)
                                      (declare (ignore ignore))
                                      (setq ,argument-variable
@@ -34,14 +34,14 @@
                                    :origin ',(ico:origin argument-ast)
                                    :next ,name)))
                       unless (typep argument-ast 'ico:variable-reference-ast)
-                        collect `(,name (make-continuation
+                        collect `(,name (make-before-continuation
                                          (lambda (&rest var)
                                            (setq ,argument-variable (car var))
                                            (step nil ,name))
                                          :origin ',(ico:origin argument-ast)
                                          :next ,name))
                       unless (typep argument-ast 'ico:variable-reference-ast)
-                        collect `(,name (make-continuation
+                        collect `(,name (make-before-continuation
                                          (lambda (&rest ignore)
                                            (declare (ignore ignore))
                                            ,(cps client environment
@@ -49,7 +49,7 @@
                                                  name))
                                          :origin ',(ico:origin argument-ast)
                                          :next ,name)))
-              (,name (make-continuation
+              (,name (make-before-continuation
                       (lambda (&rest var)
                         (setf ,function-variable (car var))
                         (step nil ,name))

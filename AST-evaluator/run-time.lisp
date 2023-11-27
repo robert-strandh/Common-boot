@@ -185,18 +185,27 @@
 
 (defparameter *debug-trampoline-iterations* nil)
 
+(defun maybe-print-continuation (continuation arguments)
+  (let ((origin (origin continuation)))
+    (when (typep origin 'cst:cst)
+      (format *debug-io*
+              "Origin: ~s~%"
+              (if (null (cst:source origin))
+                  (cst:raw origin)
+                  (cst:source origin)))
+      (unless (null arguments)
+        (format *debug-io* "Arguments ~s~%" arguments))
+      (finish-output *debug-io*))))
+
 (defun trampoline-iteration (continuation arguments)
   (when *debug-trampoline-iterations*
-    (let ((origin (origin continuation)))
-      (when (typep origin 'cst:cst)
-        (format *debug-io*
-                "Origin: ~s~%Arguments: ~s~%"
-                (if (null (cst:source origin))
-                    (cst:raw origin)
-                    (cst:source origin))
-                arguments)
-        (finish-output *debug-io*)
-        (read *debug-io*)))))
+    (format *debug-io* "------------------~%")
+    (maybe-print-continuation continuation arguments)
+    (loop for next = (next-continuation continuation)
+            then (next-continuation next)
+          until (null next)
+          do (maybe-print-continuation next nil))
+    (read *debug-io*)))
 
 (defmacro trampoline-loop ()
   `(loop (progn (trampoline-iteration continuation arguments)

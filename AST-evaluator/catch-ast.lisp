@@ -4,7 +4,7 @@
   (let ((temp (gensym))
         (continuation-variable (gensym "C-")))
     `(let ((,continuation-variable
-             (make-continuation
+             (make-before-continuation
               (lambda (&rest ,temp)
                 (setq ,temp (car ,temp))
                 (let ((dynamic-environment dynamic-environment))

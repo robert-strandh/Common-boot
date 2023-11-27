@@ -6,7 +6,7 @@
         for variable-reference-ast in variable-reference-asts
         collect
         (if (typep variable-reference-ast 'ico:special-variable-reference-ast)
-            `(,tempc (make-continuation
+            `(,tempc (make-before-continuation
                       (lambda (&rest ,tempa)
                         (setq ,tempa (car ,tempa))
                         (setf (symbol-value
@@ -23,7 +23,7 @@
             (let* ((variable-definition-ast
                      (ico:variable-definition-ast variable-reference-ast))
                    (host-variable (lookup variable-definition-ast)))
-              `(,tempc (make-continuation
+              `(,tempc (make-before-continuation
                         (lambda (&rest ,tempa)
                           (setq ,tempa (car ,tempa))
                           (setf (car ,host-variable) ,tempa)
@@ -31,7 +31,7 @@
                         :origin ',(ico:origin value-ast)
                         :next ,tempc))))
         collect
-        `(,tempc (make-continuation
+        `(,tempc (make-before-continuation
                   (lambda (&rest ,tempb)
                     (declare (ignore ,tempb))
                     ,(cps client environment value-ast tempc))

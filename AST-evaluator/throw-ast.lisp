@@ -7,7 +7,7 @@
         (tag-variable (gensym "T-")))
     `(let* ((,tag-variable nil)
             (,continuation-variable
-              (make-continuation
+              (make-before-continuation
                (lambda (&rest ,form)
                  (declare (ignore ,form))
                  (let ((entry (do-throw ,tag-variable dynamic-environment)))
@@ -15,7 +15,7 @@
                :origin ',(ico:origin ast)
                :next ,continuation))
             (,continuation-variable
-              (make-continuation
+              (make-before-continuation
                (lambda (&rest ,tag)
                  (setq ,tag-variable (car ,tag))
                  ,(cps client environment

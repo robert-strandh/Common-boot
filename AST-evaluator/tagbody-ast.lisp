@@ -28,7 +28,7 @@
   (let* ((segment-asts (ico:segment-asts ast))
          (ignore (gensym))
          (last-continuation
-           `(make-continuation
+           `(make-before-continuation
              (lambda (&rest ,ignore)
                (declare (ignore ,ignore))
                (step '(nil) ,continuation))
@@ -45,7 +45,7 @@
                   for continuation-name
                     in (rest (append segment-names
                                      (list last-continuation-name)))
-                  collect `(make-continuation
+                  collect `(make-before-continuation
                             (lambda (&rest ,ignore)
                               (declare (ignore ,ignore))
                               ,(cps client environment

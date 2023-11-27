@@ -5,14 +5,14 @@
         (values-variable (gensym "V-")))
     `(let* ((,values-variable nil)
             (,continuation-variable
-              (make-continuation
+              (make-before-continuation
                (lambda (&rest ignore)
                  (declare (ignore ignore))
                  (step ,values-variable ,continuation))
                :origin ',(ico:origin ast)
                :next ,continuation))
             (,continuation-variable
-              (make-continuation
+              (make-before-continuation
                (lambda (&rest values)
                  (setq ,values-variable values)
                  ,(cps-implicit-progn

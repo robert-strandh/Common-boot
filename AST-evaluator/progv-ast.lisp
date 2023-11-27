@@ -6,7 +6,7 @@
         (continuation-variable (gensym "C-")))
     `(let* ((,symbols-temp nil)
             (,continuation-variable
-              (make-continuation
+              (make-before-continuation
                (lambda (&rest ,values-temp)
                  (setq ,values-temp (car ,values-temp))
                  ;; The parameter contains all the values from them
@@ -41,7 +41,7 @@
                :origin ',(ico:origin ast)
                :next ,continuation))
             (,continuation-variable
-              (make-continuation 
+              (make-before-continuation 
                (lambda (&rest temp)
                  (setq ,symbols-temp (car temp))
                  ,(cps client environment

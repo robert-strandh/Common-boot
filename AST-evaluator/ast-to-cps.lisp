@@ -12,14 +12,14 @@
                continuation
                arguments)
            (declare (ignorable dynamic-environment))
-           (let ((,exit (make-continuation
+           (let ((,exit (make-before-continuation
                          (lambda (&rest ,variable)
                            (declare (ignore ,variable))
                            (return-from ,block-variable
                              (apply #'values arguments)))
                          :origin ',(ico:origin ast))))
              (step '()
-                   (make-continuation
+                   (make-before-continuation
                     (lambda ()
                       ,(cps client global-environment ast exit))
                     :origin ',(ico:origin ast)

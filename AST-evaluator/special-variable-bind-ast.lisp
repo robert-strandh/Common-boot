@@ -7,7 +7,7 @@
         (variable-name (gensym))
         (continuation-variable (gensym "C-")))
     `(let ((,continuation-variable
-             (make-continuation
+             (make-before-continuation
               (lambda (&rest ,variable-name)
                 (setf ,variable-name (car ,variable-name))
                 (let ((dynamic-environment dynamic-environment))
