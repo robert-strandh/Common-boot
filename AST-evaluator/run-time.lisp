@@ -186,7 +186,9 @@
 
 (defclass continuation (closer-mop:funcallable-standard-object)
   ((%origin :initarg :origin :reader origin)
-   (%next-continuation :initarg :next-continuation :reader next-continuation))
+   (%next-continuation
+    :initarg :next-continuation
+    :accessor next-continuation))
   (:metaclass closer-mop:funcallable-standard-class))
 
 (defclass before-continuation (continuation)
@@ -194,8 +196,21 @@
   (:metaclass closer-mop:funcallable-standard-class))
 
 (defclass after-continuation (continuation)
-  ((%results :initarg :results :reader results))
+  ((%results
+    :initform nil
+    :initarg :results
+    :accessor results)
+   (%results-valid-p
+    :initform nil
+    :initarg :results-valid-p
+    :accessor results-valid-p))
   (:metaclass closer-mop:funcallable-standard-class))
+
+(defmethod (setf results) :after
+    (results (continuation after-continuation))
+  (setf (results-valid-p continuation) t))
+
+(defvar *continuation*)
 
 (defun make-before-continuation (function &key origin next)
   (let ((result (make-instance 'before-continuation
@@ -204,12 +219,15 @@
     (closer-mop:set-funcallable-instance-function result function)
     result))
 
-(defun make-after-continuation (function &key origin next results)
+(defun make-after-continuation (function &key origin next)
   (let ((result (make-instance 'after-continuation
-                  :results results
                   :origin origin
                   :next-continuation next)))
-    (closer-mop:set-funcallable-instance-function result function)
+    (closer-mop:set-funcallable-instance-function
+     result
+     (lambda (&rest arguments)
+       (let ((*continuation* result))
+         (apply function arguments))))
     result))
 
 (defparameter *debug-trampoline-iterations* nil)
@@ -218,7 +236,7 @@
 
 (defmethod maybe-print-continuation :around (continuation)
   (when (typep (origin continuation) 'cst:cst)
-    (format *debug-io* "----------------------")
+    (format *debug-io* "----------------------~%")
     (call-next-method)))
 
 (defmethod maybe-print-continuation ((continuation continuation))
@@ -229,17 +247,20 @@
                 (cst:raw origin)
                 (cst:source origin)))))
           
-(defmethod maybe-print-continuation ((continuation after-continuation))
-  (format *debug-io*
-          "Values: ~s~%"
-          (results continuation)))
+(defmethod maybe-print-continuation :after
+    ((continuation after-continuation))
+  (format *debug-io* "After~%")
+  (when (results-valid-p continuation)
+    (format *debug-io*
+            "%Values: ~s~%"
+            (results continuation))))
 
 (defun trampoline-iteration (continuation)
   (when *debug-trampoline-iterations*
     (format *debug-io* "=======================~%")
     (loop for c = continuation then (next-continuation c)
           until (null c)
-          do (maybe-print-continuation continuation))
+          do (maybe-print-continuation c))
     (read *debug-io*)))
 
 (defmacro trampoline-loop ()
