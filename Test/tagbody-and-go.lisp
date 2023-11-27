@@ -26,9 +26,10 @@
     (iss #1=(let ((x 10))
               (tagbody
                again
-                 (if (> x 15) (go out))
-                 (setq x (1+ x))
-                 (go again)
+                 (if (> x 12)
+                     (go out)
+                     (progn (setq x (1+ x))
+                            (go again)))
                out)
               x)
          (eval-expression client '#1# environment))))
