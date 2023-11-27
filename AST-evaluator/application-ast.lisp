@@ -31,7 +31,8 @@
                                      (setq ,argument-variable
                                            (car ,host-variable))
                                      (step nil ,name))
-                                   :origin ',(ico:origin argument-ast))))
+                                   :origin ',(ico:origin argument-ast)
+                                   :next ,name)))
                       unless (typep argument-ast 'ico:variable-reference-ast)
                         collect `(,name (make-continuation
                                          (lambda (&rest var)
