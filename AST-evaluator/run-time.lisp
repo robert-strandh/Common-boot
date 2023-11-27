@@ -187,15 +187,16 @@
 
 (defun trampoline-iteration (continuation arguments)
   (when *debug-trampoline-iterations*
-    (format *debug-io*
-            "Origin: ~s~%Arguments: ~s~%"
-            (let ((origin (origin continuation)))
-              (if (typep origin 'cst:cst)
-                  (cst:raw origin)
-                  'unknown))
-            arguments)
-    (finish-output *debug-io*)
-    (read *debug-io*)))
+    (let ((origin (origin continuation)))
+      (when (typep origin 'cst:cst)
+        (format *debug-io*
+                "Origin: ~s~%Arguments: ~s~%"
+                (if (null (cst:source origin))
+                    (cst:raw origin)
+                    (cst:source origin))
+                arguments)
+        (finish-output *debug-io*)
+        (read *debug-io*)))))
 
 (defmacro trampoline-loop ()
   `(loop (progn (trampoline-iteration continuation arguments)
