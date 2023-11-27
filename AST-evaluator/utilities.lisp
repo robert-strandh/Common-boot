@@ -33,7 +33,15 @@
    (%next-continuation :initarg :next-continuation :reader next-continuation))
   (:metaclass closer-mop:funcallable-standard-class))
 
-(defun make-continuation (function &key origin next)
+(defclass before-continuation (continuation)
+  ()
+  (:metaclass closer-mop:funcallable-standard-class))
+
+(defclass after-continuation (continuation)
+  ((%results :initarg :results :reader results))
+  (:metaclass closer-mop:funcallable-standard-class))
+
+(defun make-before-continuation (function &key origin next)
   (let ((result (make-instance 'continuation
                   :origin origin
                   :next-continuation next)))
