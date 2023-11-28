@@ -10,13 +10,13 @@
 
 (defun push-tagbody-entry-form (segment-asts segment-names catch-tag)
   `(let ((entry (make-instance 'tagbody-entry
-                  :catch-tag ',catch-tag
                   :tag-entries
                   (list 
                    ,@(loop for segment-ast in segment-asts
                            for segment-name in segment-names
                            unless (null (ico:tag-ast segment-ast))
                              collect `(make-instance 'tag-entry
+                                        :catch-tag ',catch-tag
                                         :name ',segment-name
                                         :continuation ,segment-name))))))
      (push entry dynamic-environment)))
@@ -60,4 +60,7 @@
                                      segment-names segment-continuations)))
              (declare (ignorable dynamic-environment))
              ,(push-tagbody-entry-form segment-asts segment-names catch-tag)
-             (step '() ,(first segment-names))))))))
+             (step '() ,(first segment-names))
+             (loop (catch ',catch-tag
+                     (trampoline-iteration continuation)
+                     (apply continuation arguments)))))))))
