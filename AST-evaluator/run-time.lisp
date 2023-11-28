@@ -97,7 +97,7 @@
            (unwind entry dynamic-environment t)
            entry))))
 
-(defclass tag-entry (continuation-entry-mixin)
+(defclass tag-entry (continuation-entry-mixin catch-tag-mixin)
   ((%name :initarg :name :reader name)))
 
 (defmethod print-object ((object tag-entry) stream)
@@ -105,7 +105,7 @@
     (format stream "name: ~s" (name object))))
 
 (defclass tagbody-entry
-    (dynamic-environment-entry catch-tag-mixin valid-p-mixin)
+    (dynamic-environment-entry valid-p-mixin)
   ((%tag-entries :initarg :tag-entries :initform '() :reader tag-entries)))
 
 (defmethod print-object ((object tagbody-entry) stream)
