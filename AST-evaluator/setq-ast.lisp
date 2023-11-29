@@ -11,10 +11,10 @@
                         (setq ,tempa (car ,tempa))
                         (setf (symbol-value
                                ',(ico:name variable-reference-ast)
-                               (clostrum-sys:variable-cell
-                                client
-                                environment
-                                ',(ico:name variable-reference-ast))
+                               ',(clostrum-sys:variable-cell
+                                  client
+                                  environment
+                                  (ico:name variable-reference-ast))
                                dynamic-environment)
                               ,tempa)
                         (step (list ,tempa) ,tempc))
