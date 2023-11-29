@@ -1,19 +1,20 @@
 (cl:in-package #:common-boot-ast-evaluator)
 
 (defmethod cps (client environment (ast ico:special-variable-bind-ast) continuation)
-  (let ((variable-name-ast (ico:variable-name-ast ast))
-        (form-ast (ico:form-ast ast))
-        (form-asts (ico:form-asts ast))
-        (variable-name (gensym))
-        (continuation-variable (gensym "C-")))
+  (let* ((binding-ast (ico:binding-ast ast))
+         (variable-name-ast (ico:variable-name-ast binding-ast))
+         (form-ast (ico:form-ast binding-ast))
+         (form-asts (ico:form-asts ast))
+         (temp (gensym))
+         (continuation-variable (gensym "C-")))
     `(let ((,continuation-variable
              (make-before-continuation
-              (lambda (&rest ,variable-name)
-                (setf ,variable-name (car ,variable-name))
+              (lambda (&rest ,temp)
+                (setf ,temp (car ,temp))
                 (let ((dynamic-environment dynamic-environment))
                   (push (make-instance 'special-variable-entry
-                          :name ,(ico:name variable-name-ast)
-                          :value ,variable-name)
+                          :name ',(ico:name variable-name-ast)
+                          :value ,temp)
                         dynamic-environment)
                   ,(cps-implicit-progn
                     client environment form-asts continuation)))
