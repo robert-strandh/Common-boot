@@ -8,18 +8,17 @@
           sum 1
           and do (setf (lookup tag-ast) segment-name)))
 
-(defun push-tagbody-entry-form (segment-asts segment-names catch-tag)
-  `(let ((entry (make-instance 'tagbody-entry
-                  :tag-entries
-                  (list 
-                   ,@(loop for segment-ast in segment-asts
-                           for segment-name in segment-names
-                           unless (null (ico:tag-ast segment-ast))
-                             collect `(make-instance 'tag-entry
-                                        :catch-tag ',catch-tag
-                                        :name ',segment-name
-                                        :continuation ,segment-name))))))
-     (push entry dynamic-environment)))
+(defun make-tagbody-entry-form (segment-asts segment-names catch-tag)
+  `(make-instance 'tagbody-entry
+     :tag-entries
+     (list 
+      ,@(loop for segment-ast in segment-asts
+              for segment-name in segment-names
+              unless (null (ico:tag-ast segment-ast))
+                collect `(make-instance 'tag-entry
+                           :catch-tag ',catch-tag
+                           :name ',segment-name
+                           :continuation ,segment-name)))))
 
 (defmethod cps (client environment (ast ico:tagbody-ast) continuation)
   (when (null (ico:segment-asts ast))
@@ -27,13 +26,6 @@
       `(step '(nil) ,continuation)))
   (let* ((segment-asts (ico:segment-asts ast))
          (ignore (gensym))
-         (last-continuation
-           `(make-before-continuation
-             (lambda (&rest ,ignore)
-               (declare (ignore ,ignore))
-               (step '(nil) ,continuation))
-             :origin ',(ico:origin ast)
-             :next ,continuation))
          (last-continuation-name (gensym))
          (segment-names
            (loop for segment-ast in segment-asts collect (gensym))))
@@ -48,19 +40,47 @@
                   collect `(make-before-continuation
                             (lambda (&rest ,ignore)
                               (declare (ignore ,ignore))
-                              ,(cps client environment
-                                    segment-ast
-                                    continuation-name))
+                              (let ((dynamic-environment dynamic-environment))
+                                (declare (ignorable dynamic-environment))
+                                ,(cps client environment
+                                      segment-ast
+                                      continuation-name)))
                             :origin ',(ico:origin segment-ast)
                             :next ,continuation-name))))
       `(block ,block
-         (let ((,last-continuation-name ,last-continuation))
-           (let* ((dynamic-environment dynamic-environment)
-                  ,@(reverse (mapcar #'list
-                                     segment-names segment-continuations)))
-             (declare (ignorable dynamic-environment))
-             ,(push-tagbody-entry-form segment-asts segment-names catch-tag)
-             (step '() ,(first segment-names))
-             (loop (catch ',catch-tag
-                     (trampoline-iteration continuation)
-                     (apply continuation arguments)))))))))
+         (let* ((;; We bind the target dynamic environment, and we add
+                 ;; an entry to it that will be visible to the
+                 ;; CPS-translated code of the segments.
+                 dynamic-environment dynamic-environment)
+                (;; The last continuation goes here, becuse we need to
+                 ;; invalidate the block that we added to the top of
+                 ;; the dynamic environment.
+                 ,last-continuation-name
+                  (make-before-continuation
+                   (lambda (&rest ,ignore)
+                     (declare (ignore ,ignore))
+                     ;; Invalidate the top entry of the dynamic
+                     ;; environment.  That entry was put there as a
+                     ;; result of this BLOCK, and when the BLOCK
+                     ;; terminates normally, it must be invalidated.
+                     (invalidate-entry (first dynamic-environment))
+                     (step '(nil) ,continuation)
+                     (return-from ,block))
+                   :origin ',(ico:origin ast)
+                   :next ,continuation))
+                ;; The segment continuations go here, so that the new
+                ;; dynamic environment with the additional entry is
+                ;; still on top when one of these continuations is
+                ;; invoked.
+                ,@(reverse (mapcar #'list
+                                   segment-names segment-continuations))
+                (ignore
+                  (push ,(make-tagbody-entry-form
+                          segment-asts segment-names catch-tag)
+                        dynamic-environment)))
+           (declare (ignore ignore))
+           (declare (ignorable dynamic-environment))
+           (step '() ,(first segment-names))
+           (loop (catch ',catch-tag
+                   (trampoline-iteration continuation)
+                   (apply continuation arguments))))))))
