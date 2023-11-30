@@ -7,12 +7,15 @@
          (continuation-variable (gensym "C-"))
          (temp (gensym)))
     `(let ((,continuation-variable
-             (lambda (&rest ,temp)
-               (setf arguments ,temp)
-               (let ((entry (do-return-from ',name dynamic-environment)))
-                 (setf continuation (continuation entry))
-                 (invalidate-entry entry)
-                 (throw (catch-tag entry) nil)))))
+             (make-before-continuation
+              (lambda (&rest ,temp)
+                (setf arguments ,temp)
+                (let ((entry (do-return-from ',name dynamic-environment)))
+                  (setf continuation (continuation entry))
+                  (invalidate-entry entry)
+                  (throw (catch-tag entry) nil)))
+              :origin ',(ico:origin ast)
+              :next ,continuation)))
        ,(cps client environment
              (if (null form-ast)
                  (make-instance 'ico:literal-ast :literal nil)
