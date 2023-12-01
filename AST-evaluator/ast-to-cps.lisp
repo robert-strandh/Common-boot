@@ -9,7 +9,7 @@
     `(lambda ()
        (block ,block-variable
          (let ((dynamic-environment *dynamic-environment*)
-               continuation
+               (continuation *continuation*)
                arguments)
            (declare (ignorable dynamic-environment))
            (let ((,exit (make-before-continuation

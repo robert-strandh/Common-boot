@@ -12,6 +12,7 @@
                 (make-before-continuation
                  (lambda (&rest ignore)
                    (declare (ignore ignore))
+                   (setq *continuation* ,continuation)
                    (step (multiple-value-list
                           (apply ,function-variable
                                  (list ,@argument-variables)))

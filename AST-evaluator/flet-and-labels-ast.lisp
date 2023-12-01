@@ -45,11 +45,8 @@
                                     (apply #'values ,temp)))))
                              ;; The function-wide variable used by
                              ;; CPS-translated code to hold the
-                             ;; current continuation.  We dont
-                             ;; initialize it, because what it is
-                             ;; initialized to contains references to
-                             ;; it, so we use SETF leter on instead.
-                             continuation
+                             ;; current continuation.
+                             (continuation *continuation*)
                              ;; The function-wide variable used by
                              ;; CPS-translated code to hold arguments
                              ;; to transmit to CONTINUATION.

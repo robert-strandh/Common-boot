@@ -8,7 +8,8 @@
     ast))
 
 (defun eval-ast (client ast environment)
-  (setf *dynamic-environment* '())
+  (setf *dynamic-environment* '()
+        *continuation* nil)
   (let* ((transformed-ast (simplify-ast ast))
          (cps (ast-to-cps client transformed-ast environment))
          (top-level-function
