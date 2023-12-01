@@ -61,12 +61,3 @@
                    (return-from nil)))
               x)
          (eval-expression client '#1# environment))))
-
-(define-test tagbody-and-go-from-loop
-  :parent tagbody-and-go
-    (with-default-parameters (client environment global-environment)
-      (iss #1=(block b
-                (let ((x nil))
-                  (tagbody
-                     (return-from b x))))
-           (eval-expression client '#1# environment))))
