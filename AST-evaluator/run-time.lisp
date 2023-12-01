@@ -43,6 +43,12 @@
 (defclass unwind-protect-entry (dynamic-environment-entry)
   ((%closure :initarg :closure :reader closure)))
 
+;;; This variable is used only to pass the continuation over a
+;;; function call.  The caller assigns the current continuation to it,
+;;; and the callee initializes its own lexical variable holding the
+;;; continuatino to its value.
+(defparameter *continuation* '())
+
 ;;; This variable is used only to pass the dynamic environment over a
 ;;; function call.  The caller assigns the current dynamic environment
 ;;; to it, and the callee initializes its own lexical variable holding
@@ -84,6 +90,12 @@
   (lambda (entry)
     (and (typep entry 'block-entry)
          (eq name (name entry)))))
+
+(defun check-dynamic-environment (dynamic-environment)
+  (loop for entry in dynamic-environment
+        do (when (typep entry 'valid-p-mixin)
+             (unless (valid-p entry)
+               (error "invalid-entry: ~s" entry)))))
 
 (defun do-return-from (name dynamic-environment)
   (let ((entry (find-if (block-entry-predicate name) dynamic-environment)))
@@ -255,15 +267,19 @@
             "Values: ~s~%"
             (results continuation))))
 
-(defun trampoline-iteration (continuation)
+(defun trampoline-iteration (continuation dynamic-environment)
   (when *debug-trampoline-iterations*
     (format *debug-io* "=======================~%")
     (loop for c = continuation then (next-continuation c)
           until (null c)
           do (maybe-print-continuation c))
+    (format *debug-io* ".......................~%")
+    (loop for entry in dynamic-environment
+          do (format *debug-io* "~s~%" entry))
+    (format *debug-io* ".......................~%")
     (read *debug-io*)))
 
 (defmacro trampoline-loop ()
-  `(loop (progn (trampoline-iteration continuation)
+  `(loop (progn (trampoline-iteration continuation dynamic-environment)
                 (apply continuation arguments))))
 
