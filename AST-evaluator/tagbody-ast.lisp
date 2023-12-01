@@ -82,5 +82,5 @@
            (declare (ignorable dynamic-environment))
            (step '() ,(first segment-names))
            (loop (catch ',catch-tag
-                   (trampoline-iteration continuation)
+                   (trampoline-iteration continuation dynamic-environment)
                    (apply continuation arguments))))))))
