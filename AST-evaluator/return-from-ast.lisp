@@ -10,7 +10,8 @@
              (make-before-continuation
               (lambda (&rest ,temp)
                 (setf arguments ,temp)
-                (let ((entry (do-return-from ',name dynamic-environment)))
+                (let ((*continuation* ,continuation)
+                      (entry (do-return-from ',name dynamic-environment)))
                   (setf continuation (continuation entry))
                   (throw (catch-tag entry) nil)))
               :origin ',(ico:origin ast)
