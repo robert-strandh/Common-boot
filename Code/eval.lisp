@@ -2,9 +2,11 @@
 
 (defmethod eval-cst (client cst environment)
   (let* ((ast (cst-to-ast client cst environment))
-         (builder (make-builder client environment)))
-    (cm:with-builder builder
-      (cbae:eval-ast client ast environment))))
+         (builder (make-builder client environment))
+         (top-level-function 
+           (cm:with-builder builder
+             (cbae:compile-ast client ast environment))))
+    (funcall top-level-function)))
 
 (defun cps-from-expression (expression environment)
   (let* ((cst (cst:cst-from-expression expression))
