@@ -61,3 +61,10 @@
                    (return-from nil)))
               x)
          (eval-expression client '#1# environment))))
+
+(define-test tagbody-and-go-with-go-wrapped-in-let
+  :parent tagbody-and-go
+  (with-default-parameters (client environment global-environment)
+    (iss #1=(let ((x 10))
+              (tagbody (let ((y 20)) (setq x y) (go out)) (setq x 5) out) x)
+         (eval-expression client '#1# environment))))
