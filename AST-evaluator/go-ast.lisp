@@ -5,5 +5,4 @@
          (name (lookup (ico:tag-definition-ast tag-reference-ast))))
     `(let ((*continuation* ,continuation)
            (entry (do-go ',name dynamic-environment)))
-       (setf continuation (continuation entry))
-       (throw (catch-tag entry) nil))))
+       (throw (catch-tag entry) (continuation entry)))))

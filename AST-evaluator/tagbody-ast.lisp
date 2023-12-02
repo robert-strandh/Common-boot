@@ -81,6 +81,9 @@
            (declare (ignore ignore))
            (declare (ignorable dynamic-environment))
            (step '() ,(first segment-names))
-           (loop (catch ',catch-tag
-                   (trampoline-iteration continuation dynamic-environment)
-                   (apply continuation arguments))))))))
+           (loop (setf continuation
+                       (catch ',catch-tag
+                         (trampoline-iteration
+                          continuation dynamic-environment)
+                         (apply continuation arguments)
+                         continuation))))))))
