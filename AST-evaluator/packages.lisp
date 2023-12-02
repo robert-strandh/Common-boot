@@ -8,7 +8,7 @@
    (#:cm #:common-macros))
   (:use #:common-lisp)
   (:shadow #:symbol-value #:step)
-  (:export #:eval-ast
+  (:export #:compile-ast
            #:ast-to-cps
            #:eval-expression
            #:import-host-function
