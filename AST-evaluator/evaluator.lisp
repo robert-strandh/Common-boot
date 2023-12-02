@@ -7,12 +7,10 @@
          (ast (iat:let-to-labels ast)))
     ast))
 
-(defun eval-ast (client ast environment)
+(defun compile-ast (client ast environment)
   (setf *dynamic-environment* '()
         *continuation* nil)
   (let* ((transformed-ast (simplify-ast ast))
-         (cps (ast-to-cps client transformed-ast environment))
-         (top-level-function
-           (let (#+sbcl(sb-ext:*evaluator-mode* :interpret))
-             (eval cps))))
-    (funcall top-level-function)))
+         (cps (ast-to-cps client transformed-ast environment)))
+    (let (#+sbcl(sb-ext:*evaluator-mode* :interpret))
+      (eval cps))))
