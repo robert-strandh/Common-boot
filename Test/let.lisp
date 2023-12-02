@@ -26,6 +26,18 @@
     (iss #1=(let ((x 234)) (let ((x 345) (y x)) (+ x y)))
          (eval-expression client '#1# environment))))
 
+(define-test let-nested-binding-with-side-effect
+  :parent let
+  (with-default-parameters (client environment global-environment)
+    (iss #1=(let ((x 10)) (let ((y 5)) (setq x (+ x y))) x)
+         (eval-expression client '#1# environment))))
+
+(define-test let-nested-binding-with-side-effect-inside-block
+  :parent let
+  (with-default-parameters (client environment global-environment)
+    (iss #1=(let ((x 10)) (block b (let ((y 5)) (setq x (+ x y)))) x)
+         (eval-expression client '#1# environment))))
+
 (define-test let-with-special-variable
   :parent let
   (with-default-parameters (client environment global-environment)
