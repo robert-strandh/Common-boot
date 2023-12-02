@@ -9,11 +9,10 @@
     `(let ((,continuation-variable
              (make-before-continuation
               (lambda (&rest ,temp)
-                (setf arguments ,temp)
                 (let ((*continuation* ,continuation)
                       (entry (do-return-from ',name dynamic-environment)))
-                  (setf continuation (continuation entry))
-                  (throw (catch-tag entry) nil)))
+                  (throw (catch-tag entry)
+                    (values (continuation entry) ,temp))))
               :origin ',(ico:origin ast)
               :next ,continuation)))
        ,(cps client environment
