@@ -43,3 +43,27 @@
   (with-default-parameters (client environment global-environment)
     (iss #1=(let ((x 234)) (declare (special x)) x)
          (eval-expression client '#1# environment))))
+
+(define-test let-with-ignore-declaration
+  :parent let
+  (with-default-parameters (client environment global-environment)
+    (iss #1=(let ((x 234) (y 345)) (declare (ignore x)) y)
+         (eval-expression client '#1# environment))))
+
+(define-test let-with-ignore-declaration-of-second
+  :parent let
+  (with-default-parameters (client environment global-environment)
+    (iss #1=(let ((x 234) (y 345)) (declare (ignore y)) x)
+         (eval-expression client '#1# environment))))
+
+(define-test let-with-ignorable-declaration
+  :parent let
+  (with-default-parameters (client environment global-environment)
+    (iss #1=(let ((x 234) (y 345)) (declare (ignorable x)) y)
+         (eval-expression client '#1# environment))))
+
+(define-test let-with-ignorable-declaration-of-second
+  :parent let
+  (with-default-parameters (client environment global-environment)
+    (iss #1=(let ((x 234) (y 345)) (declare (ignorable y)) x)
+         (eval-expression client '#1# environment))))
