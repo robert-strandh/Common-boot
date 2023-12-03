@@ -19,3 +19,13 @@
   (with-default-parameters (client environment global-environment)
     (iss #1=(multiple-value-call #'+ (floor 234 33) 11)
          (eval-expression client '#1# environment))))
+
+(define-test multiple-value-call-with-ignore-declaration
+  :parent multiple-value-call
+  (with-default-parameters (client environment global-environment)
+    (iss #1=(multiple-value-call
+                (lambda (&optional x &rest rest)
+                  (declare (ignore rest))
+                  x)
+              234)
+         (eval-expression client '#1# environment))))
