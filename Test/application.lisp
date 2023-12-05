@@ -29,9 +29,38 @@
 (define-test application-of-lambda-with-ignore-declaration-of-required
   :parent application
   (with-default-parameters (client environment global-environment)
+    (iss #1=((lambda (x)
+               (declare (ignore x))
+               345)
+             234)
+         (eval-expression client '#1# environment))))
+
+(define-test application-of-lambda-with-ignore-declaration-of-one-required
+  :parent application
+  (with-default-parameters (client environment global-environment)
+    (iss #1=((lambda (x y)
+               (declare (ignore x))
+               y)
+             234 345)
+         (eval-expression client '#1# environment))))
+
+(define-test
+    application-of-lambda-with-rest-and-ignore-declaration-of-required
+  :parent application
+  (with-default-parameters (client environment global-environment)
     (iss #1=((lambda (x &rest rest)
                (declare (ignore x))
                rest)
+             234)
+         (eval-expression client '#1# environment))))
+
+(define-test
+    application-of-lambda-with-optional-and-ignore-declaration-of-required
+  :parent application
+  (with-default-parameters (client environment global-environment)
+    (iss #1=((lambda (x &optional y)
+               (declare (ignore x))
+               y)
              234)
          (eval-expression client '#1# environment))))
 
