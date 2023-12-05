@@ -27,3 +27,9 @@
               (declare (ignorable x))
               (let* ((x 345) (y x)) (+ x y)))
          (eval-expression client '#1# environment))))
+
+(define-test let*-with-ignore-declaration
+  :parent let*
+  (with-default-parameters (client environment global-environment)
+    (iss #1=(let* ((x 234) (y 345)) (declare (ignore x)) y)
+         (eval-expression client '#1# environment))))
