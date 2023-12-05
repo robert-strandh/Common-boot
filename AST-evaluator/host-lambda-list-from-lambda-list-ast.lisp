@@ -8,8 +8,8 @@
 
 (defmethod host-parameter-from-parameter-ast
     ((ast ico:optional-parameter-ast))
-  (let* ((parameter-ast (ico:parameter-ast ast))
-         (parameter-name (lookup parameter-ast))
+  (let* ((name-ast (ico:name-ast ast))
+         (parameter-name (lookup name-ast))
          (supplied-p-parameter-ast (ico:supplied-p-parameter-ast ast)))
     (if (null supplied-p-parameter-ast)
         parameter-name
@@ -23,10 +23,10 @@
 
 (defmethod host-parameter-from-parameter-ast
     ((ast ico:key-parameter-ast))
-  (let* ((parameter-ast (ico:parameter-ast ast))
-         (parameter-name (lookup parameter-ast))
+  (let* ((name-ast (ico:name-ast ast))
+         (parameter-name (lookup name-ast))
          (keyword-ast (ico:keyword-ast ast))
-         (keyword-name (ico:name keyword-ast))
+         (keyword-name (ico:literal keyword-ast))
          (supplied-p-parameter-ast (ico:supplied-p-parameter-ast ast)))
     (if (null supplied-p-parameter-ast)
         (list (list keyword-name parameter-name))
