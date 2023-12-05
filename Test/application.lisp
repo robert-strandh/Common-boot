@@ -35,6 +35,13 @@
              234)
          (eval-expression client '#1# environment))))
 
+(define-test application-of-lambda-with-optional
+  :parent application
+  (with-default-parameters (client environment global-environment)
+    (iss #1=((lambda (&optional x) x)
+             234)
+         (eval-expression client '#1# environment))))
+
 (define-test application-of-lambda-with-ignore-declaration-of-optional
   :parent application
   (with-default-parameters (client environment global-environment)
@@ -51,4 +58,11 @@
                (declare (ignore rest))
                x)
              234)
+         (eval-expression client '#1# environment))))
+
+(define-test application-of-lambda-with-key
+  :parent application
+  (with-default-parameters (client environment global-environment)
+    (iss #1=((lambda (&key x) x)
+             :x 234)
          (eval-expression client '#1# environment))))
