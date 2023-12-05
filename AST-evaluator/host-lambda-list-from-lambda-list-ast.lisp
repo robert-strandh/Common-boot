@@ -61,7 +61,7 @@
 
 (defmethod host-section-from-section-ast
     ((ast ico:rest-section-ast))
-  (list (host-parameter-from-parameter-ast (ico:parameter-ast ast))))
+  (list '&rest (host-parameter-from-parameter-ast (ico:parameter-ast ast))))
 
 (defun host-lambda-list-from-lambda-list-ast (ast)
   (loop for accessor in (list #'ico:required-section-ast
