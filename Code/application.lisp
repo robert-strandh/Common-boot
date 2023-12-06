@@ -13,4 +13,3 @@
         :argument-asts
         (loop for argument-ast in (ico:argument-asts ast)
               collect (convert-ast builder argument-ast))))))
-    
