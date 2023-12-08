@@ -112,7 +112,8 @@
 
 (defgeneric lambda-list-section-accessors (ast))
 
-(defmethod lambda-list-section-accessors ((ast ico:ordinary-lambda-list-ast))
+(defmethod lambda-list-section-accessors
+    ((ast ico:ordinary-lambda-list-ast))
   (list #'ico:required-section-ast
         #'ico:optional-section-ast
         #'ico:rest-section-ast
@@ -122,6 +123,25 @@
 (defmethod lambda-list-section-accessors
     ((ast ico:specialized-lambda-list-ast))
   (list #'ico:required-section-ast
+        #'ico:optional-section-ast
+        #'ico:rest-section-ast
+        #'ico:key-section-ast
+        #'ico:aux-section-ast))
+
+(defmethod lambda-list-section-accessors
+    ((ast ico:destructuring-lambda-list-ast))
+  (list #'ico:whole-section-ast
+        #'ico:required-section-ast
+        #'ico:optional-section-ast
+        #'ico:rest-section-ast
+        #'ico:key-section-ast
+        #'ico:aux-section-ast))
+
+(defmethod lambda-list-section-accessors
+    ((ast ico:macro-lambda-list-ast))
+  (list #'ico:whole-section-ast
+        #'ico:environment-section-ast
+        #'ico:required-section-ast
         #'ico:optional-section-ast
         #'ico:rest-section-ast
         #'ico:key-section-ast
