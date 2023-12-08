@@ -110,51 +110,33 @@
   (loop for variable-name-ast in variable-name-asts
         do (mark-variable-ast-as-special lambda-list-ast variable-name-ast)))
 
+(defgeneric lambda-list-section-accessors (ast))
+
+(defmethod lambda-list-section-accessors ((ast ico:ordinary-lambda-list-ast))
+  (list #'ico:required-section-ast
+        #'ico:optional-section-ast
+        #'ico:rest-section-ast
+        #'ico:key-section-ast
+        #'ico:aux-section-ast))
+
+(defmethod lambda-list-section-accessors
+    ((ast ico:specialized-lambda-list-ast))
+  (list #'ico:required-section-ast
+        #'ico:optional-section-ast
+        #'ico:rest-section-ast
+        #'ico:key-section-ast
+        #'ico:aux-section-ast))
+
 (defgeneric finalize-lambda-list
     (client environment lambda-list-ast declaration-asts))
 
-;;; Finalize the unparsed parts of an ordinary lambda list AST and
-;;; return a new environment resulting from the introduced variables.
 (defmethod finalize-lambda-list
-    (client environment (ast ico:ordinary-lambda-list-ast) declaration-asts)
+    (client environment (ast ico:lambda-list-ast) declaration-asts)
   (let ((new-environment environment)
         (special-declared-variable-asts
           (iat:extract-special-declared-variable-asts declaration-asts)))
     (mark-variable-asts-as-special ast special-declared-variable-asts)
-    (loop for accessor
-            in (list #'ico:required-section-ast
-                     #'ico:optional-section-ast
-                     #'ico:rest-section-ast
-                     #'ico:key-section-ast
-                     #'ico:aux-section-ast)
-          do (setf new-environment
-                   (finalize-section
-                    client (funcall accessor ast) new-environment)))
-    (loop for special-declared-variable-ast in special-declared-variable-asts
-          for name = (ico:name special-declared-variable-ast)
-          for description
-            = (trucler:describe-variable client new-environment name)
-          unless (typep description 'trucler:special-variable-description)
-            do (setf new-environment
-                     (trucler:add-local-special-variable
-                      client new-environment name)))
-    new-environment))
-    
-;;; Finalize the unparsed parts of a specialized lambda list AST and
-;;; return a new environment resulting from the introduced variables.
-(defmethod finalize-lambda-list
-    (client environment (ast ico:specialized-lambda-list-ast)
-     declaration-asts)
-  (let ((new-environment environment)
-        (special-declared-variable-asts
-          (iat:extract-special-declared-variable-asts declaration-asts)))
-    (mark-variable-asts-as-special ast special-declared-variable-asts)
-    (loop for accessor
-            in (list #'ico:required-section-ast
-                     #'ico:optional-section-ast
-                     #'ico:rest-section-ast
-                     #'ico:key-section-ast
-                     #'ico:aux-section-ast)
+    (loop for accessor in (lambda-list-section-accessors ast)
           do (setf new-environment
                    (finalize-section
                     client (funcall accessor ast) new-environment)))
