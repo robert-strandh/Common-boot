@@ -5,5 +5,5 @@
 (define-test macrolet-one-macro
   :parent macrolet
   (with-default-parameters (client environment global-environment)
-    (iss #1=(macrolet ((foo (x) `(1+ ,x))) (foo 234))
+    (iss #1=(macrolet ((foo (x) (list '1+ x))) (foo 234))
          (eval-expression client '#1# environment))))
