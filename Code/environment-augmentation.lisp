@@ -101,3 +101,8 @@
     (client name-ast environment)
   (let* ((name (ico:name name-ast)))
     (trucler:add-local-function client environment name name-ast)))
+
+(defun augment-environment-with-local-macro-name
+    (client name-ast environment expander)
+  (let* ((name (ico:name name-ast)))
+    (trucler:add-local-macro client environment name expander)))
