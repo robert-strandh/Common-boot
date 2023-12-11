@@ -16,8 +16,11 @@
       :form-asts
       (loop for form-ast in (ico:form-asts ast)
             collect
-            (convert-ast-in-environment client form-ast body-environment)))))
-
+            (convert-ast-in-environment client form-ast body-environment)))
+    (let ((lambda-ast (cm:parse-macro ast))
+          (builder (make-builder client environment)))
+      (cm:with-builder builder
+        (cbae:compile-ast client lambda-ast environment)))))
 
 (defmethod abp:finish-node
     ((builder builder)
@@ -27,11 +30,12 @@
     (let ((new-environment environment))
       (loop for local-macro-ast in (ico:binding-asts ast)
             for name-ast = (ico:name-ast local-macro-ast)
-            do (finalize-local-macro-ast
-                client local-macro-ast environment)
-               (setf new-environment
+            for macro-function
+              = (finalize-local-macro-ast
+                 client local-macro-ast environment)
+            do (setf new-environment
                      (augment-environment-with-local-macro-name
-                      client name-ast environment)))
+                      client name-ast environment macro-function)))
       (reinitialize-instance ast
         :form-asts
         (loop for form-ast in (ico:form-asts ast)
