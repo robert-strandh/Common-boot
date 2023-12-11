@@ -17,10 +17,11 @@
       (loop for form-ast in (ico:form-asts ast)
             collect
             (convert-ast-in-environment client form-ast body-environment)))
-    (let ((lambda-ast (cm:parse-macro ast))
-          (builder (make-builder client environment)))
-      (cm:with-builder builder
-        (cbae:compile-ast client lambda-ast environment)))))
+    (cm:with-ast-origin ast
+      (let ((lambda-ast (cm:parse-macro ast))
+            (builder (make-builder client environment)))
+        (cm:with-builder builder
+          (cbae:compile-ast client lambda-ast environment))))))
 
 (defmethod abp:finish-node
     ((builder builder)
