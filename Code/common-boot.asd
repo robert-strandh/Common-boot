@@ -28,6 +28,7 @@
    (:file "declarations")
    (:file "flet")
    (:file "labels")
+   (:file "macrolet")
    (:file "application")
    (:file "function")
    (:file "lambda-list")
