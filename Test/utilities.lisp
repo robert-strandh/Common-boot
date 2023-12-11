@@ -12,6 +12,8 @@
      (cbae:import-host-function
       ,client-variable 'null ,global-environment-variable)
      (cbae:import-host-function
+      ,client-variable 'list ,global-environment-variable)
+     (cbae:import-host-function
       ,client-variable 'first ,global-environment-variable)
      (cbae:import-host-function
       ,client-variable 'rest ,global-environment-variable)
