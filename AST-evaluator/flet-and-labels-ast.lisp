@@ -89,6 +89,12 @@
                       :origin ',(ico:origin function-name-ast)))))
     action))
 
+(defmethod cps (client environment (ast ico:local-function-ast) continuation)
+  (let ((lambda-list-ast (ico:lambda-list-ast ast))
+        (form-asts (ico:form-asts ast)))
+    (cps-function-ast
+     client environment lambda-list-ast form-asts continuation)))
+
 (defmethod cps (client environment (ast ico:flet-ast) continuation)
   (cps-flet-and-labels client environment ast continuation))
 
