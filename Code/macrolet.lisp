@@ -18,10 +18,12 @@
             collect
             (convert-ast-in-environment client form-ast body-environment)))
     (cm:with-ast-origin ast
-      (let ((lambda-ast (cm:parse-macro ast))
-            (builder (make-builder client environment)))
-        (cm:with-builder builder
-          (cbae:compile-ast client lambda-ast environment))))))
+      (let* ((lambda-ast (cm:parse-macro ast))
+             (builder (make-builder client environment))
+             (top-level-function
+               (cm:with-builder builder
+                 (cbae:compile-ast client lambda-ast environment))))
+        (funcall top-level-function)))))
 
 (defmethod abp:finish-node
     ((builder builder)
