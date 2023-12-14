@@ -10,7 +10,9 @@
           for symbol being each external-symbol in cmd
           for symbol-name = (symbol-name symbol)
           for cl-symbol = (find-symbol symbol-name cl-package)
-          do (setf (clo:macro-function nil environment cl-symbol)
-                   (macro-function symbol)))
+          for macro-function = (macro-function symbol)
+          do (unless (null macro-function)
+               (setf (clo:macro-function nil environment cl-symbol)
+                     macro-function)))
     (make-instance 'trucler-reference:environment
       :global-environment environment)))
