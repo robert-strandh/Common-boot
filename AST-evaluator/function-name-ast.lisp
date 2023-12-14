@@ -9,6 +9,9 @@
     (client environment
      (ast ico:global-function-name-reference-ast)
      continuation)
-  `(step (list (car ',(clostrum-sys:operator-cell
-                       client environment (ico:name ast))))
-         ,continuation))
+  (let* ((name (ico:name ast))
+         (cell (clostrum-sys:operator-cell client environment name)))
+    (when (null cell)
+      (error "No cell for ~s" name))
+    `(step (list (car ',cell))
+           ,continuation)))
