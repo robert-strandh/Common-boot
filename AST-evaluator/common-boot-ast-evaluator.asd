@@ -76,5 +76,6 @@
    (:file "function-ast")
    (:file "special-variable-bind-ast")
    (:file "macrolet-ast")
+   (:file "symbol-macrolet-ast")
    (:file "ast-to-cps")
    (:file "evaluator")))
