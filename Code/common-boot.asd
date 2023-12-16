@@ -29,6 +29,7 @@
    (:file "flet")
    (:file "labels")
    (:file "macrolet")
+   (:file "symbol-macrolet")
    (:file "application")
    (:file "function")
    (:file "lambda-list")
