@@ -10,7 +10,9 @@
      (description trucler:symbol-macro-description)
      environment)
   (let* ((expansion (trucler:expansion description))
-         (expander (symbol-macro-expander expansion))
+         (expander (lambda (form environment)
+                     (declare (ignore form environment))
+                     expansion))
          (expanded-form
            (funcall expander (cst:raw cst) environment))
          (expanded-cst
