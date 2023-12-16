@@ -99,10 +99,16 @@
 
 (defun augment-environment-with-local-function-name
     (client name-ast environment)
-  (let* ((name (ico:name name-ast)))
+  (let ((name (ico:name name-ast)))
     (trucler:add-local-function client environment name name-ast)))
 
 (defun augment-environment-with-local-macro-name
     (client name-ast environment expander)
-  (let* ((name (ico:name name-ast)))
+  (let ((name (ico:name name-ast)))
     (trucler:add-local-macro client environment name expander)))
+
+(defun augment-environment-with-local-symbol-macro
+    (client name-ast environment expansion-ast)
+  (let ((name (ico:name name-ast))
+        (expansion (cst:raw (ico:form expansion-ast))))
+    (trucler:add-local-symbol-macro client environment name expansion)))
