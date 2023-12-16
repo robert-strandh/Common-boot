@@ -8,10 +8,10 @@
     (let ((new-environment environment))
       (loop for symbol-expansion-ast in (ico:symbol-expansion-asts ast)
             for symbol-ast = (ico:symbol-ast symbol-expansion-ast)
-            for expansion-ast = (ico:expansion-ast ast)
+            for expansion-ast = (ico:expansion-ast symbol-expansion-ast)
             do (setf new-environment
                      (augment-environment-with-local-symbol-macro
-                      client symbol-ast environment expansion-ast)))
+                      client symbol-ast new-environment expansion-ast)))
       (reinitialize-instance ast
         :form-asts
         (loop for form-ast in (ico:form-asts ast)
