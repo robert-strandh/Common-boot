@@ -14,6 +14,7 @@
                     (#:cst #:concrete-syntax-tree)
                     (#:cbae #:common-boot-ast-evaluator))
   (:export #:client
+           #:environment
            #:macro-preserving-client
            #:macro-expanding-client
            #:macro-function-client
