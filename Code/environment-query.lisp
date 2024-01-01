@@ -6,7 +6,7 @@
          (result (trucler:describe-function
                   client environment function-name)))
     (when (null result)
-      (warn "No function description for ~s" function-name)
+      (warn 'no-function-description :name function-name)
       (return-from describe-function
         (make-instance 'trucler:global-function-description
           :name function-name)))
