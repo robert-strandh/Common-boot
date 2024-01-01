@@ -59,4 +59,5 @@
    (:file "convert")
    (:file "convert-ast")
    (:file "cst-to-ast")
-   (:file "eval")))
+   (:file "eval")
+   (:file "condition-types")))
