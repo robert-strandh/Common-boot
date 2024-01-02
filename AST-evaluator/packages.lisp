@@ -7,10 +7,11 @@
    (#:bld #:iconoclast-builder)
    (#:cm #:common-macros))
   (:use #:common-lisp)
-  (:shadow #:symbol-value #:step)
+  (:shadow #:symbol-value #:boundp #:step)
   (:export #:compile-ast
            #:ast-to-cps
            #:eval-expression
            #:import-host-function
+           #:boundp
            #:symbol-value
            #:*dynamic-environment*))
