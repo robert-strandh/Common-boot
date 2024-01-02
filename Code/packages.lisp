@@ -23,4 +23,6 @@
            #:eval-expression
            #:cst-to-ast
            #:convert-with-parser-p
-           #:convert-with-ordinary-macro-p))
+           #:convert-with-ordinary-macro-p
+           #:no-function-description
+           #:name))
