@@ -183,6 +183,13 @@
        (when (typep ,c 'after-continuation)
          (setf (results ,c) ,a)))))
 
+(defun boundp (name cell dynamic-environment)
+  (loop for entry in dynamic-environment
+        do (when (and (typep entry 'special-variable-entry)
+                      (eq name (name entry)))
+             (return (slot-boundp entry '%value)))
+        finally (return (not (eq (car cell) (cdr cell))))))
+
 (defun symbol-value (name cell dynamic-environment)
   (loop for entry in dynamic-environment
         do (when (and (typep entry 'special-variable-entry)
