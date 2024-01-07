@@ -26,7 +26,10 @@
   (let* ((name-ast (ico:name-ast ast))
          (parameter-name (lookup name-ast))
          (keyword-ast (ico:keyword-ast ast))
-         (keyword-name (ico:literal keyword-ast))
+         (keyword-name
+           (if (null keyword-ast)
+               (intern (symbol-name (ico:name name-ast)) "KEYWORD")
+               (ico:literal keyword-ast)))
          (supplied-p-parameter-ast (ico:supplied-p-parameter-ast ast)))
     (if (null supplied-p-parameter-ast)
         (list (list keyword-name parameter-name))
