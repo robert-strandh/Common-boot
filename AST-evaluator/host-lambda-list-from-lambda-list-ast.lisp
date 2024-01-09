@@ -57,10 +57,13 @@
   
 (defmethod host-section-from-section-ast
     ((ast ico:key-section-ast))
-  (cons '&key
-        (loop for parameter-ast in (ico:parameter-asts ast)
-              collect (host-parameter-from-parameter-ast
-                       parameter-ast))))
+  (append (cons '&key
+                (loop for parameter-ast in (ico:parameter-asts ast)
+                      collect (host-parameter-from-parameter-ast
+                               parameter-ast)))
+          (if (null (ico:allow-other-keys-ast ast))
+              '()
+              (list '&allow-other-keys))))
 
 (defmethod host-section-from-section-ast
     ((ast ico:rest-section-ast))
