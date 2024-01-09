@@ -51,10 +51,19 @@
            (when (and *current-form-is-top-level-p* *compile-time-too*)
              (eval-cst client cst environment))
            (let* ((operator-cst (cst:first cst))
-                  (operator (first form)))
+                  (operator (first form))
+                  (description
+                    (trucler:describe-function client environment operator)))
              (cond ((convert-with-parser-p client operator)
                     (let ((builder (make-builder client environment)))
                       (ses:parse builder t cst)))
+                   ((and (typep description 'trucler:macro-description)
+                         (not (eq operator 'defmacro)))
+                    ;; When we have a macro definition in the
+                    ;; environment, it overrides the macro definition
+                    ;; in Common Macro Definitions.
+                    (convert-with-description
+                     client cst description environment))
                    ((convert-with-ordinary-macro-p client operator)
                     (let* ((expansion (cmd:macroexpand-1 form environment))
                            (new-cst (cst:reconstruct client expansion cst)))
