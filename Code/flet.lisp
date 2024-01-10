@@ -13,11 +13,23 @@
            client environment
            (ico:lambda-list-ast ast)
            (ico:declaration-asts ast))))
-    (reinitialize-instance ast
-      :form-asts
-      (loop for form-ast in (ico:form-asts ast)
-            collect
-            (convert-ast-in-environment client form-ast body-environment)))))
+    (let* ((name (ico:name (ico:name-ast ast)))
+           (block-name-ast
+             (make-instance 'ico:block-name-definition-ast
+               :name name
+               :origin (ico:origin ast)))
+           (forms-environment
+             (trucler:add-block
+              client body-environment name block-name-ast)))
+      (reinitialize-instance ast
+        :form-asts
+        (list (make-instance 'ico:block-ast
+                :name-ast block-name-ast
+                :form-asts
+                (loop for form-ast in (ico:form-asts ast)
+                      collect
+                      (convert-ast-in-environment
+                       client form-ast forms-environment))))))))
 
 (defmethod abp:finish-node
     ((builder builder)
