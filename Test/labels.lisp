@@ -22,3 +22,9 @@
                        (g (x) (f x)))
                 (g 234)))
          (eval-expression client '#1# environment))))
+
+(define-test labels-with-return-from
+  :parent labels
+  (with-default-parameters (client environment global-environment)
+    (iss #1=(labels ((f () (return-from f 234))) (f))
+         (eval-expression client '#1# environment))))
