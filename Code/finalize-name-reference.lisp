@@ -38,6 +38,7 @@
     (client
      (name-ast ico:function-name-ast)
      (description null))
+  (warn 'no-function-description :name (ico:name name-ast))
   (change-class name-ast 'ico:global-function-name-reference-ast))
 
 (defmethod finalize-function-name-ast-from-description
