@@ -76,18 +76,23 @@
           for function-name = (lookup function-name-ast)
           for lambda-list-ast = (ico:lambda-list-ast local-function-ast)
           for form-asts = (ico:form-asts local-function-ast)
+          for temp = (gensym)
           do (setf action
                    (cps-function-ast
                     client environment
                     lambda-list-ast
                     form-asts
                     `(make-before-continuation
-                      (lambda (&rest ,function-name)
+                      (lambda (&rest ,temp)
                         (setf ,function-name
-                              (car ,function-name))
+                              (car ,temp))
                         ,action)
                       :origin ',(ico:origin function-name-ast)))))
-    action))
+    `(let ,(loop for local-function-ast in (ico:binding-asts ast)
+                 for function-name-ast = (ico:name-ast local-function-ast)
+                 for function-name = (lookup function-name-ast)
+                 collect function-name)
+       ,action)))
 
 (defmethod cps (client environment (ast ico:local-function-ast) continuation)
   (let ((lambda-list-ast (ico:lambda-list-ast ast))
