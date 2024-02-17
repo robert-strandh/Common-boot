@@ -42,7 +42,8 @@
                                (make-before-continuation
                                 (lambda (&rest ,temp)
                                   (return-from ,block-variable
-                                    (apply #'values ,temp)))))
+                                    (apply #'values ,temp)))
+                                :next *continuation*))
                              ;; The function-wide variable used by
                              ;; CPS-translated code to hold the
                              ;; current continuation.
