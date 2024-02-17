@@ -290,3 +290,6 @@
   `(loop (progn (trampoline-iteration continuation dynamic-environment)
                 (apply continuation arguments))))
 
+(defun apply-with-origin (function arguments origin)
+  (declare (ignore origin))
+  (apply function arguments))
