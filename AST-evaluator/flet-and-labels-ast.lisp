@@ -1,7 +1,7 @@
 (cl:in-package #:common-boot-ast-evaluator)
 
 (defun cps-function-ast
-    (client environment lambda-list-ast form-asts continuation)
+    (client environment lambda-list-ast form-asts origin continuation)
   (let ((lambda-list-variable-asts
           (iat:extract-variable-asts-in-lambda-list
            lambda-list-ast)))
@@ -83,6 +83,7 @@
                     client environment
                     lambda-list-ast
                     form-asts
+                    (ico:origin local-function-ast)
                     `(make-before-continuation
                       (lambda (&rest ,temp)
                         (setf ,function-name
@@ -97,9 +98,10 @@
 
 (defmethod cps (client environment (ast ico:local-function-ast) continuation)
   (let ((lambda-list-ast (ico:lambda-list-ast ast))
-        (form-asts (ico:form-asts ast)))
+        (form-asts (ico:form-asts ast))
+        (origin (ico:origin ast)))
     (cps-function-ast
-     client environment lambda-list-ast form-asts continuation)))
+     client environment lambda-list-ast form-asts origin continuation)))
 
 (defmethod cps (client environment (ast ico:flet-ast) continuation)
   (cps-flet-and-labels client environment ast continuation))

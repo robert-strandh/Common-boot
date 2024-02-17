@@ -57,7 +57,8 @@
                         ,(cps-implicit-progn
                           client environment
                           (ico:form-asts ast)
-                          end-condtinuation-variable))))
+                          end-condtinuation-variable))
+                      :origin ',(ico:origin ast)))
                (trampoline-loop)))
          (setf continuation c
                arguments a)))))
