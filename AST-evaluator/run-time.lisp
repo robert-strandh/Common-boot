@@ -290,6 +290,15 @@
   `(loop (progn (trampoline-iteration continuation dynamic-environment)
                 (apply continuation arguments))))
 
+(defparameter *stack* '())
+
+(defclass stack-entry ()
+  ((%origin :initarg :origin :reader origin)
+   (%arguments :initarg :arguments :reader arguments)))
+
 (defun apply-with-origin (function arguments origin)
-  (declare (ignore origin))
-  (apply function arguments))
+  (let ((*stack* (cons (make-instance 'stack-entry
+                         :origin origin
+                         :arguments arguments)
+                       *stack*)))
+    (apply function arguments)))
