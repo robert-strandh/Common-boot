@@ -43,6 +43,7 @@
                                 (lambda (&rest ,temp)
                                   (return-from ,block-variable
                                     (apply #'values ,temp)))
+                                :origin ',origin
                                 :next *continuation*))
                              ;; The function-wide variable used by
                              ;; CPS-translated code to hold the
