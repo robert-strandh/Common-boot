@@ -14,4 +14,7 @@
            #:import-host-function
            #:boundp
            #:symbol-value
-           #:*dynamic-environment*))
+           #:*dynamic-environment*
+           #:stack-entry
+           #:origin
+           #:arguments))
