@@ -28,4 +28,5 @@
    (:file "tagbody-and-go")
    (:file "progv")
    (:file "macrolet")
-   (:file "symbol-macrolet")))
+   (:file "symbol-macrolet")
+   (:file "special-variable")))
