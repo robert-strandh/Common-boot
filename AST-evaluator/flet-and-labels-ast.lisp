@@ -29,9 +29,7 @@
                               ;; referred to by CPS-translated code
                               ;; for access to the target dynamic
                               ;; environment.
-                              dynamic-environment
-                               (prog1 *dynamic-environment*
-                                 (setf *dynamic-environment* nil)))
+                              dynamic-environment *dynamic-environment*)
                              (;; The CPS translation of FORM* is done
                               ;; in this continuation.  So when the
                               ;; evaluation of FORM* finishes
