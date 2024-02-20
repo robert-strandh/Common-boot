@@ -13,6 +13,7 @@
                  (lambda (&rest ignore)
                    (declare (ignore ignore))
                    (setq *continuation* ,continuation)
+                   (setq *dynamic-environment* dynamic-environment)
                    (step (multiple-value-list
                           (apply-with-origin
                            ,function-variable
