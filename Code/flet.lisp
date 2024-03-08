@@ -43,7 +43,7 @@
                 client local-function-ast environment)
                (setf new-environment
                      (augment-environment-with-local-function-name
-                      client name-ast environment)))
+                      client name-ast new-environment)))
       (reinitialize-instance ast
         :form-asts
         (loop for form-ast in (ico:form-asts ast)
