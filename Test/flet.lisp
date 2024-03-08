@@ -28,3 +28,9 @@
   (with-default-parameters (client environment global-environment)
     (iss #1=(flet ((f () (return-from f 234))) (f))
          (eval-expression client '#1# environment))))
+
+(define-test flet-with-function
+  :parent flet
+  (with-default-parameters (client environment global-environment)
+    (iss #1=(flet ((f () 234)) (funcall (function f)))
+         (eval-expression client '#1# environment))))
