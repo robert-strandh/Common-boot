@@ -35,10 +35,10 @@
             for name-ast = (ico:name-ast local-macro-ast)
             for macro-function
               = (finalize-local-macro-ast
-                 client local-macro-ast environment)
+                 client local-macro-ast new-environment)
             do (setf new-environment
                      (augment-environment-with-local-macro-name
-                      client name-ast environment macro-function)))
+                      client name-ast new-environment macro-function)))
       (reinitialize-instance ast
         :form-asts
         (loop for form-ast in (ico:form-asts ast)
