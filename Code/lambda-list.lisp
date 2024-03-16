@@ -8,18 +8,21 @@
 (defgeneric finalize-parameter (client parameter-ast environment))
 
 (defun finalize-parameter-variable (client variable-name-ast environment)
-  (let ((name (ico:name variable-name-ast)))
-    (cond ((typep (trucler:describe-variable client environment name)
-                  'trucler:global-special-variable-description)
-           (change-class variable-name-ast
-                         'ico:special-variable-bound-ast)
-           environment)
-          ((typep variable-name-ast 'ico:special-variable-bound-ast)
-           (trucler:add-local-special-variable client environment name))
-          (t
-           (change-class variable-name-ast 'ico:variable-definition-ast)
-           (trucler:add-lexical-variable
-            client environment name variable-name-ast)))))
+  (if (typep variable-name-ast 'ico:pattern-ast)
+      ;; FIXME: it is not correct to pass the emtpy list as declarations.
+      (finalize-lambda-list client environment variable-name-ast '())
+      (let ((name (ico:name variable-name-ast)))
+        (cond ((typep (trucler:describe-variable client environment name)
+                      'trucler:global-special-variable-description)
+               (change-class variable-name-ast
+                             'ico:special-variable-bound-ast)
+               environment)
+              ((typep variable-name-ast 'ico:special-variable-bound-ast)
+               (trucler:add-local-special-variable client environment name))
+              (t
+               (change-class variable-name-ast 'ico:variable-definition-ast)
+               (trucler:add-lexical-variable
+                client environment name variable-name-ast))))))
 
 (defmethod finalize-parameter
     (client (parameter-ast ico:required-parameter-ast) environment)
