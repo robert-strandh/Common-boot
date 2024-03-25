@@ -11,4 +11,12 @@
                          (declare (special *foo*))
                          (f))))
                 (g)))
-         (eval-expression client `#1# environment))))
+         (eval-expression client '#1# environment))))
+
+(define-test special-variable-2
+  :parent special-variable
+  (with-default-parameters (client environment global-environment)
+    (iss #1=(let ((*foo* (let ((x 10)) x)))
+              (declare (special *foo*))
+              *foo*)
+         (eval-expression client '#1# environment))))
