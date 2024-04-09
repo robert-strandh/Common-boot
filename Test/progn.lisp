@@ -14,7 +14,7 @@
     (iss #1=(progn 234)
          (eval-expression client '#1# environment))))
 
-(define-test progn-one-two-forms
+(define-test progn-two-forms
   :parent progn
   (with-default-parameters (client environment global-environment)
     (iss #1=(progn (+ 234) 345)
