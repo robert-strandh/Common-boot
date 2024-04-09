@@ -8,6 +8,12 @@
     (iss #1=(flet ((f () 234)) (f))
          (eval-expression client '#1# environment))))
 
+(define-test flet-no-parameters-two-body-forms
+  :parent flet
+  (with-default-parameters (client environment global-environment)
+    (iss #1=(flet ((f () 234 345)) (f))
+         (eval-expression client '#1# environment))))
+
 (define-test flet-one-parameter
   :parent flet
   (with-default-parameters (client environment global-environment)

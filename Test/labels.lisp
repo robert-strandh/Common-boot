@@ -8,6 +8,12 @@
     (iss #1=(labels ((f () 234)) (f))
          (eval-expression client '#1# environment))))
 
+(define-test labels-no-parameters-two-body-forms
+  :parent labels
+  (with-default-parameters (client environment global-environment)
+    (iss #1=(labels ((f () 234 345)) (f))
+         (eval-expression client '#1# environment))))
+
 (define-test labels-one-parameter
   :parent labels
   (with-default-parameters (client environment global-environment)
