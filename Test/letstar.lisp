@@ -14,6 +14,12 @@
     (iss #1=(let* () 234)
          (eval-expression client '#1# environment))))
 
+(define-test let*-no-bindings-two-forms
+  :parent let*
+  (with-default-parameters (client environment global-environment)
+    (iss #1=(let* () 234 345)
+         (eval-expression client '#1# environment))))
+
 (define-test let*-one-binding
   :parent let*
   (with-default-parameters (client environment global-environment)
