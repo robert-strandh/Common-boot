@@ -296,9 +296,12 @@
   ((%origin :initarg :origin :reader origin)
    (%arguments :initarg :arguments :reader arguments)))
 
+;;; This table can be used to count origins in APPLY-WITH-ORIGIN.
+(defparameter *ht* (make-hash-table :test #'eq))
+
 (defun apply-with-origin (function arguments origin)
-  (let ((*stack* (cons (make-instance 'stack-entry
-                         :origin origin
-                         :arguments arguments)
-                       *stack*)))
+  (let* ((entry (make-instance 'stack-entry
+                  :origin origin
+                  :arguments arguments))
+         (*stack* (cons entry *stack*)))
     (apply function arguments)))
