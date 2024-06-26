@@ -4,4 +4,5 @@
   :depends-on ("common-boot")
   :serial t
   :components
-  ((:file "packages")))
+  ((:file "packages")
+   (:file "function-tree")))
