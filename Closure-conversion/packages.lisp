@@ -2,5 +2,6 @@
 
 (defpackage #:common-boot-closure-conversion
   (:use #:common-lisp)
-  (:local-nicknames (#:ico #:iconoclast))
+  (:local-nicknames (#:ico #:iconoclast)
+                    (#:iaw #:iconoclast-ast-walker))
   (:export))
