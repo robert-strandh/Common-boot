@@ -20,3 +20,11 @@
             :function-ast ast
             :parent *current-function-ast*)))
     (call-next-method)))
+
+(defun create-function-tree (ast)
+  (let ((root (make-instance 'function-node
+                :function-ast nil
+                :parent nil))
+        (client (make-instance 'client)))
+    (iaw:walk-ast client ast)
+    root))
