@@ -7,4 +7,5 @@
   :components
   ((:file "packages")
    (:file "client")
+   (:file "additional-ast-classes")
    (:file "function-tree")))
