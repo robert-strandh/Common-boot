@@ -22,3 +22,23 @@
   ((%variable-reference-ast
     :initarg :variable-reference-ast
     :reader variable-reference-ast)))
+
+;;; This AST has two slot, a VARIABLE-REFERENCE-AST corresponding to a
+;;; VARIABLE-DEFINITION-AST introduced by a a binding with a
+;;; MAKE-CELL-AST as the FORM-AST, and a FORM-AST that determines the
+;;; value to be written to the cell.  When a variable is both shared
+;;; and assigned to, so that its vale is contained in a cell, then
+;;; each SETQ-AST in which the VARIABLE-REFERENCE-AST refers to the
+;;; original VARIABLE-REFERENCE-AST will be replaced by an instance of
+;;; this AST class, such that the VARIABLE-REFERENCE-AST in this
+;;; instance corresponds to a VARIABLE-DEFINITION-AST introduced by a
+;;; a binding with a MAKE-CELL-AST as the FORM-AST.  The FORM-AST will
+;;; then be the same as the original FORM-AST in the SETQ-AST.
+
+(defclass write-cell-ast (ico:ast)
+  ((%variable-reference-ast
+    :initarg :variable-reference-ast
+    :reader variable-reference-ast)
+   (%form-ast
+    :initarg :form-ast
+    :reader form-ast)))
