@@ -53,3 +53,15 @@
 
 (defclass static-function-ast (ico:local-function-ast)
   ((%static-environment :accessor static-environment)))
+
+;;; This AST is used to set the static environment of an instance of
+;;; STATIC-FUNCTION-AST.  The slot LOCAL-FUNCTION-REFERENCE-AST
+;;; contains a FUNCTION-REFERENCE-AST that refers to the
+;;; STATIC-FUNCTION-AST.  This class is a subclass of FORM-ASTS-MIXIN,
+;;; so that it contains a list of FORM-ASTs, one for each element of
+;;; the static environment to be set.
+
+(defclass set-static-environment-ast (ico:form-asts-mixin ast)
+  ((%local-function-reference-ast
+    :initarg local-function-reference-ast
+    :reader local-function-reference-ast)))
