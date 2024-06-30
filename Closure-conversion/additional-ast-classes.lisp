@@ -10,6 +10,11 @@
      ico:ast)
   ())
 
+;;; This AST creates a new cell which becomes the value of the AST.
+
+(defclass make-cell-ast (ico:form-asts-mixin ico:ast)
+  ())
+
 ;;; This AST has a slot that contains a VARIABLE-REFERENCE-AST
 ;;; corresponding to a VARIABLE-DEFINITION-AST introduced by a a
 ;;; binding with a MAKE-CELL-AST as the FORM-AST.  The value of the
