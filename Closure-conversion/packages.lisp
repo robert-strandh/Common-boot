@@ -4,4 +4,8 @@
   (:use #:common-lisp)
   (:local-nicknames (#:ico #:iconoclast)
                     (#:iaw #:iconoclast-ast-walker))
-  (:export #:create-function-tree))
+  (:export #:let-temporary-ast
+           #:make-cell-ast
+           #:read-cell-ast
+           #:write-cell-ast
+           #:create-function-tree))
