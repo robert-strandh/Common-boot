@@ -47,3 +47,9 @@
    (%form-ast
     :initarg :form-ast
     :reader form-ast)))
+
+;;; This AST class is a subclass of LOCAL-FUNCTION-AST, and it has an
+;;; additional slot for the static environment.
+
+(defclass static-function-ast (ico:local-function-ast)
+  ((%static-environment :accessor static-environment)))
