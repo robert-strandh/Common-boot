@@ -12,5 +12,5 @@
         *continuation* nil)
   (let* ((transformed-ast (simplify-ast ast))
          (cps (ast-to-cps client transformed-ast environment)))
-    (let (#+sbcl(sb-ext:*evaluator-mode* :interpret))
-      (eval cps))))
+    (declare (optimize (compilation-speed 3) (debug 0)))
+    (eval cps)))
