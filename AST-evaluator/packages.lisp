@@ -17,4 +17,5 @@
            #:*dynamic-environment*
            #:stack-entry
            #:origin
+           #:called-function
            #:arguments))
