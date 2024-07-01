@@ -294,6 +294,7 @@
 
 (defclass stack-entry ()
   ((%origin :initarg :origin :reader origin)
+   (%called-function :initarg :called-function :reader called-function)
    (%arguments :initarg :arguments :reader arguments)))
 
 ;;; This table can be used to count origins in APPLY-WITH-ORIGIN.
@@ -302,6 +303,7 @@
 (defun apply-with-origin (function arguments origin)
   (let* ((entry (make-instance 'stack-entry
                   :origin origin
+                  :called-function function
                   :arguments arguments))
          (*stack* (cons entry *stack*)))
     (apply function arguments)
