@@ -65,3 +65,11 @@
   ((%local-function-reference-ast
     :initarg local-function-reference-ast
     :reader local-function-reference-ast)))
+
+;;; This AST is used to access an object in the static environment of
+;;; the current function.  It has a an INDEX slot that contains the
+;;; index of the object in the static environment.  The value of this
+;;; AST is the object.
+
+(defclass read-static-environment-ast (ico:ast)
+  ((%index :initarg :index :reader index)))
