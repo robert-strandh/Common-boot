@@ -61,7 +61,7 @@
 ;;; so that it contains a list of FORM-ASTs, one for each element of
 ;;; the static environment to be set.
 
-(defclass set-static-environment-ast (ico:form-asts-mixin ast)
+(defclass set-static-environment-ast (ico:form-asts-mixin ico:ast)
   ((%local-function-reference-ast
     :initarg local-function-reference-ast
     :reader local-function-reference-ast)))
