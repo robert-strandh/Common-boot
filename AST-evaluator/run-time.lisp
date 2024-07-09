@@ -183,14 +183,16 @@
        (when (typep ,c 'after-continuation)
          (setf (results ,c) ,a)))))
 
-(defun boundp (name cell dynamic-environment)
+(defun boundp
+    (name cell &optional (dynamic-environment *dynamic-environment*))
   (loop for entry in dynamic-environment
         do (when (and (typep entry 'special-variable-entry)
                       (eq name (name entry)))
              (return (slot-boundp entry '%value)))
         finally (return (not (eq (car cell) (cdr cell))))))
 
-(defun symbol-value (name cell dynamic-environment)
+(defun symbol-value
+    (name cell &optional (dynamic-environment *dynamic-environment*))
   (loop for entry in dynamic-environment
         do (when (and (typep entry 'special-variable-entry)
                       (eq name (name entry)))
@@ -201,7 +203,8 @@
                     (error "unbound variable ~s" name)
                     (return (car cell)))))
 
-(defun (setf symbol-value) (value name cell dynamic-environment)
+(defun (setf symbol-value)
+    (value name cell &optional (dynamic-environment *dynamic-environment*))
   (loop for entry in dynamic-environment
         do (when (and (typep entry 'special-variable-entry)
                       (eq name (name entry)))
