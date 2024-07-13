@@ -10,6 +10,6 @@
      (ast ico:global-function-name-reference-ast)
      continuation)
   (let* ((name (ico:name ast))
-         (cell (clostrum-sys:ensure-operator-cell client environment name)))
+         (cell (clostrum:ensure-operator-cell client environment name)))
     `(step (list (car ',cell))
            ,continuation)))
