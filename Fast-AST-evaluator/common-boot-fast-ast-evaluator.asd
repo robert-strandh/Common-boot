@@ -5,6 +5,7 @@
   :serial t
   :components
   ((:file "packages")
+   (:file "run-time")
    (:file "application-ast")
    (:file "function-name-ast")
    (:file "progn-ast")))
