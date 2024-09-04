@@ -6,4 +6,5 @@
   :components
   ((:file "packages")
    (:file "application-ast")
-   (:file "function-name-ast")))
+   (:file "function-name-ast")
+   (:file "progn-ast")))
