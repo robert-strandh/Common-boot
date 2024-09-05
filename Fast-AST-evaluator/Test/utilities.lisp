@@ -43,4 +43,4 @@
        (multiple-value-list ,form2)))
 
 (defun eval-expression (client expression environment)
-  (cb:eval-expression client expression environment))
+  (cbfe:eval-expression client expression environment))
