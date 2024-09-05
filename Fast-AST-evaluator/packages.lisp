@@ -3,8 +3,9 @@
 (defpackage #:common-boot-fast-ast-evaluator
   (:use #:common-lisp)
   (:local-nicknames (#:ico #:iconoclast)
+                    (#:clo #:clostrum)
                     (#:cm #:common-macros)
                     (#:cb #:common-boot))
   (:shadow #:boundp
            #:symbol-value)
-  (:export))
+  (:export #:eval-expression))
