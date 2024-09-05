@@ -2,7 +2,9 @@
 
 (defpackage #:common-boot-fast-ast-evaluator
   (:use #:common-lisp)
-  (:local-nicknames (#:ico #:iconoclast))
+  (:local-nicknames (#:ico #:iconoclast)
+                    (#:cm #:common-macros)
+                    (#:cb #:common-boot))
   (:shadow #:boundp
            #:symbol-value)
   (:export))
