@@ -8,4 +8,5 @@
   :components
   ((:file "packages")
    (:file "configuration")
-   (:file "utilities")))
+   (:file "utilities")
+   (:file "quote")))
