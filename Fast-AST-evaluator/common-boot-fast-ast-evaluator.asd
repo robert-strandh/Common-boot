@@ -8,6 +8,7 @@
   ((:file "packages")
    (:file "run-time")
    (:file "eval")
+   (:file "literal")
    (:file "quote")
    (:file "application-ast")
    (:file "function-name-ast")
