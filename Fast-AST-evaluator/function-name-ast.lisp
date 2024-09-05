@@ -7,5 +7,6 @@
 
 (defmethod translate-ast
     (client environment (ast ico:global-function-name-reference-ast))
-  (let ((name (ico:name (ico:name-ast ast))))
-    `(car ,(clostrum:ensure-operator-cell client environment name))))
+  (let ((name (ico:name ast))
+        (env (trucler:global-environment client environment)))
+    `(car ',(clostrum:ensure-operator-cell client env name))))
