@@ -1,9 +1,9 @@
 (cl:in-package #:common-boot-fast-ast-evaluator)
 
-(defgeneric translate-ast (client ast environment))
+(defgeneric translate-ast (client environment ast))
 
 (defun translate (client ast environment)
-  (translate-ast client ast environment))
+  (translate-ast client environment ast))
 
 (defun compile-ast (client ast environment)
   (compile nil `(lambda () ,(translate client ast environment))))
