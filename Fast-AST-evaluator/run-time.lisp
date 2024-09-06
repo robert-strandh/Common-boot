@@ -18,20 +18,14 @@
 (defmethod invalidate-entry ((entry valid-p-mixin))
   (setf (valid-p entry) nil))
 
-(defclass continuation-entry-mixin ()
-  ((%continuation
-    :initarg :continuation
-    :reader continuation)))
-
-(defclass catch-tag-mixin ()
-  ((%catch-tag
-    :initarg :catch-tag
-    :reader catch-tag)))
+(defclass unwinder-entry-mixin ()
+  ((%unwinder
+    :initarg :unwinder
+    :reader unwinder)))
 
 (defclass block-entry
     (dynamic-environment-entry
-     continuation-entry-mixin
-     catch-tag-mixin
+     unwinder-entry-mixin
      valid-p-mixin)
   ((%name :initarg :name :reader name)))
 
@@ -103,7 +97,7 @@
            (unwind entry dynamic-environment t)
            entry))))
 
-(defclass tag-entry (continuation-entry-mixin catch-tag-mixin)
+(defclass tag-entry (unwinder-entry-mixin)
   ((%name :initarg :name :reader name)))
 
 (defmethod print-object ((object tag-entry) stream)
@@ -139,7 +133,7 @@
                     (tag-entries entry))))))
 
 (defclass catch-entry
-    (dynamic-environment-entry continuation-entry-mixin valid-p-mixin)
+    (dynamic-environment-entry unwinder-entry-mixin valid-p-mixin)
   ((%name :initarg :name :reader name)))
 
 (defun catch-entry-predicate (name)
