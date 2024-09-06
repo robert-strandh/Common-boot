@@ -7,7 +7,11 @@
     (translate-ast client environment ast)))
 
 (defun compile-ast (client ast environment)
-  (compile nil `(lambda () ,(translate client ast environment))))
+  (compile nil
+           `(lambda ()
+              (let ((dynamic-environment *dynamic-environment*))
+                (declare (ignorable dynamic-environment))
+                ,(translate client ast environment)))))
 
 (defmethod eval-cst (client cst environment)
   (let* ((ast (cb:cst-to-ast client cst environment))
