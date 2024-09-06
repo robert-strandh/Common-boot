@@ -3,7 +3,8 @@
 (defgeneric translate-ast (client environment ast))
 
 (defun translate (client ast environment)
-  (translate-ast client environment ast))
+  (let ((*host-names* (make-hash-table :test #'eq)))
+    (translate-ast client environment ast)))
 
 (defun compile-ast (client ast environment)
   (compile nil `(lambda () ,(translate client ast environment))))
