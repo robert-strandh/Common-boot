@@ -2,6 +2,7 @@
 
 (defsystem "common-boot-fast-ast-evaluator"
   :depends-on ("iconoclast"
+               "iconoclast-ast-transformations"
                "common-boot")
   :serial t
   :components
@@ -14,4 +15,7 @@
    (:file "quote")
    (:file "application-ast")
    (:file "function-name-ast")
-   (:file "progn-ast")))
+   (:file "variable-reference-ast")
+   (:file "progn-ast")
+   (:file "block-ast")
+   (:file "labels-ast")))
