@@ -4,5 +4,15 @@
   (let* ((name-ast (ico:name-ast ast))
          (host-name (gensym)))
     (setf (lookup name-ast) host-name)
-    `(block ,host-name
-       ,@(translate-implicit-progn client environment (ico:form-asts ast)))))
+    `(let ((dynamic-environment dynamic-environment))
+       (declare (ignorable dynamic-environment))
+       (block ,host-name
+         (push (make-instance 'block-entry
+                 :name ,name-ast
+                 :unwinder
+                 (lambda (values)
+                   (return-from ,host-name
+                     (apply #'values values))))
+               dynamic-environment)
+         ,@(translate-implicit-progn
+            client environment (ico:form-asts ast))))))
