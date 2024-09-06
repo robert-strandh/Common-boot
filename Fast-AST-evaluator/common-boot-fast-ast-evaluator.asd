@@ -7,6 +7,7 @@
   :components
   ((:file "packages")
    (:file "run-time")
+   (:file "utilities")
    (:file "host-lambda-list-from-lambda-list-ast")
    (:file "eval")
    (:file "literal")
