@@ -18,4 +18,5 @@
    (:file "variable-reference-ast")
    (:file "progn-ast")
    (:file "block-ast")
-   (:file "labels-ast")))
+   (:file "labels-ast")
+   (:file "if-ast")))
