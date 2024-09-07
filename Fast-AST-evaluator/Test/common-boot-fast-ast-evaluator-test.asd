@@ -20,4 +20,5 @@
    (:file "labels")
    (:file "let")
    (:file "letstar")
-   (:file "locally")))
+   (:file "locally")
+   (:file "progn")))
