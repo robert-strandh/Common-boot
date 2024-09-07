@@ -17,4 +17,5 @@
    (:file "the")
    (:file "flet")
    (:file "function")
-   (:file "labels")))
+   (:file "labels")
+   (:file "let")))
