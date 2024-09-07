@@ -20,4 +20,5 @@
    (:file "block-ast")
    (:file "labels-ast")
    (:file "if-ast")
-   (:file "return-from-ast")))
+   (:file "return-from-ast")
+   (:file "locally-ast")))
