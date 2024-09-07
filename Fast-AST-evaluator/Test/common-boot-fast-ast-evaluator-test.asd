@@ -15,4 +15,5 @@
    (:file "block-and-return-from")
    (:file "multiple-value-call")
    (:file "the")
-   (:file "flet")))
+   (:file "flet")
+   (:file "function")))
