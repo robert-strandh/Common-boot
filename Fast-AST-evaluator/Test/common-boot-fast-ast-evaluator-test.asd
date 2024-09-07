@@ -18,4 +18,5 @@
    (:file "flet")
    (:file "function")
    (:file "labels")
-   (:file "let")))
+   (:file "let")
+   (:file "letstar")))
