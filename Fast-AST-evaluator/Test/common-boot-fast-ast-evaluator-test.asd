@@ -19,4 +19,5 @@
    (:file "function")
    (:file "labels")
    (:file "let")
-   (:file "letstar")))
+   (:file "letstar")
+   (:file "locally")))
