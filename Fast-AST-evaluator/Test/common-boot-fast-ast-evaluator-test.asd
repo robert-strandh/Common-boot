@@ -16,4 +16,5 @@
    (:file "multiple-value-call")
    (:file "the")
    (:file "flet")
-   (:file "function")))
+   (:file "function")
+   (:file "labels")))
