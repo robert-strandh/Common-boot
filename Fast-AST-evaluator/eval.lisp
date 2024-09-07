@@ -6,12 +6,20 @@
   (let ((*host-names* (make-hash-table :test #'eq)))
     (translate-ast client environment ast)))
 
+(defun simplify-ast (ast)
+  (let* ((ast (iat:lexify-lambda-list ast))
+         (ast (iat:split-let-or-let* ast))
+         (ast (iat:replace-special-let-with-bind ast))
+         (ast (iat:let-to-labels ast)))
+    ast))
+
 (defun compile-ast (client ast environment)
-  (compile nil
-           `(lambda ()
-              (let ((dynamic-environment *dynamic-environment*))
-                (declare (ignorable dynamic-environment))
-                ,(translate client ast environment)))))
+  (let ((simplified-ast (simplify-ast ast)))
+    (compile nil
+             `(lambda ()
+                (let ((dynamic-environment *dynamic-environment*))
+                  (declare (ignorable dynamic-environment))
+                  ,(translate client simplified-ast environment))))))
 
 (defmethod eval-cst (client cst environment)
   (let* ((ast (cb:cst-to-ast client cst environment))
