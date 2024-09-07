@@ -8,7 +8,7 @@
        (declare (ignorable dynamic-environment))
        (block ,host-name
          (push (make-instance 'block-entry
-                 :name ,name-ast
+                 :name ,host-name
                  :unwinder
                  (lambda (values)
                    (return-from ,host-name
