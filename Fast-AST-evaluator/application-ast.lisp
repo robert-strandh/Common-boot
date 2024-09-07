@@ -5,4 +5,4 @@
      (funcall
       ,(translate-ast client environment (ico:function-name-ast ast))
       ,@(loop for argument-ast in (ico:argument-asts ast)
-              collect (translate-ast environment client argument-ast)))))
+              collect (translate-ast client environment argument-ast)))))
