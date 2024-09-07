@@ -21,4 +21,5 @@
    (:file "let")
    (:file "letstar")
    (:file "locally")
-   (:file "progn")))
+   (:file "progn")
+   (:file "setq")))
