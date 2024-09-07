@@ -23,4 +23,5 @@
    (:file "return-from-ast")
    (:file "locally-ast")
    (:file "function-ast")
-   (:file "multiple-value-call-ast")))
+   (:file "multiple-value-call-ast")
+   (:file "the-ast")))
