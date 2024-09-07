@@ -14,4 +14,5 @@
    (:file "if")
    (:file "block-and-return-from")
    (:file "multiple-value-call")
-   (:file "the")))
+   (:file "the")
+   (:file "flet")))
