@@ -19,4 +19,5 @@
    (:file "progn-ast")
    (:file "block-ast")
    (:file "labels-ast")
-   (:file "if-ast")))
+   (:file "if-ast")
+   (:file "return-from-ast")))
