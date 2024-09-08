@@ -11,8 +11,9 @@
             (host-lambda-list-from-lambda-list-ast lambda-list-ast)))
       `(,(lookup (ico:name-ast ast))
         ,host-lambda-list
-        ,@(translate-implicit-progn
-           client environment (ico:form-asts ast))))))
+        (let ((dynamic-environment *dynamic-environment*))
+          ,@(translate-implicit-progn
+             client environment (ico:form-asts ast)))))))
 
 (defmethod translate-ast (client environment (ast ico:labels-ast))
   `(labels ,(loop for function-ast in (ico:binding-asts ast)
