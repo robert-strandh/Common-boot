@@ -24,4 +24,5 @@
    (:file "progn")
    (:file "setq")
    (:file "multiple-value-prog1")
-   (:file "special-variable")))
+   (:file "special-variable")
+   (:file "progv")))
