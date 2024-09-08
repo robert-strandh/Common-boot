@@ -4,6 +4,6 @@
   (let* ((form-ast (ico:form-ast ast))
          (form (translate-ast client environment form-ast))
          (name (translate-ast client environment (ico:tag-ast ast))))
-    `(let* ((entry (do-throw ',name dynamic-environment))
+    `(let* ((entry (do-throw ,name dynamic-environment))
             (unwinder (unwinder entry)))
        (funcall unwinder (multiple-value-list ,form)))))
