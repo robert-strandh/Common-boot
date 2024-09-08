@@ -16,6 +16,7 @@
    (:file "application-ast")
    (:file "function-name-ast")
    (:file "variable-reference-ast")
+   (:file "special-variable-reference-ast")
    (:file "progn-ast")
    (:file "block-ast")
    (:file "labels-ast")
