@@ -31,4 +31,5 @@
    (:file "special-variable-bind-ast")
    (:file "progv-ast")
    (:file "tag-ast")
-   (:file "catch-ast")))
+   (:file "catch-ast")
+   (:file "throw-ast")))
