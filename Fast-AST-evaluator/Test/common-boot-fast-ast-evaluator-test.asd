@@ -27,4 +27,5 @@
    (:file "special-variable")
    (:file "progv")
    (:file "catch-and-throw")
-   (:file "macrolet")))
+   (:file "macrolet")
+   (:file "symbol-macrolet")))
