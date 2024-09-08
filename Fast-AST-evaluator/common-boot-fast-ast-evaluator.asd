@@ -29,4 +29,5 @@
    (:file "the-ast")
    (:file "setq-ast")
    (:file "special-variable-bind-ast")
-   (:file "progv-ast")))
+   (:file "progv-ast")
+   (:file "tag-ast")))
