@@ -22,4 +22,5 @@
    (:file "letstar")
    (:file "locally")
    (:file "progn")
-   (:file "setq")))
+   (:file "setq")
+   (:file "multiple-value-prog1")))
