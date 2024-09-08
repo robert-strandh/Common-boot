@@ -25,4 +25,5 @@
    (:file "setq")
    (:file "multiple-value-prog1")
    (:file "special-variable")
-   (:file "progv")))
+   (:file "progv")
+   (:file "catch-and-throw")))
