@@ -26,4 +26,5 @@
    (:file "multiple-value-prog1")
    (:file "special-variable")
    (:file "progv")
-   (:file "catch-and-throw")))
+   (:file "catch-and-throw")
+   (:file "macrolet")))
