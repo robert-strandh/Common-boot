@@ -33,4 +33,5 @@
    (:file "tag-ast")
    (:file "catch-ast")
    (:file "throw-ast")
-   (:file "macrolet-ast")))
+   (:file "macrolet-ast")
+   (:file "symbol-macrolet-ast")))
