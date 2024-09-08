@@ -32,4 +32,5 @@
    (:file "progv-ast")
    (:file "tag-ast")
    (:file "catch-ast")
-   (:file "throw-ast")))
+   (:file "throw-ast")
+   (:file "macrolet-ast")))
