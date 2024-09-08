@@ -23,4 +23,5 @@
    (:file "locally")
    (:file "progn")
    (:file "setq")
-   (:file "multiple-value-prog1")))
+   (:file "multiple-value-prog1")
+   (:file "special-variable")))
