@@ -12,6 +12,7 @@
       `(,(lookup (ico:name-ast ast))
         ,host-lambda-list
         (let ((dynamic-environment *dynamic-environment*))
+          (declare (ignorable dynamic-environment))
           ,@(translate-implicit-progn
              client environment (ico:form-asts ast)))))))
 
