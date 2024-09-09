@@ -20,6 +20,8 @@
              `(lambda ()
                 (let ((dynamic-environment *dynamic-environment*))
                   (declare (ignorable dynamic-environment))
+                  #+sbcl
+                  (declare (sb-ext:muffle-conditions sb-ext:compiler-note))
                   ,(translate client simplified-ast environment))))))
 
 (defmethod eval-cst (client cst environment)
