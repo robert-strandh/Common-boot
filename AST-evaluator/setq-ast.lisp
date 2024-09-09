@@ -48,5 +48,3 @@
             ,@(setq-iterations
                 client environment tempc tempb tempa value-asts variable-reference-asts))
        (step (list nil) ,tempc))))
-
-        
