@@ -208,9 +208,9 @@
   (loop for entry in dynamic-environment
         do (when (and (typep entry 'special-variable-entry)
                       (eq name (name entry)))
-             (setf (value entry) value))
+             (setf (value entry) value)
+             (return value))
         finally (return (setf (car cell) value))))
-
 
 (defclass continuation (closer-mop:funcallable-standard-object)
   ((%origin :initarg :origin :reader origin)
