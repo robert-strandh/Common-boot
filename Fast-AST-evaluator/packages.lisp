@@ -9,4 +9,8 @@
                     (#:cb #:common-boot))
   (:shadow #:boundp
            #:symbol-value)
-  (:export #:eval-expression))
+  (:export #:eval-expression
+           #:compile-ast
+           #:boundp
+           #:symbol-value
+           #:*stack*))
