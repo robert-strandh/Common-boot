@@ -28,4 +28,5 @@
    (:file "progv")
    (:file "catch-and-throw")
    (:file "macrolet")
-   (:file "symbol-macrolet")))
+   (:file "symbol-macrolet")
+   (:file "tagbody-and-go")))
