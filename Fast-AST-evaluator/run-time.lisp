@@ -188,3 +188,5 @@
                       (eq name (name entry)))
              (setf (value entry) value))
         finally (return (setf (car cell) value))))
+
+(defparameter *stack* '())
