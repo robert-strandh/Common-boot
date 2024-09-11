@@ -5,8 +5,7 @@
   (:local-nicknames (#:ico #:iconoclast)
                     (#:iat #:iconoclast-ast-transformations)
                     (#:clo #:clostrum)
-                    (#:cm #:common-macros)
-                    (#:cb #:common-boot))
+                    (#:cm #:common-macros))
   (:shadow #:boundp
            #:symbol-value)
   (:export #:eval-expression
