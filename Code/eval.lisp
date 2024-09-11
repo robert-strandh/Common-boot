@@ -8,14 +8,6 @@
              (cbae:compile-ast client ast environment))))
     (funcall top-level-function)))
 
-(defun cps-from-expression (expression environment)
-  (let* ((cst (cst:cst-from-expression expression))
-         (client (make-instance 'trucler-reference:client))
-         (ast (cst-to-ast client cst environment))
-         (builder (make-builder client environment)))
-    (cm:with-builder builder
-      (cbae:ast-to-cps client ast environment))))
-
 (defun ast-from-expression (expression environment)
   (let* ((cst (cst:cst-from-expression expression))
          (client (make-instance 'trucler-reference:client)))
