@@ -2,8 +2,7 @@
 
 (defsystem "common-boot-fast-ast-evaluator"
   :depends-on ("iconoclast"
-               "iconoclast-ast-transformations"
-               "common-boot")
+               "iconoclast-ast-transformations")
   :serial t
   :components
   ((:file "packages")
