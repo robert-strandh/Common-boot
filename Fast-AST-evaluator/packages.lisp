@@ -10,6 +10,7 @@
            #:symbol-value)
   (:export #:eval-expression
            #:compile-ast
+           #:compile-local-macro-function-ast
            #:boundp
            #:symbol-value
            #:origin
