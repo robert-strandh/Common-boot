@@ -12,7 +12,7 @@
                     (#:ses #:s-expression-syntax)
                     (#:abp #:architecture.builder-protocol)
                     (#:cst #:concrete-syntax-tree)
-                    (#:cbae #:common-boot-ast-evaluator))
+                    (#:cbae #:common-boot-fast-ast-evaluator))
   (:export #:client
            #:environment
            #:macro-preserving-client
