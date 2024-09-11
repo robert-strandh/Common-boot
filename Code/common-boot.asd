@@ -12,7 +12,7 @@
                #:iconoclast-ast-transformations
                #:common-macros
                #:common-macro-definitions
-               #:common-boot-ast-evaluator)
+               #:common-boot-fast-ast-evaluator)
   :serial t
   :components
   ((:file "packages")
