@@ -2,9 +2,20 @@
 
 (defgeneric translate-ast (client environment ast))
 
+(defun tree-size (tree)
+  (let ((ht (make-hash-table :test #'eq)))
+    (labels ((aux (tree)
+               (if (or (atom tree) (gethash tree ht))
+                   0
+                   (progn 
+                     (setf (gethash tree ht) t)
+                     (+ 1 (aux (car tree)) (aux (cdr tree)))))))
+      (aux tree))))
+
 (defun translate (client ast environment)
-  (let ((*host-names* (make-hash-table :test #'eq)))
-    (translate-ast client environment ast)))
+  (let* ((*host-names* (make-hash-table :test #'eq))
+         (result (translate-ast client environment ast)))
+    result))
 
 (defun simplify-ast (ast)
   (let* ((ast (iat:lexify-lambda-list ast))
