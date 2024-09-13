@@ -38,4 +38,5 @@
    (:file "tagbody-ast")
    (:file "go-ast")
    (:file "eval-when-ast")
-   (:file "load-time-value-ast")))
+   (:file "load-time-value-ast")
+   (:file "let-temporary-ast")))
