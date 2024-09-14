@@ -2,4 +2,6 @@
 
 (defpackage #:common-boot-ast-interpreter-test
   (:use #:common-lisp #:parachute)
-  (:export))
+  (:local-nicknames (#:cbfe #:common-boot-fast-ast-evaluator)
+                    (#:cmd #:common-macro-definitions)
+                    (#:cb #:common-boot)))
