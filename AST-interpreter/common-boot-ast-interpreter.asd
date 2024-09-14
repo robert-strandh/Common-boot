@@ -6,4 +6,5 @@
   :serial t
   :components
   ((:file "packages")
-   (:file "run-time")))
+   (:file "run-time")
+   (:file "eval")))
