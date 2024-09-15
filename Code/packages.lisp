@@ -20,6 +20,7 @@
            #:macro-function-client
            #:macro-transforming-client
            #:create-environment
+           #:eval-cst
            #:eval-expression
            #:cst-to-ast
            #:convert-with-parser-p
