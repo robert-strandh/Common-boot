@@ -1,6 +1,6 @@
 (cl:in-package #:common-boot-ast-interpreter-test)
 
-(defclass client (trucler-reference:client)
+(defclass client (trucler-reference:client cbai:client)
   ())
 
 (defmethod cb:convert-with-parser-p ((client client) operator)
