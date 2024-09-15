@@ -7,4 +7,5 @@
   :components
   ((:file "packages")
    (:file "run-time")
-   (:file "eval")))
+   (:file "eval")
+   (:file "literal")))
