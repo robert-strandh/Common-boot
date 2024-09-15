@@ -2,10 +2,12 @@
 
 (defsystem "common-boot-ast-interpreter"
   :depends-on ("iconoclast"
-               "iconoclast-ast-transformations")
+               "iconoclast-ast-transformations"
+               "common-boot")
   :serial t
   :components
   ((:file "packages")
+   (:file "client")
    (:file "run-time")
    (:file "eval")
    (:file "literal-ast")
