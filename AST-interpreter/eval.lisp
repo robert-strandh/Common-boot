@@ -15,3 +15,8 @@
 (defun interpret (client ast global-environment)
   (let ((*global-environment* global-environment))
     (interpret-ast client '() (simplify-ast ast))))
+
+(defmethod cb:eval-cst ((client client) cst environment)
+  (let* ((ast (cb:cst-to-ast client cst environment))
+         (simplified-ast (simplify-ast ast)))
+    (interpret client simplified-ast environment)))
