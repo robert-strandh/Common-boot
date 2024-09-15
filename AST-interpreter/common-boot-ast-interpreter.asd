@@ -9,4 +9,5 @@
    (:file "run-time")
    (:file "eval")
    (:file "literal-ast")
-   (:file "quote-ast")))
+   (:file "quote-ast")
+   (:file "progn-ast")))
