@@ -8,4 +8,5 @@
   ((:file "packages")
    (:file "run-time")
    (:file "eval")
-   (:file "literal")))
+   (:file "literal-ast")
+   (:file "quote-ast")))
