@@ -2,12 +2,13 @@
 
 (defun handle-required-parameters
     (section-ast remaining-arguments environment)
-  (loop for parameter-ast in (ico:parameter-asts section-ast)
-        do (if (null remaining-arguments)
-               (error "Not enough arguments")
-               (push (cons parameter-ast
-                           (pop remaining-arguments))
-                     environment)))
+  (unless (null section-ast)
+    (loop for parameter-ast in (ico:parameter-asts section-ast)
+          do (if (null remaining-arguments)
+                 (error "Not enough arguments")
+                 (push (cons parameter-ast
+                             (pop remaining-arguments))
+                       environment))))
   (values remaining-arguments environment))
 
 (defun handle-optional-parameters
@@ -125,4 +126,5 @@
           do (setf (cdr (assoc name-ast new-environment)) function))
     ;; Finally interpret the body of the LABELS-AST in the new
     ;; environment.
-    (interpret-implicit-progn-asts client environment (ico:form-asts ast))))
+    (interpret-implicit-progn-asts
+     client new-environment (ico:form-asts ast))))
