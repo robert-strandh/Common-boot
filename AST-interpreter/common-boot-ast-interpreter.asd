@@ -12,4 +12,5 @@
    (:file "eval")
    (:file "literal-ast")
    (:file "quote-ast")
-   (:file "progn-ast")))
+   (:file "progn-ast")
+   (:file "labels-ast")))
