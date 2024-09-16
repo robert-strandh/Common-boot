@@ -13,5 +13,6 @@
    (:file "literal-ast")
    (:file "quote-ast")
    (:file "progn-ast")
+   (:file "function-reference-ast")
    (:file "application-ast")
    (:file "labels-ast")))
