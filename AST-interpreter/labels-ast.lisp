@@ -100,7 +100,8 @@
         (handle-optional-parameters
          optional-section-ast remaining-arguments new-environment))
       (unless (null rest-section-ast)
-        (push (cons (ico:parameter-ast rest-section-ast) remaining-arguments)
+        (push (cons (ico:name-ast (ico:parameter-ast rest-section-ast))
+                    remaining-arguments)
               new-environment))
       (unless (null key-section-ast)
         (assert (evenp (length remaining-arguments)))
