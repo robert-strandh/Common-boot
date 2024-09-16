@@ -1,5 +1,12 @@
 (cl:in-package #:common-boot-ast-interpreter)
 
+(defun lookup (thing environment)
+  (let ((entry (assoc thing environment :test #'eq)))
+    (if (null entry)
+        (error "No entry for ~s in environment ~s"
+               thing environment)
+        (cdr entry))))
+
 (defclass dynamic-environment-entry ()
   ())
 
