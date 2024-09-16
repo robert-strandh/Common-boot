@@ -5,7 +5,7 @@
         (catch-tag (gensym)))
     (push (make-instance 'block-entry
             :name (ico:name-ast ast)
-            :unwinder (lambda (&rest values)
+            :unwinder (lambda (values)
                         (throw catch-tag (apply #'values values))))
           *dynamic-environment*)
     (catch catch-tag
