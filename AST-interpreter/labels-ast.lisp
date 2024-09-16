@@ -17,19 +17,16 @@
     (loop for optional-parameter-ast in (ico:parameter-asts section-ast)
           for supplied-p-parameter-ast
             = (ico:supplied-p-parameter-ast optional-parameter-ast)
-          for parameter-ast = (ico:parameter-ast optional-parameter-ast)
+          for name-ast = (ico:name-ast optional-parameter-ast)
           do (if (null remaining-arguments)
-                 (progn (push (cons (ico:name-ast parameter-ast)
-                                    nil)
+                 (progn (push (cons name-ast nil)
                               environment)
-                        (push (cons (ico:name-ast supplied-p-parameter-ast)
-                                    nil)
+                        (push (cons supplied-p-parameter-ast nil)
                               environment))
-                 (progn (push (cons (ico:name-ast parameter-ast)
+                 (progn (push (cons name-ast
                                     (pop remaining-arguments))
                               environment)
-                        (push (cons (ico:name-ast supplied-p-parameter-ast)
-                                    t)
+                        (push (cons supplied-p-parameter-ast t)
                               environment)))))
   (values remaining-arguments environment))
 
@@ -84,7 +81,8 @@
                     key-parameter-ast
                     remaining-arguments
                     environment
-                    allowed-keys)))))
+                    allowed-keys)))
+    environment))
 
 (defun interpret-local-function-ast-components
     (client environment lambda-list-ast form-asts)
@@ -106,9 +104,9 @@
               new-environment))
       (unless (null key-section-ast)
         (assert (evenp (length remaining-arguments)))
-        (multiple-value-setq (remaining-arguments new-environment)
-          (handle-key-parameters
-           key-section-ast remaining-arguments new-environment)))
+        (setq new-environment
+              (handle-key-parameters
+               key-section-ast remaining-arguments new-environment)))
       (interpret-implicit-progn-asts client new-environment form-asts))))
     
 (defmethod interpret-ast (client environment (ast ico:labels-ast))
