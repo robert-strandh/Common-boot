@@ -46,7 +46,7 @@
 (defun mentioned-keywords (key-section-ast)
   (loop for key-parameter-ast in (ico:parameter-asts key-section-ast)
         for keyword-ast = (ico:keyword-ast key-parameter-ast)
-        collect (ico:name keyword-ast)))
+        collect (ico:literal keyword-ast)))
 
 ;;; Return T if any keyword argument is allowed, or a list of the
 ;;; keywords allowed to be supplied.
@@ -60,21 +60,19 @@
     (key-parameter-ast remaining-arguments environment allowed-keys)
   (let* ((supplied-p-parameter-ast
            (ico:supplied-p-parameter-ast key-parameter-ast))
-         (parameter-ast (ico:parameter-ast key-parameter-ast))
-         (keyword-ast (ico:lambda-list-keyword-ast key-parameter-ast))
-         (keyword (ico:name keyword-ast)))
+         (name-ast (ico:name-ast key-parameter-ast))
+         (keyword-ast (ico:keyword-ast key-parameter-ast))
+         (keyword (ico:literal keyword-ast)))
     (when (and (listp allowed-keys)
                (not (member keyword allowed-keys)))
       (error "Invalid key: ~s" keyword))
     (loop for (key value) on remaining-arguments by #'cddr
           when (eq key keyword)
-            return (acons (ico:name-ast parameter-ast) value
-                          (acons (ico:name-ast supplied-p-parameter-ast) t
+            return (acons name-ast value
+                          (acons supplied-p-parameter-ast t
                                  environment))
-          finally (return (acons (ico:name-ast parameter-ast) nil
-                                 (acons (ico:name-ast
-                                         supplied-p-parameter-ast)
-                                        nil
+          finally (return (acons name-ast nil
+                                 (acons supplied-p-parameter-ast nil
                                         environment))))))
 
 (defun handle-key-parameters (section-ast remaining-arguments environment)
