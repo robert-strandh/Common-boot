@@ -17,5 +17,6 @@
    (:file "variable-reference-ast")
    (:file "application-ast")
    (:file "block-ast")
+   (:file "return-from-ast")
    (:file "labels-ast")
    (:file "if-ast")))
