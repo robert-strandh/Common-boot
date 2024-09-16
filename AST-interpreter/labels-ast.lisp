@@ -117,7 +117,7 @@
     ;; environment.
     (loop for binding-ast in (ico:binding-asts ast)
           for name-ast = (ico:name-ast binding-ast)
-          for lambda-list-ast = (ico:lambda-list-ast ast)
+          for lambda-list-ast = (ico:lambda-list-ast binding-ast)
           for form-asts = (ico:form-asts binding-ast)
           for function
             = (interpret-local-function-ast-components
