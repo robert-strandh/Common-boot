@@ -15,4 +15,5 @@
    (:file "progn-ast")
    (:file "function-reference-ast")
    (:file "application-ast")
+   (:file "block-ast")
    (:file "labels-ast")))
