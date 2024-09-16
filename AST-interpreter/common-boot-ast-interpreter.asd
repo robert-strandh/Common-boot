@@ -14,6 +14,7 @@
    (:file "quote-ast")
    (:file "progn-ast")
    (:file "function-reference-ast")
+   (:file "global-function-name-ast")
    (:file "variable-reference-ast")
    (:file "application-ast")
    (:file "block-ast")
