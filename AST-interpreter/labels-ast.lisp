@@ -6,7 +6,7 @@
     (loop for parameter-ast in (ico:parameter-asts section-ast)
           do (if (null remaining-arguments)
                  (error "Not enough arguments")
-                 (push (cons parameter-ast
+                 (push (cons (ico:name-ast parameter-ast)
                              (pop remaining-arguments))
                        environment))))
   (values remaining-arguments environment))
@@ -19,14 +19,17 @@
             = (ico:supplied-p-parameter-ast optional-parameter-ast)
           for parameter-ast = (ico:parameter-ast optional-parameter-ast)
           do (if (null remaining-arguments)
-                 (progn (push (cons parameter-ast nil)
+                 (progn (push (cons (ico:name-ast parameter-ast)
+                                    nil)
                               environment)
-                        (push (cons supplied-p-parameter-ast nil)
+                        (push (cons (ico:name-ast supplied-p-parameter-ast)
+                                    nil)
                               environment))
-                 (progn (push (cons parameter-ast
+                 (progn (push (cons (ico:name-ast parameter-ast)
                                     (pop remaining-arguments))
                               environment)
-                        (push (cons supplied-p-parameter-ast t)
+                        (push (cons (ico:name-ast supplied-p-parameter-ast)
+                                    t)
                               environment)))))
   (values remaining-arguments environment))
 
@@ -65,11 +68,13 @@
       (error "Invalid key: ~s" keyword))
     (loop for (key value) on remaining-arguments by #'cddr
           when (eq key keyword)
-            return (acons parameter-ast value
-                          (acons supplied-p-parameter-ast t
+            return (acons (ico:name-ast parameter-ast) value
+                          (acons (ico:name-ast supplied-p-parameter-ast) t
                                  environment))
-          finally (return (acons parameter-ast nil
-                                 (acons supplied-p-parameter-ast nil
+          finally (return (acons (ico:name-ast parameter-ast) nil
+                                 (acons (ico:name-ast
+                                         supplied-p-parameter-ast)
+                                        nil
                                         environment))))))
 
 (defun handle-key-parameters (section-ast remaining-arguments environment)
@@ -106,7 +111,7 @@
         (multiple-value-setq (remaining-arguments new-environment)
           (handle-key-parameters
            key-section-ast remaining-arguments new-environment)))
-      (interpret-implicit-progn-asts client environment form-asts))))
+      (interpret-implicit-progn-asts client new-environment form-asts))))
     
 (defmethod interpret-ast (client environment (ast ico:labels-ast))
   (let ((new-environment environment))
