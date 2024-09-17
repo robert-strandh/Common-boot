@@ -6,6 +6,7 @@
   :serial t
   :components
   ((:file "packages")
+   (:file "client")
    (:file "run-time")
    (:file "utilities")
    (:file "host-lambda-list-from-lambda-list-ast")
