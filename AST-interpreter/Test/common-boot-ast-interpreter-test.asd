@@ -14,4 +14,5 @@
    (:file "labels")
    (:file "function")
    (:file "the")
-   (:file "multiple-value-call")))
+   (:file "multiple-value-call")
+   (:file "multiple-value-prog1")))
