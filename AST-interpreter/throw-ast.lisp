@@ -4,4 +4,4 @@
   (let ((entry (do-throw (ico:tag-ast ast) *dynamic-environment*)))
     (funcall (unwinder entry)
              (multiple-value-list
-              (intepret-ast client environment (ico:form-ast ast))))))
+              (interpret-ast client environment (ico:form-ast ast))))))
