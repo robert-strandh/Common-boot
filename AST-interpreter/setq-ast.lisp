@@ -9,10 +9,12 @@
                       (ico:name variable-name-ast)
                       (clostrum-sys:variable-cell
                        client
-                       *global-environment*
+                       (trucler:global-environment 
+                        client *global-environment*)
                        (ico:name variable-name-ast))
                       *dynamic-environment*)
-                     (interpret-ast client environment value-ast))
+                     (setq value 
+                           (interpret-ast client environment value-ast)))
                (let ((variable-definition-ast
                        (ico:variable-definition-ast variable-name-ast)))
                  (setf (cdr (assoc variable-definition-ast environment))
