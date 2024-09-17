@@ -21,4 +21,5 @@
    (:file "return-from-ast")
    (:file "labels-ast")
    (:file "locally-ast")
-   (:file "if-ast")))
+   (:file "if-ast")
+   (:file "function-ast")))
