@@ -18,4 +18,5 @@
    (:file "multiple-value-prog1")
    (:file "setq")
    (:file "progv")
+   (:file "catch-and-throw")
    (:file "tagbody-and-go")))
