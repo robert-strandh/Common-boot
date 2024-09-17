@@ -30,4 +30,5 @@
    (:file "special-variable-reference-ast")
    (:file "special-variable-bind-ast")
    (:file "progv-ast")
-   (:file "macrolet-ast")))
+   (:file "macrolet-ast")
+   (:file "symbol-macrolet-ast")))
