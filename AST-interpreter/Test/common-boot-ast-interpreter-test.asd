@@ -17,4 +17,5 @@
    (:file "multiple-value-call")
    (:file "multiple-value-prog1")
    (:file "setq")
-   (:file "progv")))
+   (:file "progv")
+   (:file "tagbody-and-go")))
