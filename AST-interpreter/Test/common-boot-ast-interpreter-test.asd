@@ -16,4 +16,5 @@
    (:file "the")
    (:file "multiple-value-call")
    (:file "multiple-value-prog1")
-   (:file "setq")))
+   (:file "setq")
+   (:file "progv")))
