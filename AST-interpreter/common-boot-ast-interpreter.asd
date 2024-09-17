@@ -37,4 +37,5 @@
    (:file "symbol-macrolet-ast")
    (:file "tagbody-segment-ast")
    (:file "tagbody-ast")
-   (:file "go-ast")))
+   (:file "go-ast")
+   (:file "eval-when-ast")))
