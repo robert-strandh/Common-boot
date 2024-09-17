@@ -25,4 +25,5 @@
    (:file "function-ast")
    (:file "the-ast")
    (:file "multiple-value-call-ast")
-   (:file "multiple-value-prog1-ast")))
+   (:file "multiple-value-prog1-ast")
+   (:file "setq-ast")))
