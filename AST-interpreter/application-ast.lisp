@@ -1,6 +1,14 @@
 (cl:in-package #:common-boot-ast-interpreter)
 
 (defmethod interpret-ast (client environment (ast ico:application-ast))
-  (apply (interpret-ast client environment (ico:function-name-ast ast))
-         (loop for argument-ast in (ico:argument-asts ast)
-               collect (interpret-ast client environment argument-ast))))
+  (let ((function
+          (interpret-ast client environment (ico:function-name-ast ast)))
+        (arguments
+          (loop for argument-ast in (ico:argument-asts ast)
+                collect (interpret-ast client environment argument-ast))))
+    (let ((*stack* (cons (make-instance 'stack-entry
+                           :called-function function
+                           :arguments arguments
+                           :origin (ico:origin ast))
+                         *stack*)))
+      (apply function arguments))))
