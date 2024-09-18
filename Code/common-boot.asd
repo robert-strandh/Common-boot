@@ -11,8 +11,7 @@
                #:iconoclast-builder
                #:iconoclast-ast-transformations
                #:common-macros
-               #:common-macro-definitions
-               #:common-boot-fast-ast-evaluator)
+               #:common-macro-definitions)
   :serial t
   :components
   ((:file "packages")
