@@ -36,7 +36,15 @@
           (declare (sb-ext:muffle-conditions sb-ext:compiler-note))
           ,(translate client simplified-ast environment))))))
 
-(defun compile-local-macro-function-ast (client ast environment)
+(defmethod cb:eval-cst ((client client) cst environment)
+  (let* ((ast (cb:cst-to-ast client cst environment))
+         (builder (cb:make-builder client environment))
+         (top-level-function 
+           (cm:with-builder builder
+             (compile-ast client ast environment))))
+    (funcall top-level-function)))
+
+(defmethod cb:compile-local-macro-function-ast (client ast environment)
   (let ((simplified-ast (simplify-ast ast)))
     (compile
      nil
