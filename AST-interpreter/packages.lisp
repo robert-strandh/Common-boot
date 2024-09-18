@@ -10,6 +10,7 @@
   (:shadow #:boundp
            #:symbol-value)
   (:export #:eval-expression
+           #:compile-ast
            #:client
            #:boundp
            #:symbol-value
