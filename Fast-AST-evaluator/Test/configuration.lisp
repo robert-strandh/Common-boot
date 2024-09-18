@@ -1,6 +1,6 @@
 (cl:in-package #:common-boot-fast-ast-evaluator-test)
 
-(defclass client (trucler-reference:client)
+(defclass client (trucler-reference:client cbfe:client)
   ())
 
 (defmethod cb:convert-with-parser-p ((client client) operator)
