@@ -22,7 +22,7 @@
              (builder (make-builder client environment))
              (top-level-function
                (cm:with-builder builder
-                 (cbae:compile-local-macro-function-ast 
+                 (compile-local-macro-function-ast 
                   client lambda-ast environment))))
         (funcall top-level-function)))))
 
