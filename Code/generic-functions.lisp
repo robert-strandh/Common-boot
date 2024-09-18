@@ -7,3 +7,5 @@
 (defgeneric convert-ast (builder ast))
 
 (defgeneric eval-cst (client cst environment))
+
+(defgeneric compile-local-macro-function-ast (client lambda-ast environment))
