@@ -20,3 +20,7 @@
   (let* ((ast (cb:cst-to-ast client cst environment))
          (simplified-ast (simplify-ast ast)))
     (interpret client simplified-ast environment)))
+
+(defun compile-ast (client ast environment)
+  (lambda ()
+    (interpret client ast environment)))
