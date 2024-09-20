@@ -13,14 +13,17 @@
     ast))
 
 (defun interpret (client ast global-environment)
-  (let ((*global-environment* global-environment))
-    (interpret-ast client '() (simplify-ast ast))))
+  (let* ((*global-environment* global-environment))
+    (interpret-ast client '() ast)))
 
 (defmethod cb:eval-cst ((client client) cst environment)
   (let* ((ast (cb:cst-to-ast client cst environment))
-         (simplified-ast (simplify-ast ast)))
-    (interpret client simplified-ast environment)))
+         (simplified-ast (simplify-ast ast))
+         (cells-ast (introduce-cells client environment simplified-ast)))
+    (interpret client cells-ast environment)))
 
 (defun compile-ast (client ast environment)
-  (lambda ()
-    (interpret client ast environment)))
+  (let* ((simplified-ast (simplify-ast ast))
+         (cells-ast (introduce-cells client environment simplified-ast)))
+    (lambda ()
+      (interpret client cells-ast environment))))
