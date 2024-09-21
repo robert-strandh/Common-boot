@@ -137,8 +137,9 @@
 
 (defmethod cb:compile-local-macro-function-ast
     ((client client) local-function-ast environment)
-  (let ((simplified-ast (simplify-ast local-function-ast)))
-    (let* ((lambda-list-ast (ico:lambda-list-ast simplified-ast))
+  (let* ((simplified-ast (simplify-ast local-function-ast))
+         (cells-ast (introduce-cells client environment simplified-ast)))
+    (let* ((lambda-list-ast (ico:lambda-list-ast cells-ast))
            (required-section-ast (ico:required-section-ast lambda-list-ast))
            (parameter-asts (ico:parameter-asts required-section-ast))
            (form-parameter-ast (first parameter-asts))
@@ -155,4 +156,4 @@
                  (cons environment-variable-definition-ast env)))
               (*global-environment* environment))
           (interpret-implicit-progn-asts
-           client lexical-environment (ico:form-asts simplified-ast))))))))
+           client lexical-environment (ico:form-asts cells-ast))))))))
