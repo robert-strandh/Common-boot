@@ -189,10 +189,3 @@
              (setf (value entry) value)
              (return value))
         finally (return (setf (car cell) value))))
-
-(defclass stack-entry ()
-  ((%origin :initarg :origin :reader origin)
-   (%called-function :initarg :called-function :reader called-function)
-   (%arguments :initarg :arguments :reader arguments)))
-
-(defparameter *stack* '())

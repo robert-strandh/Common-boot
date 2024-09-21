@@ -10,11 +10,11 @@
                (function
                  ,(translate-ast client environment function-name-ast))
                (arguments (list ,@argument-forms)))
-           (let ((*stack* (cons (make-instance 'stack-entry
-                                  :origin ',(ico:origin ast)
-                                  :called-function function
-                                  :arguments arguments)
-                                *stack*)))
+           (let ((cb:*stack* (cons (make-instance 'cb:stack-entry
+                                     :origin ',(ico:origin ast)
+                                     :called-function function
+                                     :arguments arguments)
+                                   cb:*stack*)))
              (apply function arguments)))
         `(let ((*dynamic-environment* dynamic-environment)
                (function

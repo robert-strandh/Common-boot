@@ -13,9 +13,4 @@
            #:eval-expression
            #:compile-ast
            #:boundp
-           #:symbol-value
-           #:origin
-           #:stack-entry
-           #:called-function
-           #:arguments
-           #:*stack*))
+           #:symbol-value))
