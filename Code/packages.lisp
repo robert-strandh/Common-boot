@@ -27,4 +27,9 @@
            #:convert-with-ordinary-macro-p
            #:no-function-description
            #:make-builder
-           #:name))
+           #:name
+           #:*stack*
+           #:stack-entry
+           #:origin
+           #:called-function
+           #:arguments))
