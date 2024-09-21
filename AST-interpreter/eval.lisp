@@ -20,11 +20,17 @@
 (defmethod cb:eval-cst ((client client) cst environment)
   (let* ((ast (cb:cst-to-ast client cst environment))
          (simplified-ast (simplify-ast ast))
-         (cells-ast (introduce-cells client environment simplified-ast)))
-    (interpret client cells-ast environment)))
+         (global-environment
+           (trucler:global-environment client environment))
+         (cells-ast
+           (introduce-cells client global-environment simplified-ast)))
+    (interpret client cells-ast global-environment)))
 
 (defun compile-ast (client ast environment)
   (let* ((simplified-ast (simplify-ast ast))
-         (cells-ast (introduce-cells client environment simplified-ast)))
+         (global-environment
+           (trucler:global-environment client environment))
+         (cells-ast
+           (introduce-cells client global-environment simplified-ast)))
     (lambda ()
-      (interpret client cells-ast environment))))
+      (interpret client cells-ast global-environment))))
