@@ -3,8 +3,7 @@
 (defclass global-function-cell-ast (ico:ast)
   ((%cell :initarg :cell :reader cell)))
 
-(defclass introduce-global-function-cells-client
-    (trucler-reference:client)
+(defclass introduce-global-function-cells-client ()
   ((%environment :initarg :environment :reader environment)
    (%client :initarg :client :reader client)))
 
