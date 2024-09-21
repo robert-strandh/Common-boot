@@ -27,7 +27,8 @@
     ast))
 
 (defun compile-ast (client ast environment)
-  (let ((simplified-ast (simplify-ast ast)))
+  (let ((simplified-ast (simplify-ast ast))
+        (global-environment (trucler:global-environment client environment)))
     (compile
      nil
      `(lambda ()
@@ -35,14 +36,15 @@
           (declare (ignorable dynamic-environment))
           #+sbcl
           (declare (sb-ext:muffle-conditions sb-ext:compiler-note))
-          ,(translate client simplified-ast environment))))))
+          ,(translate client simplified-ast global-environment))))))
 
 (defmethod cb:eval-cst ((client client) cst environment)
   (let* ((ast (cb:cst-to-ast client cst environment))
          (builder (cb:make-builder client environment))
+         (global-environment (trucler:global-environment client environment))
          (top-level-function 
            (cm:with-builder builder
-             (compile-ast client ast environment))))
+             (compile-ast client ast global-environment))))
     (funcall top-level-function)))
 
 (defmethod cb:compile-local-macro-function-ast (client ast environment)
