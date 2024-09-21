@@ -4,8 +4,7 @@
   (let* ((variable (gensym))
          (block-variable (gensym))
          (*host-names* (make-hash-table :test #'eq))
-         (exit (gensym "EXIT"))
-         (global-environment (trucler:global-environment client environment)))
+         (exit (gensym "EXIT")))
     `(lambda ()
        (block ,block-variable
          (let ((dynamic-environment *dynamic-environment*)
@@ -21,7 +20,7 @@
              (step '()
                    (make-before-continuation
                     (lambda ()
-                      ,(cps client global-environment ast exit))
+                      ,(cps client environment ast exit))
                     :origin ',(ico:origin ast)
                     :next ,exit))
              (trampoline-loop)))))))

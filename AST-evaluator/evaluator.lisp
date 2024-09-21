@@ -11,6 +11,7 @@
   (setf *dynamic-environment* '()
         *continuation* nil)
   (let* ((transformed-ast (simplify-ast ast))
-         (cps (ast-to-cps client transformed-ast environment)))
+         (global-environment (trucler:global-environment client environment))
+         (cps (ast-to-cps client transformed-ast global-environment)))
     (declare (optimize (compilation-speed 3) (debug 0)))
     (eval cps)))
