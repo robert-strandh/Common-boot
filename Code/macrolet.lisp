@@ -23,7 +23,8 @@
              (top-level-function
                (cm:with-builder builder
                  (compile-local-macro-function-ast 
-                  client lambda-ast environment))))
+                  client lambda-ast
+                  (trucler:global-environment client environment)))))
         (funcall top-level-function)))))
 
 (defmethod abp:finish-node
