@@ -32,6 +32,7 @@
    (:file "simple-setq-ast")
    (:file "special-variable-setq-ast")
    (:file "special-variable-reference-ast")
+   (:file "special-variable-cell-ast")
    (:file "special-variable-bind-ast")
    (:file "progv-ast")
    (:file "tag-ast")
