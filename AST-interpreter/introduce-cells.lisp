@@ -7,6 +7,17 @@
   ((%cell :initarg :cell :reader cell)
    (%name :initarg :name :reader name)))
 
+;;; We don't want the AST walker to attempt to walk nodes of type
+;;; GLOBAL-FUNCTION-CELL-AST and SPECIAL-VARIABLE-CELL-AST because it
+;;; does not know the cardinality of its slots.  So we define methods
+;;; here that do nothing.
+
+(defmethod iaw:walk-ast-node (client (ast global-function-cell-ast))
+  nil)
+
+(defmethod iaw:walk-ast-node (client (ast special-variable-cell-ast))
+  nil)
+
 (defclass introduce-cells-client ()
   ((%environment :initarg :environment :reader environment)
    (%client :initarg :client :reader client)))
