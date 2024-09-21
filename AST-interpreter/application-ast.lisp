@@ -6,9 +6,9 @@
         (arguments
           (loop for argument-ast in (ico:argument-asts ast)
                 collect (interpret-ast client environment argument-ast))))
-    (let ((*stack* (cons (make-instance 'stack-entry
-                           :called-function function
-                           :arguments arguments
-                           :origin (ico:origin ast))
-                         *stack*)))
+    (let ((cb:*stack* (cons (make-instance 'cb:stack-entry
+                              :called-function function
+                              :arguments arguments
+                              :origin (ico:origin ast))
+                            cb:*stack*)))
       (apply function arguments))))
