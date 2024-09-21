@@ -5,6 +5,7 @@
    (#:iat #:iconoclast-ast-transformations)
    (#:ico #:iconoclast)
    (#:bld #:iconoclast-builder)
+   (#:cb #:common-boot)
    (#:cm #:common-macros))
   (:use #:common-lisp)
   (:shadow #:symbol-value #:boundp #:step)
@@ -14,8 +15,4 @@
            #:import-host-function
            #:boundp
            #:symbol-value
-           #:*dynamic-environment*
-           #:stack-entry
-           #:origin
-           #:called-function
-           #:arguments))
+           #:*dynamic-environment*))

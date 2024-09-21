@@ -293,22 +293,15 @@
   `(loop (progn (trampoline-iteration continuation dynamic-environment)
                 (apply continuation arguments))))
 
-(defparameter *stack* '())
-
-(defclass stack-entry ()
-  ((%origin :initarg :origin :reader origin)
-   (%called-function :initarg :called-function :reader called-function)
-   (%arguments :initarg :arguments :reader arguments)))
-
 ;;; This table can be used to count origins in APPLY-WITH-ORIGIN.
 (defparameter *ht* (make-hash-table :test #'eq))
 
 (defun apply-with-origin (function arguments origin)
-  (let* ((entry (make-instance 'stack-entry
+  (let* ((entry (make-instance 'cb:stack-entry
                   :origin origin
                   :called-function function
                   :arguments arguments))
-         (*stack* (cons entry *stack*)))
+         (cb:*stack* (cons entry cb:*stack*)))
     (apply function arguments)
     #+(or)(if (null origin)
               (apply function arguments)
