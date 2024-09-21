@@ -9,7 +9,8 @@
          (ast (iat:split-let-or-let* ast))
          (ast (iat:replace-special-let-with-bind ast))
          (ast (iat:let-to-labels ast))
-         (ast (iat:flet-to-labels ast)))
+         (ast (iat:flet-to-labels ast))
+         (ast (iat:split-setq ast)))
     ast))
 
 (defun interpret (client ast global-environment)
