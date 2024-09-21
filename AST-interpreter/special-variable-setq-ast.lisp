@@ -8,8 +8,7 @@
            (ico:name variable-name-ast)
            (clostrum-sys:variable-cell
             client
-            (trucler:global-environment 
-             client *global-environment*)
+            *global-environment*
             (ico:name variable-name-ast))
            *dynamic-environment*)
           (interpret-ast client environment value-ast))))

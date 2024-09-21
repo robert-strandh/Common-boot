@@ -8,10 +8,9 @@
    (%client :initarg :client :reader client)))
 
 (defun introduce-global-function-cells-helper (igfc-client ast)
-  (let* ((environment (environment igfc-client))
+  (let* ((global-environment (environment igfc-client))
          (client (client igfc-client))
          (name (ico:name ast))
-         (global-environment (trucler:global-environment client environment))
          (cell (clostrum:ensure-operator-cell
                 client global-environment name)))
     (change-class ast 'global-function-cell-ast :cell cell)))
