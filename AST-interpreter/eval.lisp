@@ -1,7 +1,5 @@
 (cl:in-package #:common-boot-ast-interpreter)
 
-(defvar *global-environment*)
-
 (defgeneric interpret-ast (client environment ast))
 
 (defun simplify-ast (ast)
@@ -13,9 +11,8 @@
          (ast (iat:split-setq ast)))
     ast))
 
-(defun interpret (client ast global-environment)
-  (let* ((*global-environment* global-environment))
-    (interpret-ast client '() ast)))
+(defun interpret (client ast)
+  (interpret-ast client '() ast))
 
 (defmethod cb:eval-cst ((client client) cst environment)
   (let* ((ast (cb:cst-to-ast client cst environment))
@@ -24,7 +21,7 @@
            (trucler:global-environment client environment))
          (cells-ast
            (introduce-cells client global-environment simplified-ast)))
-    (interpret client cells-ast global-environment)))
+    (interpret client cells-ast)))
 
 (defun compile-ast (client ast environment)
   (let* ((simplified-ast (simplify-ast ast))
@@ -33,4 +30,4 @@
          (cells-ast
            (introduce-cells client global-environment simplified-ast)))
     (lambda ()
-      (interpret client cells-ast global-environment))))
+      (interpret client cells-ast))))
