@@ -27,7 +27,6 @@
    (:file "the-ast")
    (:file "multiple-value-call-ast")
    (:file "multiple-value-prog1-ast")
-   (:file "setq-ast")
    (:file "simple-setq-ast")
    (:file "special-variable-setq-ast")
    (:file "special-variable-cell-ast")
