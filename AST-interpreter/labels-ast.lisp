@@ -86,33 +86,31 @@
 
 (defun interpret-local-function-ast-components
     (client environment lambda-list-ast form-asts)
-  (let ((global-environment *global-environment*))
-    (lambda (&rest arguments)
-      (let ((*global-environment* global-environment)
-            (new-environment environment)
-            (remaining-arguments arguments)
-            (required-section-ast (ico:required-section-ast lambda-list-ast))
-            (optional-section-ast (ico:optional-section-ast lambda-list-ast))
-            (rest-section-ast (ico:rest-section-ast lambda-list-ast))
-            (key-section-ast (ico:key-section-ast lambda-list-ast)))
-        (unless (null required-section-ast)
-          (multiple-value-setq (remaining-arguments new-environment)
-            (handle-required-parameters
-             required-section-ast remaining-arguments new-environment)))
-        (unless (null optional-section-ast)
-          (multiple-value-setq (remaining-arguments new-environment)
-            (handle-optional-parameters
-             optional-section-ast remaining-arguments new-environment)))
-        (unless (null rest-section-ast)
-          (push (cons (ico:name-ast (ico:parameter-ast rest-section-ast))
-                      remaining-arguments)
-                new-environment))
-        (unless (null key-section-ast)
-          (assert (evenp (length remaining-arguments)))
-          (setq new-environment
-                (handle-key-parameters
-                 key-section-ast remaining-arguments new-environment)))
-        (interpret-implicit-progn-asts client new-environment form-asts)))))
+  (lambda (&rest arguments)
+    (let ((new-environment environment)
+          (remaining-arguments arguments)
+          (required-section-ast (ico:required-section-ast lambda-list-ast))
+          (optional-section-ast (ico:optional-section-ast lambda-list-ast))
+          (rest-section-ast (ico:rest-section-ast lambda-list-ast))
+          (key-section-ast (ico:key-section-ast lambda-list-ast)))
+      (unless (null required-section-ast)
+        (multiple-value-setq (remaining-arguments new-environment)
+          (handle-required-parameters
+           required-section-ast remaining-arguments new-environment)))
+      (unless (null optional-section-ast)
+        (multiple-value-setq (remaining-arguments new-environment)
+          (handle-optional-parameters
+           optional-section-ast remaining-arguments new-environment)))
+      (unless (null rest-section-ast)
+        (push (cons (ico:name-ast (ico:parameter-ast rest-section-ast))
+                    remaining-arguments)
+              new-environment))
+      (unless (null key-section-ast)
+        (assert (evenp (length remaining-arguments)))
+        (setq new-environment
+              (handle-key-parameters
+               key-section-ast remaining-arguments new-environment)))
+      (interpret-implicit-progn-asts client new-environment form-asts))))
     
 (defmethod interpret-ast (client environment (ast ico:labels-ast))
   (let ((new-environment environment))
@@ -153,7 +151,6 @@
         (let ((lexical-environment
                 (list
                  (cons form-variable-definition-ast form)
-                 (cons environment-variable-definition-ast env)))
-              (*global-environment* environment))
+                 (cons environment-variable-definition-ast env))))
           (interpret-implicit-progn-asts
            client lexical-environment (ico:form-asts cells-ast))))))))
