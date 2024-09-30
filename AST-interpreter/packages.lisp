@@ -9,7 +9,8 @@
                     (#:cb #:common-boot)
                     (#:cm #:common-macros))
   (:shadow #:boundp
-           #:symbol-value)
+           #:symbol-value
+           #:identity)
   (:export #:eval-expression
            #:compile-ast
            #:client
