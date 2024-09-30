@@ -113,21 +113,22 @@
 
 (defclass tagbody-entry
     (dynamic-environment-entry valid-p-mixin)
-  ((%tag-entries :initarg :tag-entries :initform '() :reader tag-entries)))
+  ((%identity :initarg :identity :reader identity)
+   (%unwinders :initarg :unwinders :reader unwinders)))
 
 (defmethod print-object ((object tagbody-entry) stream)
   (print-unreadable-object (object stream :type t)
-    (format stream "valid-p: ~s tag-entries ~s"
-            (valid-p object) (tag-entries object))))
+    (format stream "identity: ~s valid-p: ~s unwinders ~s"
+            (identity object) (valid-p object) (unwinders object))))
 
-(defun tagbody-entry-predicate (name)
+(defun tagbody-entry-predicate (identity)
   (lambda (entry)
     (and (typep entry 'tagbody-entry)
-      (member-if (lambda (e) (eq (name e) name))
-                 (tag-entries entry)))))
+         (eq identity (identity entry)))))
 
-(defun do-go (name dynamic-environment)
-  (let ((entry (find-if (tagbody-entry-predicate name) dynamic-environment)))
+(defun do-go (identity dynamic-environment)
+  (let ((entry (find-if (tagbody-entry-predicate identity)
+                        dynamic-environment)))
     (cond ((null entry)
            (error "No valid TAG entry for ~s" name))
           ((not (valid-p entry))
@@ -136,8 +137,7 @@
            (error "Attempt to use an expired entry ~s~%" entry))
           (t
            (unwind entry dynamic-environment nil)
-           (find-if (lambda (e) (eq (name e) name))
-                    (tag-entries entry))))))
+           entry))))
 
 (defclass catch-entry
     (dynamic-environment-entry unwinder-entry-mixin valid-p-mixin)
