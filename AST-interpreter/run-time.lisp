@@ -130,7 +130,7 @@
   (let ((entry (find-if (tagbody-entry-predicate identity)
                         dynamic-environment)))
     (cond ((null entry)
-           (error "No valid TAG entry for ~s" name))
+           (error "No valid TAG entry for ~s" identity))
           ((not (valid-p entry))
            ;; For now, signal a host error.  It would be better to
            ;; call the target function ERROR.
