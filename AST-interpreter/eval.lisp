@@ -3,12 +3,14 @@
 (defgeneric interpret-ast (client environment ast))
 
 (defun simplify-ast (ast)
-  (let* ((ast (iat:lexify-lambda-list ast))
+  (let* ((ast (iat:macrolet-to-locally ast))
+         (ast (iat:lexify-lambda-list ast))
          (ast (iat:split-let-or-let* ast))
          (ast (iat:replace-special-let-with-bind ast))
          (ast (iat:let-to-labels ast))
          (ast (iat:flet-to-labels ast))
-         (ast (iat:split-setq ast)))
+         (ast (iat:split-setq ast))
+         (ast (iat:inline-inlinable-functions ast)))
     ast))
 
 (defun interpret (client ast)
