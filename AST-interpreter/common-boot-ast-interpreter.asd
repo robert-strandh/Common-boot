@@ -21,6 +21,7 @@
    (:file "block-ast")
    (:file "block-with-variable-ast")
    (:file "return-from-ast")
+   (:file "return-from-with-variable-ast")
    (:file "labels-ast")
    (:file "locally-ast")
    (:file "if-ast")
