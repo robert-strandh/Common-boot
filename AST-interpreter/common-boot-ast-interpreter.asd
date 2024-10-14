@@ -43,6 +43,7 @@
    (:file "tagbody-ast")
    (:file "tagbody-with-variable-ast")
    (:file "go-ast")
+   (:file "go-with-variable-ast")
    (:file "eval-when-ast")
    (:file "load-time-value-ast")
    (:file "let-temporary-ast")
