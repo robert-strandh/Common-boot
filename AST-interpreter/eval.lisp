@@ -11,7 +11,8 @@
          (ast (iat:flet-to-labels ast))
          (ast (iat:split-setq ast))
          (ast (iat:inline-inlinable-functions ast))
-         (ast (iat:assignment-conversion ast)))
+         (ast (iat:assignment-conversion ast))
+         (ast (iat:convert-block ast)))
     ast))
 
 (defun interpret (client ast)
