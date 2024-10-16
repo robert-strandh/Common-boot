@@ -13,7 +13,8 @@
          (ast (iat:inline-inlinable-functions ast))
          (ast (iat:assignment-conversion ast))
          (ast (iat:convert-block ast))
-         (ast (iat:convert-tagbody ast)))
+         (ast (iat:convert-tagbody ast))
+         (ast (iat:transform-function-definition-and-reference ast)))
     ast))
 
 (defun interpret (client ast)
