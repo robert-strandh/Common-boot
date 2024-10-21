@@ -84,33 +84,57 @@
                     allowed-keys)))
     environment))
 
+(defclass closure (closer-mop:funcallable-standard-object)
+  ((%static-environment
+    :initform nil
+    :accessor static-environment)
+   (%function
+    :initarg :function
+    :reader function))
+  (:metaclass closer-mop:funcallable-standard-class))
+
 (defun interpret-local-function-ast-components
     (client environment lambda-list-ast form-asts)
-  (lambda (&rest arguments)
-    (let ((new-environment environment)
-          (remaining-arguments arguments)
-          (required-section-ast (ico:required-section-ast lambda-list-ast))
-          (optional-section-ast (ico:optional-section-ast lambda-list-ast))
-          (rest-section-ast (ico:rest-section-ast lambda-list-ast))
-          (key-section-ast (ico:key-section-ast lambda-list-ast)))
-      (unless (null required-section-ast)
-        (multiple-value-setq (remaining-arguments new-environment)
-          (handle-required-parameters
-           required-section-ast remaining-arguments new-environment)))
-      (unless (null optional-section-ast)
-        (multiple-value-setq (remaining-arguments new-environment)
-          (handle-optional-parameters
-           optional-section-ast remaining-arguments new-environment)))
-      (unless (null rest-section-ast)
-        (push (cons (ico:name-ast (ico:parameter-ast rest-section-ast))
-                    remaining-arguments)
-              new-environment))
-      (unless (null key-section-ast)
-        (assert (evenp (length remaining-arguments)))
-        (setq new-environment
-              (handle-key-parameters
-               key-section-ast remaining-arguments new-environment)))
-      (interpret-implicit-progn-asts client new-environment form-asts))))
+  (let* ((function 
+           (lambda (&rest arguments)
+              (let ((new-environment environment)
+                    (remaining-arguments arguments)
+                    (required-section-ast
+                      (ico:required-section-ast lambda-list-ast))
+                    (optional-section-ast
+                      (ico:optional-section-ast lambda-list-ast))
+                    (rest-section-ast (ico:rest-section-ast lambda-list-ast))
+                    (key-section-ast (ico:key-section-ast lambda-list-ast)))
+                (unless (null required-section-ast)
+                  (multiple-value-setq (remaining-arguments new-environment)
+                    (handle-required-parameters
+                     required-section-ast
+                     remaining-arguments
+                     new-environment)))
+                (unless (null optional-section-ast)
+                  (multiple-value-setq (remaining-arguments new-environment)
+                    (handle-optional-parameters
+                     optional-section-ast
+                     remaining-arguments
+                     new-environment)))
+                (unless (null rest-section-ast)
+                  (push (cons (ico:name-ast
+                               (ico:parameter-ast rest-section-ast))
+                              remaining-arguments)
+                        new-environment))
+                (unless (null key-section-ast)
+                  (assert (evenp (length remaining-arguments)))
+                  (setq new-environment
+                        (handle-key-parameters
+                         key-section-ast
+                         remaining-arguments
+                         new-environment)))
+                (interpret-implicit-progn-asts
+                 client new-environment form-asts))))
+         (closure (make-instance 'closure
+                    :function function)))
+    (closer-mop:set-funcallable-instance-function closure function)
+    closure))
     
 (defmethod interpret-ast (client environment (ast ico:labels-ast))
   (let ((new-environment environment))
