@@ -50,4 +50,5 @@
    (:file "let-temporary-ast")
    (:file "make-cell-ast")
    (:file "read-cell-ast")
-   (:file "write-cell-ast")))
+   (:file "write-cell-ast")
+   (:file "static-environment-ast")))
