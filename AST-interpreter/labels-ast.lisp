@@ -93,6 +93,10 @@
     :reader function))
   (:metaclass closer-mop:funcallable-standard-class))
 
+;;; This variable is used only between the invocation of a closure,
+;;; and the interpretation of the STATIC-ENVIRONMENT-AST.
+(defvar *static-environment*)
+
 (defun interpret-local-function-ast-components
     (client environment lambda-list-ast form-asts)
   (let* ((function 
@@ -133,7 +137,11 @@
                  client new-environment form-asts))))
          (closure (make-instance 'closure
                     :function function)))
-    (closer-mop:set-funcallable-instance-function closure function)
+    (closer-mop:set-funcallable-instance-function
+     closure
+     (lambda (&rest arguments)
+       (let ((*static-environment* (static-environment closure)))
+         (apply (function closure) arguments))))
     closure))
     
 (defmethod interpret-ast (client environment (ast ico:labels-ast))
