@@ -3,7 +3,8 @@
 (defsystem "common-boot-ast-interpreter"
   :depends-on ("iconoclast"
                "iconoclast-ast-transformations"
-               "common-boot")
+               "common-boot"
+               "closer-mop")
   :serial t
   :components
   ((:file "packages")
