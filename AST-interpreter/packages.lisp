@@ -10,7 +10,8 @@
                     (#:cm #:common-macros))
   (:shadow #:boundp
            #:symbol-value
-           #:identity)
+           #:identity
+           #:function)
   (:export #:eval-expression
            #:compile-ast
            #:client
