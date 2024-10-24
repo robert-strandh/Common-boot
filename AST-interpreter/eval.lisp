@@ -15,7 +15,8 @@
          (ast (iat:convert-block ast))
          (ast (iat:convert-tagbody ast))
          (ast (iat:transform-function-definition-and-reference ast))
-         (ast (iat:eliminate-function ast)))
+         (ast (iat:eliminate-function ast))
+         #+(or)(ast (iat:closure-conversion ast)))
     ast))
 
 (defun interpret (client ast)

@@ -58,7 +58,7 @@
     ((description trucler:local-function-description) function-name-ast)
   (let* ((function-definition-ast (trucler:identity description))
          (result (make-instance 'ico:function-reference-ast
-                   :local-function-name-definition-ast
+                   :definition-ast
                    function-definition-ast
                    :name (ico:name function-name-ast)
                    :origin (ico:origin function-name-ast))))

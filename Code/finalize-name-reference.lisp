@@ -45,16 +45,16 @@
     (client
      (name-ast ico:function-name-ast)
      (description trucler:local-function-description))
-  (let ((local-function-name-definition-ast (trucler:identity description)))
+  (let ((definition-ast (trucler:identity description)))
     (change-class name-ast 'ico:function-reference-ast
-                  :name (ico:name local-function-name-definition-ast)
-                  :local-function-name-definition-ast
-                  local-function-name-definition-ast)
-    (reinitialize-instance local-function-name-definition-ast
+                  :name (ico:name definition-ast)
+                  :definition-ast
+                  definition-ast)
+    (reinitialize-instance definition-ast
       :local-function-name-reference-asts
       (cons name-ast
        (ico:local-function-name-reference-asts
-        local-function-name-definition-ast)))))
+        definition-ast)))))
 
 (defun finalize-variable-name-ast-from-environment
     (client name-ast environment)

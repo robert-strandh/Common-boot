@@ -7,7 +7,7 @@
   ;; make progress.  It keeps only SPECIAL declarations.
   (trim-declaration-asts (ico:declaration-asts ast))
   (change-class (ico:name-ast ast)
-                'ico:local-function-name-definition-ast)
+                'ico:definition-ast)
   (let ((body-environment
           (finalize-lambda-list
            client environment

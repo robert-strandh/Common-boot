@@ -3,7 +3,7 @@
 (defmethod translate-ast
     (client environment (ast ico:function-reference-ast))
   (let ((function-definition-ast
-          (ico:local-function-name-definition-ast ast)))
+          (ico:definition-ast ast)))
     `(function ,(lookup function-definition-ast))))
 
 (defmethod translate-ast
