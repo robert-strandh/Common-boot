@@ -2,4 +2,4 @@
 
 (defmethod translate-ast
     (client enviroment (ast ico:variable-reference-ast))
-  (lookup (ico:variable-definition-ast ast)))
+  (lookup (ico:definition-ast ast)))

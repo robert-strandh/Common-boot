@@ -21,7 +21,7 @@
                       :origin ',(ico:origin variable-reference-ast)
                       :next ,tempc))
             (let* ((variable-definition-ast
-                     (ico:variable-definition-ast variable-reference-ast))
+                     (ico:definition-ast variable-reference-ast))
                    (host-variable (lookup variable-definition-ast)))
               `(,tempc (make-before-continuation
                         (lambda (&rest ,tempa)

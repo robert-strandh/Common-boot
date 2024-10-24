@@ -2,4 +2,4 @@
 
 (defmethod interpret-ast
     (client environment (ast ico:variable-reference-ast))
-  (lookup (ico:variable-definition-ast ast) environment))
+  (lookup (ico:definition-ast ast) environment))

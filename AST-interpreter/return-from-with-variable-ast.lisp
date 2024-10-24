@@ -4,7 +4,7 @@
     (client environment (ast ico:return-from-with-variable-ast))
   (let* ((variable-reference-ast (ico:variable-reference-ast ast))
          (definition-ast
-           (ico:variable-definition-ast variable-reference-ast))
+           (ico:definition-ast variable-reference-ast))
          (identity (lookup definition-ast environment))
          (entry (do-return-from identity *dynamic-environment*)))
     (funcall

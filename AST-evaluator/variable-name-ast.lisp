@@ -2,7 +2,7 @@
 
 (defmethod cps
     (client environment (ast ico:variable-reference-ast) continuation)
-  (let ((definition-ast (ico:variable-definition-ast ast)))
+  (let ((definition-ast (ico:definition-ast ast)))
     `(step
       ;; The LIST is so that we the STEP can use APPLY to apply the
       ;; continuation to the list of arguments, and the CAR is because

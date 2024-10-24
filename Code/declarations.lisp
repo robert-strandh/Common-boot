@@ -19,7 +19,7 @@
                             (change-class
                              name-ast
                              'ico:variable-reference-ast
-                             :variable-definition-ast variable-name-ast)
+                             :definition-ast variable-name-ast)
                             (reinitialize-instance variable-name-ast
                               :variable-reference-asts
                               (cons name-ast
@@ -38,7 +38,7 @@
          (result (make-instance 'ico:variable-reference-ast
                    :name (ico:name variable-name-ast)
                    :origin (ico:origin variable-name-ast)
-                   :variable-definition-ast variable-definition-ast)))
+                   :definition-ast variable-definition-ast)))
     (reinitialize-instance variable-definition-ast
       :variable-reference-asts
       (append (ico:variable-reference-asts variable-definition-ast)

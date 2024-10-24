@@ -204,7 +204,7 @@
          (result (make-instance 'ico:variable-reference-ast
                    :origin cst
                    :name (trucler:name description)
-                   :variable-definition-ast variable-definition-ast)))
+                   :definition-ast variable-definition-ast)))
     (reinitialize-instance variable-definition-ast
       :variable-reference-asts
       (append (ico:variable-reference-asts variable-definition-ast)

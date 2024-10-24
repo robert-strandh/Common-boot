@@ -4,7 +4,7 @@
     (client environment (ast ico:go-with-variable-ast))
   (let* ((variable-reference-ast (ico:variable-reference-ast ast))
          (variable-definition-ast
-           (ico:variable-definition-ast variable-reference-ast))
+           (ico:definition-ast variable-reference-ast))
          (identity (lookup variable-definition-ast environment))
          (index-ast (ico:index-ast ast))
          (index (ico:literal index-ast))

@@ -15,7 +15,7 @@
      (description trucler:lexical-variable-description))
   (let ((local-variable-definition-ast (trucler:identity description)))
     (change-class name-ast 'ico:variable-reference-ast
-                  :variable-definition-ast
+                  :definition-ast
                   local-variable-definition-ast)
     (reinitialize-instance local-variable-definition-ast
       :variable-reference-asts
