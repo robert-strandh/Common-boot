@@ -63,8 +63,8 @@
                    :name (ico:name function-name-ast)
                    :origin (ico:origin function-name-ast))))
     (reinitialize-instance function-definition-ast
-      :local-function-name-reference-asts
-      (append (ico:local-function-name-reference-asts
+      :reference-asts
+      (append (ico:reference-asts
                function-definition-ast)
               (list result)))
     result))

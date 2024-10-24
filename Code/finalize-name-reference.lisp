@@ -51,9 +51,9 @@
                   :definition-ast
                   definition-ast)
     (reinitialize-instance definition-ast
-      :local-function-name-reference-asts
+      :reference-asts
       (cons name-ast
-       (ico:local-function-name-reference-asts
+       (ico:reference-asts
         definition-ast)))))
 
 (defun finalize-variable-name-ast-from-environment
