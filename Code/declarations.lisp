@@ -21,9 +21,9 @@
                              'ico:variable-reference-ast
                              :definition-ast variable-name-ast)
                             (reinitialize-instance variable-name-ast
-                              :variable-reference-asts
+                              :reference-asts
                               (cons name-ast
-                               (ico:variable-reference-asts
+                               (ico:reference-asts
                                 variable-name-ast))))
                           (change-class
                            name-ast
@@ -40,8 +40,8 @@
                    :origin (ico:origin variable-name-ast)
                    :definition-ast variable-definition-ast)))
     (reinitialize-instance variable-definition-ast
-      :variable-reference-asts
-      (append (ico:variable-reference-asts variable-definition-ast)
+      :reference-asts
+      (append (ico:reference-asts variable-definition-ast)
               (list result)))
     result))
 

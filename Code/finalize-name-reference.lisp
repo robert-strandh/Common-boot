@@ -18,9 +18,9 @@
                   :definition-ast
                   local-variable-definition-ast)
     (reinitialize-instance local-variable-definition-ast
-      :variable-reference-asts
+      :reference-asts
       (cons name-ast
-       (ico:variable-reference-asts local-variable-definition-ast)))))
+       (ico:reference-asts local-variable-definition-ast)))))
 
 (defgeneric finalize-function-name-ast-from-description
     (client name-ast description))

@@ -206,7 +206,7 @@
                    :name (trucler:name description)
                    :definition-ast variable-definition-ast)))
     (reinitialize-instance variable-definition-ast
-      :variable-reference-asts
-      (append (ico:variable-reference-asts variable-definition-ast)
+      :reference-asts
+      (append (ico:reference-asts variable-definition-ast)
               (list result)))
     result))
