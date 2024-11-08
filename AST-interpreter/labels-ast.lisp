@@ -90,7 +90,13 @@
     :accessor static-environment)
    (%function
     :initarg :function
-    :reader function))
+    :reader function)
+   (%lambda-list-ast
+    :initarg :lambda-list-ast
+    :reader lambda-list-ast)
+   (%form-asts
+    :initarg :form-asts
+    :reader form-asts))
   (:metaclass closer-mop:funcallable-standard-class))
 
 ;;; This variable is used only between the invocation of a closure,
@@ -136,6 +142,8 @@
                 (interpret-implicit-progn-asts
                  client new-environment form-asts))))
          (closure (make-instance 'closure
+                    :lambda-list-ast lambda-list-ast
+                    :form-asts form-asts
                     :function function)))
     (closer-mop:set-funcallable-instance-function
      closure
