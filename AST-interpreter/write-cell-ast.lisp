@@ -2,5 +2,6 @@
 
 (defmethod interpret-ast (client environment (ast ico:write-cell-ast))
   (let ((value (interpret-ast client environment (ico:form-ast ast))))
-    (rplaca (ico:cell-ast ast) value)
+    (rplaca (interpret-ast client environment (ico:cell-ast ast))
+            value)
     value))
