@@ -10,7 +10,6 @@
                #:trucler-reference
                #:iconoclast-builder
                #:iconoclast-ast-transformations
-               #:common-macros
                #:common-macro-definitions)
   :serial t
   :components
