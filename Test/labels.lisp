@@ -40,3 +40,12 @@
   (with-default-parameters (client environment global-environment)
     (iss #1=(labels ((f (x) (if (null x) 234 (f nil)))) (f 0))
          (eval-expression client '#1# environment))))
+
+(define-test labels-with-first-calling-second
+  :parent labels
+  (with-default-parameters (client environment global-environment)
+    (iss #1=(labels ((f (x) (g x))
+                     (g (x) x))
+              (f 234))
+         (eval-expression client '#1# environment))))
+  
