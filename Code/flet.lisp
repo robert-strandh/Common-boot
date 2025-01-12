@@ -6,8 +6,6 @@
   ;; FIXME: This call is a temporary simplification to allow us to
   ;; make progress.  It keeps only SPECIAL declarations.
   (trim-declaration-asts (ico:declaration-asts ast))
-  (change-class (ico:name-ast ast)
-                'ico:function-definition-ast)
   (let ((body-environment
           (finalize-lambda-list
            client environment
@@ -39,7 +37,8 @@
     (let ((new-environment environment))
       (loop for local-function-ast in (ico:binding-asts ast)
             for name-ast = (ico:name-ast local-function-ast)
-            do (finalize-local-function-ast
+            do (change-class name-ast 'ico:function-definition-ast)
+               (finalize-local-function-ast
                 client local-function-ast environment)
                (setf new-environment
                      (augment-environment-with-local-function-name

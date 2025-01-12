@@ -5,7 +5,8 @@
     (let ((new-environment environment))
       (loop for local-function-ast in (ico:binding-asts labels-ast)
             for name-ast = (ico:name-ast local-function-ast)
-            do (setf new-environment
+            do (change-class name-ast 'ico:function-definition-ast)
+               (setf new-environment
                      (augment-environment-with-local-function-name
                       client name-ast new-environment)))
       (loop for local-function-ast in (ico:binding-asts labels-ast)
