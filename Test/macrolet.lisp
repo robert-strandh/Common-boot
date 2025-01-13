@@ -25,3 +25,11 @@
   (with-default-parameters (client environment global-environment)
     (iss #1=(macrolet ((foo (x) (list '1+ x))) (foo 234))
          (eval-expression client '#1# environment))))
+
+(define-test macrolet-with-setf
+  :parent macrolet
+  (with-default-parameters (client environment global-environment)
+    (iss #1=(let ((list (list 234)))
+              (macrolet ((f () '(car list)))
+                (setf (f) 345) list))
+         (eval-expression client '#1# environment))))
