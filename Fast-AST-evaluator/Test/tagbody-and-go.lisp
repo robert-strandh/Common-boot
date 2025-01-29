@@ -68,3 +68,18 @@
     (iss #1=(let ((x 10))
               (tagbody (let ((y 20)) (setq x y) (go out)) (setq x 5) out) x)
          (eval-expression client '#1# environment))))
+
+(define-test tagbody-with-go-to-outermost
+  :parent tagbody-and-go
+  (with-default-parameters (client environment global-environment)
+    (iss #1=(let ((x 0))
+              (labels ((bar (f test)
+                         (tagbody
+                            (if test
+                                (funcall f)
+                                (bar (lambda () (go out)) t))
+                          out)
+                         (incf x)))
+                (bar nil nil))
+              x)
+         (eval-expression client '#1# environment))))

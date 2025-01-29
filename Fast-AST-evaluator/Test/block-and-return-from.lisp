@@ -43,8 +43,22 @@
 
 (define-test block-with-return-from-inside-let-with-variable
   :parent block-and-return-from
-    (with-default-parameters (client environment global-environment)
-      (iss #1=(block b
-                (let ((x nil))
-                  (return-from b x)))
-           (eval-expression client '#1# environment))))
+  (with-default-parameters (client environment global-environment)
+    (iss #1=(block b
+              (let ((x nil))
+                (return-from b x)))
+         (eval-expression client '#1# environment))))
+
+(define-test block-with-return-from-outermost
+  :parent block-and-return-from
+  (with-default-parameters (client environment global-environment)
+    (iss #1=(let ((x 0))
+              (labels ((bar (f test)
+                         (block nil
+                           (if test
+                               (funcall f)
+                               (bar (lambda () (return)) t)))
+                         (incf x)))
+                (bar nil nil))
+              x)
+         (eval-expression client '#1# environment))))
