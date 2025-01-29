@@ -24,6 +24,7 @@
    (:file "labels-ast")
    (:file "if-ast")
    (:file "return-from-ast")
+   (:file "return-from-with-variable-ast")
    (:file "locally-ast")
    (:file "function-ast")
    (:file "multiple-value-call-ast")
