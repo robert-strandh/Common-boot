@@ -20,6 +20,7 @@
    (:file "special-variable-reference-ast")
    (:file "progn-ast")
    (:file "block-ast")
+   (:file "block-with-variable-ast")
    (:file "labels-ast")
    (:file "if-ast")
    (:file "return-from-ast")
