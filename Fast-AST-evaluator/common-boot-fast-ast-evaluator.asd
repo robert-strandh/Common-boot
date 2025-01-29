@@ -46,4 +46,5 @@
    (:file "eval-when-ast")
    (:file "load-time-value-ast")
    (:file "let-temporary-ast")
-   (:file "make-cell-ast")))
+   (:file "make-cell-ast")
+   (:file "read-cell-ast")))
