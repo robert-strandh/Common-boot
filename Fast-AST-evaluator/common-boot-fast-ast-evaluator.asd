@@ -50,4 +50,5 @@
    (:file "read-cell-ast")
    (:file "write-cell-ast")
    (:file "static-environment-ast")
-   (:file "set-static-environment-ast")))
+   (:file "set-static-environment-ast")
+   (:file "read-static-environment-ast")))
