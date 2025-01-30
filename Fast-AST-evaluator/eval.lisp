@@ -42,9 +42,15 @@
 (defvar *code-objects*)
 
 (defun compile-ast (client ast environment)
-  (let ((simplified-ast (simplify-ast ast))
-        (global-environment (trucler:global-environment client environment))
-        (*code-objects* (make-hash-table :test #'eq)))
+  (let* ((simplified-ast (simplify-ast ast))
+         (global-environment (trucler:global-environment client environment))
+         (*code-objects* (make-hash-table :test #'eq))
+         (local-functions (find-local-functions ast))
+         (names (loop for local-function in local-functions
+                      for name = (gensym)
+                      do (setf (gethash (cdr local-function) *code-objects*)
+                               name)
+                      collect name)))
     (compile
      nil
      `(lambda ()
