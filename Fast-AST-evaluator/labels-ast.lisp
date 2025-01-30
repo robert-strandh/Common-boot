@@ -15,28 +15,16 @@
     :reader form-asts))
   (:metaclass closer-mop:funcallable-standard-class))
 
-(defmethod translate-ast (client environment (ast ico:local-function-ast))
-  (setf (lookup (ico:name-ast ast)) (gensym))
-  (let* ((lambda-list-ast (ico:lambda-list-ast ast))
-         (lambda-list-variable-asts
-           (iat:extract-variable-asts-in-lambda-list lambda-list-ast))
-         (lambda-list-variables
-           (loop for lambda-list-variable-ast in lambda-list-variable-asts
-                 collect (gensym))))
-    (loop for lambda-list-variable-ast in lambda-list-variable-asts
-          for lambda-list-variable in lambda-list-variables
-          do (setf (lookup lambda-list-variable-ast) lambda-list-variable))
-    (let ((host-lambda-list
-            (host-lambda-list-from-lambda-list-ast lambda-list-ast)))
-      `(,(lookup (ico:name-ast ast))
-        ,host-lambda-list
-        (declare (ignorable ,@lambda-list-variables))
-        (let ((dynamic-environment *dynamic-environment*))
-          (declare (ignorable dynamic-environment))
-          ,@(translate-implicit-progn
-             client environment (ico:form-asts ast)))))))
-
 (defmethod translate-ast (client environment (ast ico:labels-ast))
-  `(labels ,(loop for function-ast in (ico:binding-asts ast)
-                  collect (translate-ast client environment function-ast))
+  `(let ,(loop for function-ast in (ico:binding-asts ast)
+               for name-ast = (ico:name-ast function-ast)
+               for lambda-list-ast = (ico:lambda-list-ast function-ast)
+               for form-asts = (ico:form-asts function-ast)
+               for name = (gethash name-ast *code-object-names*)
+               collect `(,name
+                         (make-instance 'closure
+                           :static-environment *static-environment*
+                           :function name
+                           :lambda-list-ast lambda-list-ast
+                           :form-asts form-asts)))
      ,@(translate-implicit-progn client environment (ico:form-asts ast))))
