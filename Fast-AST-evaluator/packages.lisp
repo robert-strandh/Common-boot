@@ -4,6 +4,7 @@
   (:use #:common-lisp)
   (:local-nicknames (#:ico #:iconoclast)
                     (#:iat #:iconoclast-ast-transformations)
+                    (#:iaw #:iconoclast-ast-walker)
                     (#:clo #:clostrum)
                     (#:cb #:common-boot)
                     (#:cm #:common-macros))
