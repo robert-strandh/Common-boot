@@ -36,9 +36,15 @@
          (ast (iat:closure-conversion ast)))
     ast))
 
+;;; This variable holds a hash table that maps the list of FORM-ASTs
+;;; of a local function to symbol to be used as a variable name to
+;;; refer to the "code object" part of a CLOSURE instance.
+(defvar *code-objects*)
+
 (defun compile-ast (client ast environment)
   (let ((simplified-ast (simplify-ast ast))
-        (global-environment (trucler:global-environment client environment)))
+        (global-environment (trucler:global-environment client environment))
+        (*code-objects* (make-hash-table :test #'eq)))
     (compile
      nil
      `(lambda ()
