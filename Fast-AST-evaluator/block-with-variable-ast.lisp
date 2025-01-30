@@ -3,9 +3,7 @@
 (defmethod translate-ast
     (client (ast ico:block-with-variable-ast))
   (let* ((catch-tag (gensym))
-         (identity (list nil))
-         (new-environment
-           (acons (ico:variable-definition-ast ast) identity environment)))
+         (identity (list nil)))
     `(let ((dynamic-environment dynamic-environment))
        (declare (ignorable dynamic-environment))
        (push (make-instance 'block-entry
@@ -15,4 +13,4 @@
              dynamic-environment)
        (catch ,catch-tag
          ,@(translate-implicit-progn
-            client new-environment (ico:form-asts ast))))))
+            client (ico:form-asts ast))))))

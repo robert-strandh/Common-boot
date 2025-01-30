@@ -1,6 +1,6 @@
 (cl:in-package #:common-boot-fast-ast-evaluator)
 
-(defmethod translate-ast (client enviroment (ast ico:go-ast))
+(defmethod translate-ast (client (ast ico:go-ast))
   (let* ((tag-reference-ast (ico:tag-ast ast))
          (tag-definition-ast (ico:tag-definition-ast tag-reference-ast))
          (host-name (lookup tag-definition-ast)))

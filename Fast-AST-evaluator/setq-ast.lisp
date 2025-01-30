@@ -6,7 +6,7 @@
               ',(ico:name variable-name-ast)
               ',(clostrum-sys:variable-cell
                  client
-                 environment
+                 *global-environment*
                  (ico:name variable-name-ast))
               dynamic-environment)
              ,(translate-ast client value-ast))
