@@ -1,14 +1,14 @@
 (cl:in-package #:common-boot-fast-ast-evaluator)
 
-(defmethod translate-ast (client environment (ast ico:progv-ast))
+(defmethod translate-ast (client (ast ico:progv-ast))
   (let ((symbols-ast (ico:symbols-ast ast))
         (values-ast (ico:values-ast ast))
         (symbols-var (gensym))
         (values-var (gensym)))
     `(let ((dynamic-environment dynamic-environment))
        (declare (ignorable dynamic-environment))
-       (let ((,symbols-var ,(translate-ast client environment symbols-ast))
-             (,values-var ,(translate-ast client environment values-ast)))
+       (let ((,symbols-var ,(translate-ast client symbols-ast))
+             (,values-var ,(translate-ast client values-ast)))
          (loop for symbol in ,symbols-var
                for value in ,values-var
                do (push (make-instance 'special-variable-entry
@@ -23,4 +23,4 @@
                             :name symbol)
                           dynamic-environment)))
          ,@(translate-implicit-progn
-            client environment (ico:form-asts ast))))))
+            client (ico:form-asts ast))))))

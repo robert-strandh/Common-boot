@@ -1,6 +1,6 @@
 (cl:in-package #:common-boot-fast-ast-evaluator)
 
-(defmethod translate-ast (client environment (ast ico:block-ast))
+(defmethod translate-ast (client (ast ico:block-ast))
   (let* ((name-ast (ico:name-ast ast))
          (host-name (gensym)))
     (setf (lookup name-ast) host-name)
@@ -15,4 +15,4 @@
                      (apply #'values values))))
                dynamic-environment)
          ,@(translate-implicit-progn
-            client environment (ico:form-asts ast))))))
+            client (ico:form-asts ast))))))

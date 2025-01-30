@@ -20,7 +20,7 @@
                                              (go ,host-segment-name))))))
          dynamic-environment))
 
-(defmethod translate-ast (client environment (ast ico:tagbody-ast))
+(defmethod translate-ast (client (ast ico:tagbody-ast))
   (let* ((segment-asts (ico:segment-asts ast))
          (host-segment-names (loop for segment-ast in segment-asts
                                    collect (gensym))))
@@ -30,4 +30,4 @@
           ,@(loop for segment-ast in segment-asts
                   for host-segment-name in host-segment-names
                   collect host-segment-name
-                  collect (translate-ast client environment segment-ast))))))
+                  collect (translate-ast client segment-ast))))))

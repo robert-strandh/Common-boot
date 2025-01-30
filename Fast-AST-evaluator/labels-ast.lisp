@@ -15,16 +15,16 @@
     :reader form-asts))
   (:metaclass closer-mop:funcallable-standard-class))
 
-(defmethod translate-ast (client environment (ast ico:labels-ast))
+(defmethod translate-ast (client (ast ico:labels-ast))
   `(let ,(loop for function-ast in (ico:binding-asts ast)
                for name-ast = (ico:name-ast function-ast)
                for lambda-list-ast = (ico:lambda-list-ast function-ast)
                for form-asts = (ico:form-asts function-ast)
-               for name = (gethash name-ast *code-object-names*)
+               for code-object-name = (gethash name-ast *code-object-names*)
                collect `(,name
                          (make-instance 'closure
                            :static-environment *static-environment*
-                           :function name
-                           :lambda-list-ast lambda-list-ast
-                           :form-asts form-asts)))
-     ,@(translate-implicit-progn client environment (ico:form-asts ast))))
+                           :function ,code-object-name
+                           :lambda-list-ast ,lambda-list-ast
+                           :form-asts ,form-asts)))
+     ,@(translate-implicit-progn client (ico:form-asts ast))))

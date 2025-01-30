@@ -1,6 +1,6 @@
 (cl:in-package #:common-boot-fast-ast-evaluator)
 
-(defgeneric translate-ast (client environment ast))
+(defgeneric translate-ast (client ast))
 
 (defun tree-size (tree)
   (let ((ht (make-hash-table :test #'eq)))
@@ -12,9 +12,9 @@
                      (+ 1 (aux (car tree)) (aux (cdr tree)))))))
       (aux tree))))
 
-(defun translate (client ast environment)
+(defun translate (client ast)
   (let* ((*host-names* (make-hash-table :test #'eq))
-         (result (translate-ast client environment ast)))
+         (result (translate-ast client ast)))
     result))
 
 (defun simplify-ast (ast)
@@ -58,11 +58,13 @@
                   (let ((dynamic-environment *dynamic-environment*))
                     (declare (ignorable dynamic-environment))
                     ,@(translate-implicit-progn
-                       client '() (ico:form-asts ast))))))))
+                       client (ico:form-asts ast))))))))
+
+(defvar *global-environment*)
 
 (defun compile-ast (client ast environment)
   (let* ((simplified-ast (simplify-ast ast))
-         (global-environment (trucler:global-environment client environment))
+         (*global-environment* (trucler:global-environment client environment))
          (*code-object-names* (make-hash-table :test #'eq))
          (local-function-asts (find-local-function-asts ast))
          (names (loop for local-function-ast in local-function-asts
@@ -82,7 +84,7 @@
           (declare (ignorable dynamic-environment))
           #+sbcl
           (declare (sb-ext:muffle-conditions sb-ext:compiler-note))
-          ,(translate client simplified-ast global-environment))))))
+          ,(translate client simplified-ast))))))
 
 (defmethod cb:eval-cst ((client client) cst environment)
   (let* ((ast (cb:cst-to-ast client cst environment))
@@ -94,7 +96,8 @@
     (funcall top-level-function)))
 
 (defmethod cb:compile-local-macro-function-ast (client ast environment)
-  (let ((simplified-ast (simplify-ast ast)))
+  (let ((simplified-ast (simplify-ast ast))
+        (*global-environment* environment))
     (compile
      nil
      `(lambda ()
@@ -103,4 +106,4 @@
           #+sbcl
           (declare (sb-ext:muffle-conditions sb-ext:compiler-note))
           ,(cons 'lambda
-                 (cdr (translate client simplified-ast environment))))))))
+                 (cdr (translate client simplified-ast))))))))

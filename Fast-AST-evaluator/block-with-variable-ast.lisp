@@ -1,7 +1,7 @@
 (cl:in-package #:common-boot-fast-ast-evaluator)
 
 (defmethod translate-ast
-    (client environment (ast ico:block-with-variable-ast))
+    (client (ast ico:block-with-variable-ast))
   (let* ((catch-tag (gensym))
          (identity (list nil))
          (new-environment
