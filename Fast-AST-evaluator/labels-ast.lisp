@@ -21,6 +21,8 @@
                for lambda-list-ast = (ico:lambda-list-ast function-ast)
                for form-asts = (ico:form-asts function-ast)
                for code-object-name = (gethash name-ast *code-object-names*)
+               for name = (gensym)
+               do (setf (lookup name-ast) name)
                collect `(,name
                          (make-instance 'closure
                            :static-environment *static-environment*
