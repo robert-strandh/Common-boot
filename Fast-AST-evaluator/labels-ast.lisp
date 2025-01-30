@@ -1,5 +1,20 @@
 (cl:in-package #:common-boot-fast-ast-evaluator)
 
+(defclass closure (closer-mop:funcallable-standard-object)
+  ((%static-environment
+    :initform nil
+    :accessor static-environment)
+   (%function
+    :initarg :function
+    :reader function)
+   (%lambda-list-ast
+    :initarg :lambda-list-ast
+    :reader lambda-list-ast)
+   (%form-asts
+    :initarg :form-asts
+    :reader form-asts))
+  (:metaclass closer-mop:funcallable-standard-class))
+
 (defmethod translate-ast (client environment (ast ico:local-function-ast))
   (setf (lookup (ico:name-ast ast)) (gensym))
   (let* ((lambda-list-ast (ico:lambda-list-ast ast))
