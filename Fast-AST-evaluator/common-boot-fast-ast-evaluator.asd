@@ -11,6 +11,7 @@
    (:file "run-time")
    (:file "utilities")
    (:file "host-lambda-list-from-lambda-list-ast")
+   (:file "find-local-functions")
    (:file "eval")
    (:file "literal")
    (:file "quote")
