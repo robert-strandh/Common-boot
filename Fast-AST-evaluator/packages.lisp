@@ -8,7 +8,8 @@
                     (#:cb #:common-boot)
                     (#:cm #:common-macros))
   (:shadow #:boundp
-           #:symbol-value)
+           #:symbol-value
+           #:function)
   (:export #:client
            #:eval-expression
            #:compile-ast
