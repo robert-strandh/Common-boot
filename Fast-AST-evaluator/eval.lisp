@@ -36,21 +36,45 @@
          (ast (iat:closure-conversion ast)))
     ast))
 
-;;; This variable holds a hash table that maps the list of FORM-ASTs
-;;; of a local function to symbol to be used as a variable name to
-;;; refer to the "code object" part of a CLOSURE instance.
-(defvar *code-objects*)
+(defvar *code-object-names*)
+
+(defgeneric compile-local-function-ast (client ast))
+
+(defmethod compile-local-function-ast (client ast)
+  (let* ((lambda-list-ast (ico:lambda-list-ast ast))
+         (lambda-list-variable-asts
+           (iat:extract-variable-asts-in-lambda-list lambda-list-ast))
+         (lambda-list-variables
+           (loop for lambda-list-variable-ast in lambda-list-variable-asts
+                 collect (gensym))))
+    (loop for lambda-list-variable-ast in lambda-list-variable-asts
+          for lambda-list-variable in lambda-list-variables
+          do (setf (lookup lambda-list-variable-ast) lambda-list-variable))
+    (let ((host-lambda-list
+            (host-lambda-list-from-lambda-list-ast lambda-list-ast)))
+      (compile nil
+               `(lambda ,host-lambda-list
+                  (declare (ignorable ,@lambda-list-variables))
+                  (let ((dynamic-environment *dynamic-environment*))
+                    (declare (ignorable dynamic-environment))
+                    ,@(translate-implicit-progn
+                       client '() (ico:form-asts ast))))))))
 
 (defun compile-ast (client ast environment)
   (let* ((simplified-ast (simplify-ast ast))
          (global-environment (trucler:global-environment client environment))
-         (*code-objects* (make-hash-table :test #'eq))
-         (local-functions (find-local-functions ast))
-         (names (loop for local-function in local-functions
+         (*code-object-names* (make-hash-table :test #'eq))
+         (local-function-asts (find-local-function-asts ast))
+         (names (loop for local-function-ast in local-function-asts
+                      for name-ast = (ico:name-ast local-function-ast)
                       for name = (gensym)
-                      do (setf (gethash (cdr local-function) *code-objects*)
+                      do (setf (gethash name-ast *code-object-names*)
                                name)
-                      collect name)))
+                      collect name))
+         (code-objects
+           (loop for local-function-ast in local-function-asts
+                 collect (compile-local-function-ast
+                          client local-function-ast))))
     (compile
      nil
      `(lambda ()
