@@ -15,18 +15,29 @@
     :reader form-asts))
   (:metaclass closer-mop:funcallable-standard-class))
 
+(defun make-closure-binding (function-ast)
+  (let* ((name-ast (ico:name-ast function-ast))
+         (lambda-list-ast (ico:lambda-list-ast function-ast))
+         (form-asts (ico:form-asts function-ast))
+         (code-object-name (gethash name-ast *code-object-names*))
+         (closure-name (gensym)))
+    (setf (lookup name-ast) closure-name)
+    `(,closure-name
+      (let ((,closure-name
+              (make-instance 'closure
+                :function ,code-object-name
+                :lambda-list-ast ,lambda-list-ast
+                :form-asts ',form-asts)))
+        (closer-mop:set-funcallable-instance-function
+         ,closure-name
+         (lambda (&rest arguments)
+           (let ((*static-environment*
+                   (static-environment ,closure-name)))
+             (declare (special *static-environment*))
+             (apply (function ,closure-name) arguments))))
+        ,closure-name))))
+
 (defmethod translate-ast (client (ast ico:labels-ast))
   `(let ,(loop for function-ast in (ico:binding-asts ast)
-               for name-ast = (ico:name-ast function-ast)
-               for lambda-list-ast = (ico:lambda-list-ast function-ast)
-               for form-asts = (ico:form-asts function-ast)
-               for code-object-name = (gethash name-ast *code-object-names*)
-               for name = (gensym)
-               do (setf (lookup name-ast) name)
-               collect `(,name
-                         (make-instance 'closure
-                           :static-environment nil
-                           :function ,code-object-name
-                           :lambda-list-ast ,lambda-list-ast
-                           :form-asts ,form-asts)))
+               collect (make-closure-binding function-ast))
      ,@(translate-implicit-progn client (ico:form-asts ast))))
