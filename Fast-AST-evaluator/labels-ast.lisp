@@ -25,7 +25,7 @@
                do (setf (lookup name-ast) name)
                collect `(,name
                          (make-instance 'closure
-                           :static-environment *static-environment*
+                           :static-environment nil
                            :function ,code-object-name
                            :lambda-list-ast ,lambda-list-ast
                            :form-asts ,form-asts)))
