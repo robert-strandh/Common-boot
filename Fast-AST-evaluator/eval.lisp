@@ -41,7 +41,8 @@
 (defgeneric compile-local-function-ast (client ast))
 
 (defmethod compile-local-function-ast (client ast)
-  (let* ((lambda-list-ast (ico:lambda-list-ast ast))
+  (let* ((*host-names* (make-hash-table :test #'eq))
+         (lambda-list-ast (ico:lambda-list-ast ast))
          (lambda-list-variable-asts
            (iat:extract-variable-asts-in-lambda-list lambda-list-ast))
          (lambda-list-variables
@@ -64,7 +65,8 @@
 
 (defun compile-ast (client ast environment)
   (let* ((simplified-ast (simplify-ast ast))
-         (*global-environment* (trucler:global-environment client environment))
+         (*global-environment*
+           (trucler:global-environment client environment))
          (*code-object-names* (make-hash-table :test #'eq))
          (local-function-asts (find-local-function-asts ast))
          (names (loop for local-function-ast in local-function-asts
