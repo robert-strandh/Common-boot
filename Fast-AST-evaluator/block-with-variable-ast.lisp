@@ -7,10 +7,10 @@
     `(let ((dynamic-environment dynamic-environment))
        (declare (ignorable dynamic-environment))
        (push (make-instance 'block-entry
-               :name ,identity
+               :name ',identity
                :unwinder (lambda (values)
-                           (throw ,catch-tag (apply #'values values))))
+                           (throw ',catch-tag (apply #'values values))))
              dynamic-environment)
-       (catch ,catch-tag
+       (catch ',catch-tag
          ,@(translate-implicit-progn
             client (ico:form-asts ast))))))
