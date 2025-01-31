@@ -63,12 +63,24 @@
 
 (defvar *global-environment*)
 
+(defun make-form-to-compile (client names code-objects simplified-ast)
+  `(lambda ()
+     (let ,names
+       ,@(loop for name in names
+               for code-object in code-objects
+               collect `(setf ,name ,code-object))
+       (let ((dynamic-environment *dynamic-environment*))
+         (declare (ignorable dynamic-environment))
+         #+sbcl
+         (declare (sb-ext:muffle-conditions sb-ext:compiler-note))
+         ,(translate client simplified-ast)))))
+
 (defun compile-ast (client ast environment)
   (let* ((simplified-ast (simplify-ast ast))
          (*global-environment*
            (trucler:global-environment client environment))
-         (*code-object-names* (make-hash-table :test #'eq))
          (local-function-asts (find-local-function-asts ast))
+         (*code-object-names* (make-hash-table :test #'eq))
          (names (loop for local-function-ast in local-function-asts
                       for name-ast = (ico:name-ast local-function-ast)
                       for name = (gensym)
@@ -81,13 +93,8 @@
                           client local-function-ast))))
     (compile
      nil
-     `(lambda ()
-        (let ((dynamic-environment *dynamic-environment*))
-          (declare (ignorable dynamic-environment))
-          #+sbcl
-          (declare (sb-ext:muffle-conditions sb-ext:compiler-note))
-          ,(translate client simplified-ast))))))
-
+     (make-form-to-compile client names code-objects simplified-ast))))
+  
 (defmethod cb:eval-cst ((client client) cst environment)
   (let* ((ast (cb:cst-to-ast client cst environment))
          (builder (cb:make-builder client environment))
