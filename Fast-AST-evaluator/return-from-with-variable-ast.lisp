@@ -10,8 +10,8 @@
          (definition-ast
            (ico:definition-ast variable-reference-ast))
          (identity (lookup definition-ast)))
-    `(let ((entry (do-return-from ',identity dynamic-environment))
-           (unwinder (unwinder entry)))
+    `(let* ((entry (do-return-from ',identity dynamic-environment))
+            (unwinder (unwinder entry)))
        (funcall unwinder
                 ,(if (null form)
                      '()
