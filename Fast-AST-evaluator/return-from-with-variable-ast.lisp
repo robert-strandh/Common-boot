@@ -9,8 +9,8 @@
          (variable-reference-ast (ico:variable-reference-ast ast))
          (definition-ast
            (ico:definition-ast variable-reference-ast))
-         (identity (lookup definition-ast)))
-    `(let* ((entry (do-return-from ',identity dynamic-environment))
+         (identity-host-name (lookup definition-ast)))
+    `(let* ((entry (do-return-from ,identity-host-name dynamic-environment))
             (unwinder (unwinder entry)))
        (funcall unwinder
                 ,(if (null form)
