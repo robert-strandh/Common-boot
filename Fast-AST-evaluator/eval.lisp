@@ -53,13 +53,13 @@
           do (setf (lookup lambda-list-variable-ast) lambda-list-variable))
     (let ((host-lambda-list
             (host-lambda-list-from-lambda-list-ast lambda-list-ast)))
-      (compile nil
-               `(lambda ,host-lambda-list
-                  (declare (ignorable ,@lambda-list-variables))
-                  (let ((dynamic-environment *dynamic-environment*))
-                    (declare (ignorable dynamic-environment))
-                    ,@(translate-implicit-progn
-                       client (ico:form-asts ast))))))))
+      `(lambda ,host-lambda-list
+         (declare (ignorable ,@lambda-list-variables))
+         (declare (special *static-environment*))
+         (let ((dynamic-environment *dynamic-environment*))
+           (declare (ignorable dynamic-environment))
+           ,@(translate-implicit-progn
+              client (ico:form-asts ast)))))))
 
 (defvar *global-environment*)
 
