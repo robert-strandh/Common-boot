@@ -22,6 +22,15 @@
      :lambda-list-ast ,lambda-list-ast
      :form-asts ',form-asts))
 
+(defmacro set-function (closure-name code-object-name)
+  `(closer-mop:set-funcallable-instance-function
+    ,closure-name
+    (lambda (&rest arguments)
+      (let ((*static-environment*
+              (static-environment ,closure-name)))
+        (declare (special *static-environment*))
+        (apply ,code-object-name arguments)))))
+
 (defun make-closure-binding (function-ast)
   (let* ((name-ast (ico:name-ast function-ast))
          (lambda-list-ast (ico:lambda-list-ast function-ast))
@@ -35,13 +44,7 @@
                             ,code-object-name
                             ,lambda-list-ast
                             ,form-asts)))
-        (closer-mop:set-funcallable-instance-function
-         ,closure-name
-         (lambda (&rest arguments)
-           (let ((*static-environment*
-                   (static-environment ,closure-name)))
-             (declare (special *static-environment*))
-             (apply ,code-object-name arguments))))
+        (set-function ,closure-name ,code-object-name)
         ,closure-name))))
 
 (defmethod translate-ast (client (ast ico:labels-ast))
