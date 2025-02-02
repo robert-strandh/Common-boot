@@ -34,7 +34,7 @@
            (let ((*static-environment*
                    (static-environment ,closure-name)))
              (declare (special *static-environment*))
-             (apply (function ,closure-name) arguments))))
+             (apply ,code-object-name arguments))))
         ,closure-name))))
 
 (defmethod translate-ast (client (ast ico:labels-ast))
