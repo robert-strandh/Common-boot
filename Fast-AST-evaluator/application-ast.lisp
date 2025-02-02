@@ -15,8 +15,16 @@
                                      :called-function function
                                      :arguments arguments)
                                    cb:*stack*)))
-             (apply function arguments)))
+             (if (typep function 'closure)
+                 (let ((*static-environment* (static-environment function)))
+                   (declare (special *static-environment*))
+                   (apply function arguments))
+                 (apply function arguments))))
         `(let ((*dynamic-environment* dynamic-environment)
                (function
                  ,(translate-ast client function-name-ast)))
-           (funcall function ,@argument-forms)))))
+           (if (typep function 'closure)
+               (let ((*static-environment* (static-environment function)))
+                 (declare (special *static-environment*))
+                 (funcall function ,@argument-forms))
+               (funcall function ,@argument-forms))))))
