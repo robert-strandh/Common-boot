@@ -15,6 +15,13 @@
     :reader form-asts))
   (:metaclass closer-mop:funcallable-standard-class))
 
+(defmacro make-closure
+    (closure-name code-object-name lambda-list-ast form-asts)
+  `(make-instance 'closure
+     :function ,code-object-name
+     :lambda-list-ast ,lambda-list-ast
+     :form-asts ',form-asts))
+
 (defun make-closure-binding (function-ast)
   (let* ((name-ast (ico:name-ast function-ast))
          (lambda-list-ast (ico:lambda-list-ast function-ast))
@@ -24,10 +31,14 @@
     (setf (lookup name-ast) closure-name)
     `(,closure-name
       (let ((,closure-name
-              (make-instance 'closure
-                :function ,code-object-name
-                :lambda-list-ast ,lambda-list-ast
-                :form-asts ',form-asts)))
+              (make-closure ,closure-name
+                            ,code-object-name
+                            ,lambda-list-ast
+                            ,form-asts)))
+              ;; (make-instance 'closure
+              ;;   :function ,code-object-name
+              ;;   :lambda-list-ast ,lambda-list-ast
+              ;;   :form-asts ',form-asts)))
         (closer-mop:set-funcallable-instance-function
          ,closure-name
          (lambda (&rest arguments)
