@@ -35,10 +35,6 @@
                             ,code-object-name
                             ,lambda-list-ast
                             ,form-asts)))
-              ;; (make-instance 'closure
-              ;;   :function ,code-object-name
-              ;;   :lambda-list-ast ,lambda-list-ast
-              ;;   :form-asts ',form-asts)))
         (closer-mop:set-funcallable-instance-function
          ,closure-name
          (lambda (&rest arguments)
