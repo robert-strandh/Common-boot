@@ -1,5 +1,13 @@
 (cl:in-package #:common-boot-fast-ast-evaluator)
 
+(defmacro with-stack-entry ((origin function arguments) &body body)
+  `(let ((cb:*stack* (cons (make-instance 'cb:stack-entry
+                             :origin ',origin
+                             :called-function ,function
+                             :arguments ,arguments)
+                           cb:*stack*)))
+     ,@body))
+
 (defmethod translate-ast (client (ast ico:application-ast))
   (let ((function-name-ast (ico:function-name-ast ast))
         (argument-forms (loop for argument-ast in (ico:argument-asts ast)
@@ -10,11 +18,7 @@
                (function
                  ,(translate-ast client function-name-ast))
                (arguments (list ,@argument-forms)))
-           (let ((cb:*stack* (cons (make-instance 'cb:stack-entry
-                                     :origin ',(ico:origin ast)
-                                     :called-function function
-                                     :arguments arguments)
-                                   cb:*stack*)))
+           (with-stack-entry (,(ico:origin ast) function arguments)
              (if (typep function 'closure)
                  (let ((*static-environment* (static-environment function)))
                    (declare (special *static-environment*))
