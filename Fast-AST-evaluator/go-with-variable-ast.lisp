@@ -5,5 +5,6 @@
          (definition-ast (ico:definition-ast variable-reference-ast))
          (host-name (lookup definition-ast))
          (index (translate-ast client (ico:index-ast ast))))
-    `(let* ((entry (do-go ,host-name dynamic-environment)))
-       (throw ,host-name ,index))))
+    `(let* ((entry (do-go ,host-name dynamic-environment))
+            (name (name entry)))
+       (throw name ,index))))
