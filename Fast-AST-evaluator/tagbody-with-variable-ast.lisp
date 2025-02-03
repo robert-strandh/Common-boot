@@ -17,15 +17,15 @@
                       (funcall (svref ,segments-variable ,(1+ i))))))
     (setf (lookup (ico:variable-definition-ast ast)) host-variable)
     `(let ((dynamic-environment dynamic-environment)
-           ,host-variable (list nil))
+           (,host-variable (list nil)))
        (push (make-instance 'tagbody-entry
-               :name ,host-variable
-               :tag-entries nil)
+               :name ,host-variable)
              dynamic-environment)
        (block nil
-         (let ((,segments-variable
+         (let* (,segments-variable
+                (,index-variable 0))
+           (setf ,segments-variable
                  (vector ,@(coerce segment-thunk-forms 'list)))
-               (,index-variable 0))
            (loop (setf ,index-variable
                        (catch ,host-variable
                          (funcall
