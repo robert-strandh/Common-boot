@@ -25,7 +25,6 @@
 
 (defclass block-entry
     (dynamic-environment-entry
-     unwinder-entry-mixin
      valid-p-mixin)
   ((%name :initarg :name :reader name)))
 
