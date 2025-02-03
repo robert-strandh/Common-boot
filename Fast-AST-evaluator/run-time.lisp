@@ -96,13 +96,6 @@
            (unwind entry dynamic-environment t)
            entry))))
 
-(defclass tag-entry (unwinder-entry-mixin)
-  ((%name :initarg :name :reader name)))
-
-(defmethod print-object ((object tag-entry) stream)
-  (print-unreadable-object (object stream :type t)
-    (format stream "name: ~s" (name object))))
-
 (defclass tagbody-entry
     (dynamic-environment-entry valid-p-mixin)
   ((%name :initarg :name :initform '() :reader name)))
