@@ -8,10 +8,7 @@
            (,catch-tag-variable (list nil)))
        (declare (ignorable dynamic-environment))
        (push (make-instance 'block-entry
-               :name ,catch-tag-variable
-               :unwinder (lambda (values)
-                           (throw ,catch-tag-variable
-                             (apply #'values values))))
+               :name ,catch-tag-variable)
              dynamic-environment)
        (catch ,catch-tag-variable
          ,@(translate-implicit-progn
