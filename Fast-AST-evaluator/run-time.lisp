@@ -105,18 +105,17 @@
 
 (defclass tagbody-entry
     (dynamic-environment-entry valid-p-mixin)
-  ((%tag-entries :initarg :tag-entries :initform '() :reader tag-entries)))
+  ((%name :initarg :name :initform '() :reader name)))
 
 (defmethod print-object ((object tagbody-entry) stream)
   (print-unreadable-object (object stream :type t)
-    (format stream "valid-p: ~s tag-entries ~s"
-            (valid-p object) (tag-entries object))))
+    (format stream "valid-p: ~s name ~s"
+            (valid-p object) (name object))))
 
 (defun tagbody-entry-predicate (name)
   (lambda (entry)
     (and (typep entry 'tagbody-entry)
-      (member-if (lambda (e) (eq (name e) name))
-                 (tag-entries entry)))))
+         (eq name (name entry)))))
 
 (defun do-go (name dynamic-environment)
   (let ((entry (find-if (tagbody-entry-predicate name) dynamic-environment)))
@@ -128,8 +127,7 @@
            (error "Attempt to use an expired entry ~s~%" entry))
           (t
            (unwind entry dynamic-environment nil)
-           (find-if (lambda (e) (eq (name e) name))
-                    (tag-entries entry))))))
+           entry))))
 
 (defclass catch-entry
     (dynamic-environment-entry unwinder-entry-mixin valid-p-mixin)
