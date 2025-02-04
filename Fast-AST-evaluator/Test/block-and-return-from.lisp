@@ -62,3 +62,11 @@
                 (bar nil nil))
               x)
          (eval-expression client '#1# environment))))
+
+(define-test block-nested
+  :parent block-and-return-from
+  (with-default-parameters (client environment global-environment)
+    (iss #1=(block a
+              (block b
+                (return-from a 234)))
+         (eval-expression client '#1# environment))))
