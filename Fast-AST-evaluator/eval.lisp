@@ -17,6 +17,16 @@
          (result (translate-ast client ast)))
     result))
 
+(defclass ast-simplified-client () ())
+
+(defmethod iaw:walk-ast-node :around
+    ((client ast-simplified-client) (ast ico:block-ast))
+  (break))
+
+(defun assert-ast-simplified (ast)
+  (let ((client (make-instance 'ast-simplified-client)))
+    (iaw:walk-ast client ast)))
+
 (defun simplify-ast (ast)
   (let* ((ast (iat:macrolet-to-locally ast))
          (ast (iat:lexify-lambda-list ast))
@@ -79,7 +89,7 @@
   (let* ((simplified-ast (simplify-ast ast))
          (*global-environment*
            (trucler:global-environment client environment))
-         (local-function-asts (find-local-function-asts ast))
+         (local-function-asts (find-local-function-asts simplified-ast))
          (*code-object-names* (make-hash-table :test #'eq))
          (names (loop for local-function-ast in local-function-asts
                       for name-ast = (ico:name-ast local-function-ast)
