@@ -10,7 +10,9 @@
     (client (ast ico:global-function-name-reference-ast))
   (let ((name (ico:name ast)))
     `(car (load-time-value
-           ',(clostrum:ensure-operator-cell client *global-environment* name) nil))))
+           (clostrum:ensure-operator-cell
+            ',client *global-environment* ',name)
+           nil))))
 
 ;;; This code used to read:
 ;;; `(car ',(clostrum:ensure-operator-cell client env name))
