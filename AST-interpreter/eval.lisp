@@ -19,7 +19,8 @@
          (ast (iat:transform-function-definition-and-reference ast))
          (ast (iat:eliminate-function ast))
          (ast (iat:closure-conversion ast))
-         (ast (iat:replace-trivial-locally-by-progn ast)))
+         (ast (iat:replace-trivial-locally-by-progn ast))
+         (ast (iat:eliminate-trivial-progn ast)))
     ast))
 
 (defun interpret (client ast)
