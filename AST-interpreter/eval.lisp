@@ -18,7 +18,8 @@
          (ast (iat:convert-tagbody ast))
          (ast (iat:transform-function-definition-and-reference ast))
          (ast (iat:eliminate-function ast))
-         (ast (iat:closure-conversion ast)))
+         (ast (iat:closure-conversion ast))
+         (ast (iat:replace-trivial-locally-by-progn ast)))
     ast))
 
 (defun interpret (client ast)
