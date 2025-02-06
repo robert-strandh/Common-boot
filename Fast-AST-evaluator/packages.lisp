@@ -15,4 +15,5 @@
            #:eval-expression
            #:compile-ast
            #:boundp
-           #:symbol-value))
+           #:symbol-value
+           #:ast-to-host-form))
