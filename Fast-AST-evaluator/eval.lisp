@@ -85,6 +85,24 @@
          (declare (sb-ext:muffle-conditions sb-ext:compiler-note))
          ,(translate client simplified-ast)))))
 
+(defun ast-to-host-form (client ast environment)
+  (let* ((simplified-ast (simplify-ast ast))
+         (*global-environment*
+           (trucler:global-environment client environment))
+         (local-function-asts (find-local-function-asts simplified-ast))
+         (*code-object-names* (make-hash-table :test #'eq))
+         (names (loop for local-function-ast in local-function-asts
+                      for name-ast = (ico:name-ast local-function-ast)
+                      for name = (gensym)
+                      do (setf (gethash name-ast *code-object-names*)
+                               name)
+                      collect name))
+         (code-objects
+           (loop for local-function-ast in local-function-asts
+                 collect (compile-local-function-ast
+                          client local-function-ast))))
+    (make-form-to-compile client names code-objects simplified-ast)))
+
 (defun compile-ast (client ast environment)
   (let* ((simplified-ast (simplify-ast ast))
          (*global-environment*
