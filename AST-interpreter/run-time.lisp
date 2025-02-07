@@ -1,5 +1,7 @@
 (cl:in-package #:common-boot-ast-interpreter)
 
+(declaim (inline lookup))
+
 (defun lookup (thing environment)
   (let ((entry (assoc thing environment :test #'eq)))
     (if (null entry)
