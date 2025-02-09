@@ -11,4 +11,5 @@
    (:file "utilities")
    (:file "translate")
    (:file "progn-ast")
-   (:file "let-temporary-ast")))
+   (:file "let-temporary-ast")
+   (:file "variable-reference-ast")))
