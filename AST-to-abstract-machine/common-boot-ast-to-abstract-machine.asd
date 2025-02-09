@@ -9,4 +9,5 @@
   ((:file "packages")
    (:file "context")
    (:file "utilities")
-   (:file "translate")))
+   (:file "translate")
+   (:file "let-temporary-ast")))
