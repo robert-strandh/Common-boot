@@ -2,14 +2,12 @@
 
 (defvar *register-numbers*)
 
-(defvar *next-register-number*)
-
 (defvar *dynamic-environment-register*)
 
 (defclass context ()
-  ((%next-instruction
-    :initarg :next-instruction
-    :reader next-instruction)
+  ((%next-instructions
+    :initarg :next-instructions
+    :reader next-instructions)
    ;; This slot contains 0, 1, or :ALL.
    (%values-count
     :initarg :values-count
@@ -18,9 +16,16 @@
     :initarg :target-register
     :reader target-register)))
 
-(defun assign-register (variable-definition-ast register-number)
-  (setf (gethash variable-definition-ast *register-numbers*)
-        register-number))
+(defun make-context (next-instructions values-count target-register)
+  (make-instance 'context
+    :next-instructions next-instructions
+    :values-count values-count
+    :target-register target-register))
 
-(defun find-register (variable-definition-ast)
-  (gethash variable-definition-ast *register-numbers*))
+(defmacro with-new-register ((identity register-variable) &body body)
+  `(let* ((,register-variable (1+ (cdar *register-numbers*)))
+          (*register-numbers*
+            (acons ,identity ,register-variable *register-numbers*)))
+     ,@body))
+
+       
