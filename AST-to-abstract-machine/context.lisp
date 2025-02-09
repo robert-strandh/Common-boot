@@ -28,4 +28,8 @@
             (acons ,identity ,register-variable *register-numbers*)))
      ,@body))
 
-       
+(defun find-register (variable-reference-ast)
+  (let* ((definition-ast (ico:definition-ast variable-reference-ast))
+         (result (assoc definition-ast *register-numbers*)))
+    (assert (not (null result)))
+    result))
