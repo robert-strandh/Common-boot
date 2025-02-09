@@ -12,4 +12,5 @@
    (:file "translate")
    (:file "progn-ast")
    (:file "let-temporary-ast")
-   (:file "variable-reference-ast")))
+   (:file "variable-reference-ast")
+   (:file "if-ast")))
