@@ -4,6 +4,8 @@
 
 (defvar *next-register-number*)
 
+(defvar *dynamic-environment-register*)
+
 (defclass context ()
   ((%next-instruction
     :initarg :next-instruction
