@@ -28,6 +28,16 @@
             (acons ,identity ,register-variable *register-numbers*)))
      ,@body))
 
+(defmacro with-new-registers ((identities registers-variable) &body body)
+  `(let* ((,registers-variable
+            (loop for register-number from (1+ (cdar *register-numbers*))
+                  repeat (length ,identities)
+                  collect register-number))
+          (*register-numbers*
+            (append (pairlis ,identities ,registers-variable)
+                    *register-numbers*)))
+     ,@body))
+
 (defun find-register (variable-reference-ast)
   (let* ((definition-ast (ico:definition-ast variable-reference-ast))
          (result (assoc definition-ast *register-numbers*)))
