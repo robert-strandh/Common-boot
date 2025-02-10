@@ -22,20 +22,12 @@
     :values-count values-count
     :target-register target-register))
 
-(defmacro with-context-components
-    (((next-instructions-variable
-       values-count-variable
-       target-register-variable)
-      context-form)
-     &body body)
+(defmacro with-context-components ((context-form) &body body)
   (let ((context-variable (gensym)))
     `(let* ((,context-variable ,context-form)
-            (,next-instructions-variable
-              (next-instructions ,context-variable))
-            (,values-count-variable
-              (values-count ,context-variable))
-            (,target-register-variable
-              (target-register ,context-variable)))
+            (next-instructions (next-instructions ,context-variable))
+            (values-count (values-count ,context-variable))
+            (target-register (target-register ,context-variable)))
        ,@body)))
 
 (defmacro with-new-register ((identity register-variable) &body body)
