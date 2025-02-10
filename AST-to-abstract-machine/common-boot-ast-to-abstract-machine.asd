@@ -15,4 +15,5 @@
    (:file "literal-ast")
    (:file "variable-reference-ast")
    (:file "if-ast")
-   (:file "application-ast")))
+   (:file "application-ast")
+   (:file "make-cell-ast")))
