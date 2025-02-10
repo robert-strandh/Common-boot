@@ -13,4 +13,5 @@
    (:file "progn-ast")
    (:file "let-temporary-ast")
    (:file "variable-reference-ast")
-   (:file "if-ast")))
+   (:file "if-ast")
+   (:file "application-ast")))
