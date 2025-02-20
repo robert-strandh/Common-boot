@@ -1,4 +1,4 @@
-(cl:in-package #:sicl-hir-visualizer)
+(cl:in-package #:common-boot-hir-visualizer)
 
 (defun overlap-with-next-p (data index)
   (< (- (datum-vertical-position (aref data (1+ index)))

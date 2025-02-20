@@ -1,6 +1,6 @@
 (cl:in-package #:common-lisp-user)
 
-(defpackage #:sicl-hir-visualizer
+(defpackage #:common-boot-hir-visualizer
   (:use #:common-lisp)
-  (:local-nicknames (#:ir #:sicl-hir))
+  (:local-nicknames (#:ir #:common-boot-hir))
   (:export #:visualize))

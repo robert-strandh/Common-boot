@@ -1,4 +1,4 @@
-(cl:in-package #:sicl-hir-visualizer)
+(cl:in-package #:common-boot-hir-visualizer)
 
 ;;; Given a datum as the key, this table contains a CONS of the
 ;;; horizontal position and the vertical position for that datum.

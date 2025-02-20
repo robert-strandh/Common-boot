@@ -1,4 +1,4 @@
-(cl:in-package #:sicl-hir-visualizer)
+(cl:in-package #:common-boot-hir-visualizer)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;

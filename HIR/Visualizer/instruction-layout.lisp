@@ -1,4 +1,4 @@
-(cl:in-package #:sicl-hir-visualizer)
+(cl:in-package #:common-boot-hir-visualizer)
 
 ;;; This table is created for each function.  It maps an instruction
 ;;; to T if and only if it has already been considered for layout.

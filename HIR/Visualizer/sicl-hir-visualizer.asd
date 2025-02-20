@@ -1,7 +1,7 @@
 (cl:in-package #:asdf-user)
 
-(defsystem #:sicl-hir-visualizer
-  :depends-on (#:sicl-hir
+(defsystem #:common-boot-hir-visualizer
+  :depends-on (#:common-boot-hir
                #:mcclim
                #:clouseau)
   :serial t

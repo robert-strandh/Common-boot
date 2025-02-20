@@ -1,4 +1,4 @@
-(cl:in-package #:sicl-hir-visualizer)
+(cl:in-package #:common-boot-hir-visualizer)
 
 ;;; This function takes an ENTER-INSTRUCTION and finds the longest
 ;;; simple path from the enter instruction.  The algorithm is probably

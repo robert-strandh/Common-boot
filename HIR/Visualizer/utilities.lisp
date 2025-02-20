@@ -1,4 +1,4 @@
-(cl:in-package #:sicl-hir-visualizer)
+(cl:in-package #:common-boot-hir-visualizer)
 
 (defun map-instructions-arbitrary-order (function first-instruction)
   (let ((visited (make-hash-table :test #'eq)))
