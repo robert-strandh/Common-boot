@@ -13,4 +13,5 @@
    (:file "utilities")
    (:file "lexical-environment")
    (:file "evaluator")
+   (:file "make-thunk")
    (:file "parse-arguments-instruction")))
