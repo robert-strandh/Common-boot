@@ -12,4 +12,5 @@
   ((:file "packages")
    (:file "utilities")
    (:file "lexical-environment")
+   (:file "evaluator")
    (:file "parse-arguments-instruction")))
