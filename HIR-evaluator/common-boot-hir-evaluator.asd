@@ -5,7 +5,8 @@
 ;;; extracted it to the Common boot repository.
 
 (defsystem "common-boot-hir-evaluator"
-  :depends-on ("common-boot-hir")
+  :depends-on ("common-boot-hir"
+               "closer-mop")
   :serial t
   :components
   ((:file "packages")
