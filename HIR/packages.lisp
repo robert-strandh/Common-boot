@@ -9,11 +9,13 @@
    #:predecessors
    #:successors
    #:parse-arguments-instruction
+   #:lambda-list
+   #:static-environment-register
+   #:dynamic-environment-register
    #:make-cell-instruction
    #:read-cell-instruction
    #:write-cell-instruction
    #:set-static-environment-instruction
-   #:static-environment-instruction
    #:dynamic-environment-instruction
    #:read-static-environment-instruction
    #:if-instruction
