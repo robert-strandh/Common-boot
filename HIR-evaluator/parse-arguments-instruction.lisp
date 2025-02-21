@@ -64,3 +64,67 @@
        (go maybe-key)
      out)
     (values (reverse host-lambda-list) (reverse pairs))))
+
+(defclass closure (closer-mop:funcallable-standard-object)
+  ((%static-environment
+    :initform nil
+    :accessor static-environment))
+  (:metaclass closer-mop:funcallable-standard-class))
+
+(defvar *static-environment*)
+
+(defvar *dynamic-environment*)
+
+(defun parse-arguments-instruction-to-host-function
+    (client parse-arguments-instruction)
+  (multiple-value-bind (host-lambda-list pairs)
+      (host-lambda-list-from-register-lambda-list
+       (hir:lambda-list parse-arguments-instruction))
+    (let* ((lexical-environment (make-lexical-environment))
+           (output-lexical-references
+             (loop for reference in (hir:outputs parse-arguments-instruction)
+                   collect (ensure-lexical-reference
+                            reference lexical-environment)))
+           (static-environment-lexical-reference
+             (first output-lexical-references))
+           (dynamic-environment-lexical-reference
+             (second output-lexical-references))
+           (parameter-lexical-references
+             (rest (rest output-lexical-references)))
+           (successor (first (hir:successors parse-arguments-instruction)))
+           (thunk (ensure-thunk client successor lexical-environment))
+           (lexical-locations (make-lexical-locations lexical-environment))
+           (argument-parser-expression
+             `(lambda ,host-lambda-list
+                (list ,(mapcar #'car pairs))))
+           (argument-parser
+             (compile nil argument-parser-expression))
+           (code
+             (lambda (&rest arguments)
+               (let ((parameter-values (apply argument-parser arguments)))
+                 (loop for parameter-value in parameter-values
+                       for parameter-lexical-reference
+                         in parameter-lexical-references
+                       do (setf (lexical-value lexical-locations
+                                               parameter-lexical-reference)
+                                parameter-value)))
+               (setf (lexical-value lexical-locations
+                                    dynamic-environment-lexical-reference)
+                     *dynamic-environment*)
+               (setf (lexical-value lexical-locations
+                                    static-environment-lexical-reference)
+                     *static-environment*)
+               (let ((thunk thunk))
+                 (catch 'return
+                   (loop (catch 'unwind
+                           (loop (setf thunk
+                                       (funcall thunk
+                                                lexical-locations)))))))))
+           (closure (make-instance 'closure)))
+      (closer-mop:set-funcallable-instance-function
+       closure (lambda (&rest arguments)
+                 (let ((*static-environment* (static-environment closure)))
+                   (apply code arguments))))
+      closure)))
+
+                   
