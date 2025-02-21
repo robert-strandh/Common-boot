@@ -108,6 +108,10 @@
       (make-instance 'hir:parse-arguments-instruction
         :lambda-list
         (register-lambda-list-from-lambda-list-ast lambda-list-ast)
+        :static-environment-register *static-environment-register*
+        :dynamic-environment-register *dynamic-environment-register*
         :inputs '()
-        :outputs registers
+        :outputs (list* *static-environment-register*
+                        *dynamic-environment-register*
+                        registers)
         :successors (list body-instruction)))))
