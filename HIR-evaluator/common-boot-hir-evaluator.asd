@@ -10,4 +10,5 @@
   :components
   ((:file "packages")
    (:file "utilities")
-   (:file "lexical-environment")))
+   (:file "lexical-environment")
+   (:file "parse-arguments-instruction")))
