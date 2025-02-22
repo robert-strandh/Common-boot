@@ -97,35 +97,26 @@
              `(lambda ,host-lambda-list
                 (list ,(mapcar #'car pairs))))
            (argument-parser
-             (compile nil argument-parser-expression))
-           (code
-             (lambda (&rest arguments)
-               (let ((lexical-locations
-                       (make-lexical-locations lexical-environment))
-                     (parameter-values (apply argument-parser arguments)))
-                 (loop for parameter-value in parameter-values
-                       for parameter-lexical-reference
-                         in parameter-lexical-references
-                       do (setf (lexical-value lexical-locations
-                                               parameter-lexical-reference)
-                                parameter-value))
-                 (setf (lexical-value lexical-locations
-                                      dynamic-environment-lexical-reference)
-                       *dynamic-environment*)
-                 (setf (lexical-value lexical-locations
-                                      static-environment-lexical-reference)
-                       *static-environment*)
-                 (let ((thunk thunk))
-                   (catch 'return
-                     (loop (catch 'unwind
-                             (loop (setf thunk
-                                         (funcall thunk
-                                                  lexical-locations))))))))))
-           (closure (make-instance 'closure)))
-      (closer-mop:set-funcallable-instance-function
-       closure (lambda (&rest arguments)
-                 (let ((*static-environment* (static-environment closure)))
-                   (apply code arguments))))
-      closure)))
-
-                   
+             (compile nil argument-parser-expression)))
+      (lambda (&rest arguments)
+        (let ((lexical-locations
+                (make-lexical-locations lexical-environment))
+              (parameter-values (apply argument-parser arguments)))
+          (loop for parameter-value in parameter-values
+                for parameter-lexical-reference
+                  in parameter-lexical-references
+                do (setf (lexical-value lexical-locations
+                                        parameter-lexical-reference)
+                         parameter-value))
+          (setf (lexical-value lexical-locations
+                               dynamic-environment-lexical-reference)
+                *dynamic-environment*)
+          (setf (lexical-value lexical-locations
+                               static-environment-lexical-reference)
+                *static-environment*)
+          (let ((thunk thunk))
+            (catch 'return
+              (loop (catch 'unwind
+                      (loop (setf thunk
+                                  (funcall thunk
+                                           lexical-locations))))))))))))
