@@ -42,3 +42,7 @@
    (%value
     :initarg :value
     :reader value)))
+
+;;; This variable contains the values transmitted by the UNWIND
+;;; instruction.
+(defvar *unwind-values*)
