@@ -17,4 +17,5 @@
    (:file "make-thunk")
    (:file "parse-arguments-instruction")
    (:file "enclose-instruction")
-   (:file "if-instruction")))
+   (:file "if-instruction")
+   (:file "assignment-instruction")))
