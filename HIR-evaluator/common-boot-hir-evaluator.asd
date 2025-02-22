@@ -20,4 +20,5 @@
    (:file "if-instruction")
    (:file "assignment-instruction")
    (:file "read-static-environment-instruction")
-   (:file "set-static-environment-instruction")))
+   (:file "set-static-environment-instruction")
+   (:file "receive-instruction")))
