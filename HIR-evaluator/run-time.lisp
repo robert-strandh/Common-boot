@@ -29,3 +29,16 @@
 (defvar *static-environment*)
 
 (defvar *dynamic-environment*)
+
+(defclass exit-point-entry ()
+  ((%catch-tag
+    :initarg :catch-tag
+    :reader catch-tag)))
+
+(defclass special-variable-bind-entry ()
+  ((%name
+    :initarg :name
+    :reader name)
+   (%value
+    :initarg :value
+    :reader value)))
