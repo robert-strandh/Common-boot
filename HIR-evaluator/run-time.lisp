@@ -31,9 +31,9 @@
 (defvar *dynamic-environment*)
 
 (defclass exit-point-entry ()
-  ((%unique-identiry
-    :initarg :unique-identiry
-    :reader unique-identiry)
+  ((%unique-identity
+    :initarg :unique-identity
+    :reader unique-identity)
    (%catch-tag
     :initarg :catch-tag
     :reader catch-tag)))
