@@ -15,4 +15,5 @@
    (:file "run-time")
    (:file "evaluator")
    (:file "make-thunk")
-   (:file "parse-arguments-instruction")))
+   (:file "parse-arguments-instruction")
+   (:file "enclose-instruction")))
