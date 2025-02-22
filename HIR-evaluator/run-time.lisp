@@ -25,3 +25,7 @@
 (defclass call-stack-entry ()
   ((%origin :initarg :origin :reader origin)
    (%arguments :initarg :arguments :reader arguments)))
+
+(defvar *static-environment*)
+
+(defvar *dynamic-environment*)

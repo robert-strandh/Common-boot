@@ -71,10 +71,6 @@
     :accessor static-environment))
   (:metaclass closer-mop:funcallable-standard-class))
 
-(defvar *static-environment*)
-
-(defvar *dynamic-environment*)
-
 (defun parse-arguments-instruction-to-host-function
     (client parse-arguments-instruction)
   (multiple-value-bind (host-lambda-list pairs)
