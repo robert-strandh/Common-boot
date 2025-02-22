@@ -18,4 +18,5 @@
    (:file "parse-arguments-instruction")
    (:file "enclose-instruction")
    (:file "if-instruction")
-   (:file "assignment-instruction")))
+   (:file "assignment-instruction")
+   (:file "read-static-environment-instruction")))
