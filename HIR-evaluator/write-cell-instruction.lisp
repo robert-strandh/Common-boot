@@ -2,7 +2,7 @@
 
 (defmethod instruction-thunk
     (client
-     (instruction hir:read-write-instruction)
+     (instruction hir:write-cell-instruction)
      lexical-environment)
   (make-thunk (client instruction lexical-environment
                :inputs 2 :outputs 0 :successors 1)
