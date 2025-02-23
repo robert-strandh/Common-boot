@@ -6,4 +6,5 @@
      lexical-environment)
   (make-thunk (client instruction lexical-environment
                :inputs 2 :outputs 1)
-    (setf (output 0) (svref (input 0) (input 1)))))
+    (setf (output 0) (svref (input 0) (input 1)))
+    (successor 0)))

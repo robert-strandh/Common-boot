@@ -6,4 +6,5 @@
      lexical-environment)
   (make-thunk (client instruction lexical-environment
                :inputs 0 :outputs 1 :successors 1)
-    (setf (output 0) (list nil))))
+    (setf (output 0) (list nil))
+    (successor 0)))

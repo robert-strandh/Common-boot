@@ -10,4 +10,5 @@
     (make-thunk (client instruction lexical-environment
                  :inputs 0 :outputs 1)
       (setf (output 0)
-            (enclose entry-point)))))
+            (enclose entry-point))
+      (successor 0))))
