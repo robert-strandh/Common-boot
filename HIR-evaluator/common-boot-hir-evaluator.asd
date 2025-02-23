@@ -25,4 +25,5 @@
    (:file "unwind-instruction")
    (:file "receive-instruction")
    (:file "special-variable-binding-instruction")
-   (:file "return-instruction")))
+   (:file "return-instruction")
+   (:file "make-cell-instruction")))
