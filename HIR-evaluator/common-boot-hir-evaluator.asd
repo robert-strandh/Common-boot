@@ -22,5 +22,6 @@
    (:file "read-static-environment-instruction")
    (:file "set-static-environment-instruction")
    (:file "exit-point-instruction")
+   (:file "unwind-instruction")
    (:file "receive-instruction")
    (:file "special-variable-binding-instruction")))
