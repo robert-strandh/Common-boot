@@ -15,12 +15,22 @@
                  collect (ensure-lexical-reference
                           input lexical-environment)))
          (static-environment-size
-           (length static-environment-element-inputs)))
-    (lambda (lexical-locations)
-      (let ((static-environment (make-array static-environment-size)))
-        (loop for lexical-location in static-environment-lexical-locations
-              do (setf (svref static-environment lexical-location)
-                       (lexical-value lexical-locations lexical-location)))
-        (setf (lexical-value
-               lexical-locations closure-object-lexical-location)
-              static-environment)))))
+           (length static-environment-element-inputs))
+         (successor-thunk #'dummy-successor)
+         (thunk 
+           (lambda (lexical-locations)
+             (let ((static-environment (make-array static-environment-size)))
+               (loop for lexical-location
+                       in static-environment-lexical-locations
+                     do (setf (svref static-environment lexical-location)
+                              (lexical-value
+                               lexical-locations lexical-location)))
+               (setf (lexical-value
+                      lexical-locations closure-object-lexical-location)
+                     static-environment))
+             successor-thunk)))
+    (setf (gethash instruction *instruction-thunks*) thunk)
+    (setf successor-thunk
+          (instruction-thunk
+           client (first (hir:successors instruction)) lexical-environment))
+    thunk))
