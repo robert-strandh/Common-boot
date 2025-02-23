@@ -1,10 +1,16 @@
 (cl:in-package #:common-boot-hir-evaluator)
 
-;; A hash table, caching the thunk of each instruction that has
-;; already been converted.
+;;; This variable contains a catch tag to be used by the
+;;; EXIT-POINT-INSTRUCTION to create an entry in the dynamic
+;;; environment.  The UNWIND instruction then does a host CATCH to
+;;; this tag.
+(defvar *unwind-tag*)
+
+;;; A hash table, caching the thunk of each instruction that has
+;;; already been converted.
 (defvar *instruction-thunks*)
 
-;; The main entry point for converting instructions to thunks.
+;;; The main entry point for converting instructions to thunks.
 (defgeneric ensure-thunk (client instruction lexical-environment))
 
 (defmethod ensure-thunk :around
