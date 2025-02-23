@@ -26,4 +26,5 @@
    (:file "receive-instruction")
    (:file "special-variable-binding-instruction")
    (:file "return-instruction")
-   (:file "make-cell-instruction")))
+   (:file "make-cell-instruction")
+   (:file "read-cell-instruction")))
