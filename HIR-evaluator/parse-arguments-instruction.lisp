@@ -76,7 +76,9 @@
   (multiple-value-bind (host-lambda-list pairs)
       (host-lambda-list-from-register-lambda-list
        (hir:lambda-list parse-arguments-instruction))
-    (let* ((lexical-environment (make-lexical-environment))
+    (let* ((*unwind-tag* (list nil))
+           (unwind-tag *unwind-tag*)
+           (lexical-environment (make-lexical-environment))
            (output-lexical-references
              (loop for reference in (hir:outputs parse-arguments-instruction)
                    collect (ensure-lexical-reference
@@ -112,7 +114,9 @@
                 *static-environment*)
           (let ((thunk thunk))
             (catch 'return
-              (loop (catch 'unwind
-                      (loop (setf thunk
-                                  (funcall thunk
-                                           lexical-locations))))))))))))
+              (loop
+                (setf thunk
+                      (catch unwind-tag
+                        (loop (setf thunk
+                                    (funcall thunk
+                                             lexical-locations)))))))))))))
