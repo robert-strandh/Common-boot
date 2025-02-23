@@ -82,11 +82,13 @@
                                (error "Invalid successor index: ~S" index))))
                           (lexical-locations ()
                             ',lexical-locations))
-                 (let ((,thunk-gensym
-                         (lambda (,lexical-locations)
-                           (declare (simple-vector ,lexical-locations))
-                           (declare (ignorable ,lexical-locations))
-                           (progn ,@body))))
+                 (let* ((unwind-tag *unwind-tag*)
+                        (,thunk-gensym
+                          (lambda (,lexical-locations)
+                            (declare (simple-vector ,lexical-locations))
+                            (declare (ignorable ,lexical-locations))
+                            (progn ,@body))))
+                   (declare (ignorable unwind-tag))
                    (setf (gethash ,instruction *instruction-thunks*)
                          ,thunk-gensym)
                    ,client ; Touch the client to avoid warnings when
