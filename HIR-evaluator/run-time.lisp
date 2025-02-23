@@ -34,9 +34,17 @@
   ((%unique-identity
     :initarg :unique-identity
     :reader unique-identity)
-   (%catch-tag
-    :initarg :catch-tag
-    :reader catch-tag)))
+   (%unwind-tag
+    :initarg :unwind-tag
+    :reader unwind-tag)))
+
+(defun unwind
+    (successor dynamic-environment unique-identity &optional values)
+  (let ((entry (find unique-identity dynamic-environment
+                     :key #'unique-identity :test #'eq)))
+    (assert (not (null entry)))
+    (setf *unwind-values* values)
+    (throw (unwind-tag entry) successor)))
 
 (defclass special-variable-bind-entry ()
   ((%name
