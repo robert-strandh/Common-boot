@@ -8,7 +8,7 @@
                  collect (make-instance 'hir:single-value-register)))
          (result
            (make-instance 'hir:funcall-instruction
-             :inputs registers
+             :inputs (cons *dynamic-environment-register* registers)
              :outputs (list *target-register*)
              :successors (list *next-instruction*))))
     (loop for ast in (reverse (cons function-name-ast argument-asts))
