@@ -5,8 +5,7 @@
          (definition-ast (ico:definition-ast variable-reference-ast))
          (identity-register (find-register definition-ast))
          (form-ast (ico:form-ast ast))
-         (block-target-register
-           (assoc definition-ast *block-target-register*))
+         (block-target-register *block-target-register*)
          (*target-register*
            (if (null block-target-register)
                nil
@@ -17,8 +16,7 @@
                            identity-register
                            *target-register*)
              :outputs '()
-             :successors
-             (list (assoc definition-ast *block-receive-instruction*)))))
+             :successors (list *block-receive-instruction*))))
     (translate-ast client form-ast)))
                                       
     
