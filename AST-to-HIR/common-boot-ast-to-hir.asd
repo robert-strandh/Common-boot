@@ -15,6 +15,7 @@
    (:file "quote-ast")
    (:file "variable-reference-ast")
    (:file "progn-ast")
+   (:file "simple-setq-ast")
    (:file "application-ast")
    (:file "if-ast")
    (:file "let-temporary-ast")
