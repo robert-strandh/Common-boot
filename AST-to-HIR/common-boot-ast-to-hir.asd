@@ -3,7 +3,8 @@
 (defsystem "common-boot-ast-to-hir"
   :depends-on ("iconoclast"
                "iconoclast-ast-transformations"
-               "common-boot-hir")
+               "common-boot-hir"
+               "concrete-syntax-tree")
   :serial t
   :components
   ((:file "packages")
@@ -11,6 +12,7 @@
    (:file "registers")
    (:file "translate")
    (:file "literal-ast")
+   (:file "quote-ast")
    (:file "variable-reference-ast")
    (:file "progn-ast")
    (:file "application-ast")
