@@ -1,6 +1,6 @@
 (cl:in-package #:common-boot-hir-evaluator)
 
-(defmethod instruction-thunk
+(defmethod ensure-thunk
     (client
      (instruction hir:set-static-environment-instruction)
      lexical-environment)
@@ -31,6 +31,6 @@
              successor-thunk)))
     (setf (gethash instruction *instruction-thunks*) thunk)
     (setf successor-thunk
-          (instruction-thunk
+          (ensure-thunk
            client (first (hir:successors instruction)) lexical-environment))
     thunk))

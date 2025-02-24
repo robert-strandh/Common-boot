@@ -1,6 +1,6 @@
 (cl:in-package #:common-boot-hir-evaluator)
 
-(defmethod instruction-thunk
+(defmethod ensure-thunk
     (client
      (instruction hir:exit-point-instruction)
      lexical-environment)
