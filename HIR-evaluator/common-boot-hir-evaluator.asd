@@ -11,6 +11,7 @@
   :serial t
   :components
   ((:file "packages")
+   (:file "client")
    (:file "utilities")
    (:file "lexical-environment")
    (:file "run-time")
