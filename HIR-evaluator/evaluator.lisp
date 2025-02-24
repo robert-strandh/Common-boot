@@ -27,17 +27,14 @@
 ;;; because we completely control how it is called.  Instead, we just
 ;;; pass it a single required parameter, namely a vector to be filled
 ;;; in with values of LOAD-TIME-VALUE forms and constants created by
-;;; the reader.  The parameter LEXICAL-LOCATION is the third output of
-;;; the PARSE-ARGUMENTS-INSTRUCTION.  (FIXME: should we access it as
-;;; the first element of the lambda list instead?)
+;;; the reader.
 
-(defun top-level-hir-to-host-function (client parse-arguments-instruction)
+(defun top-level-hir-to-host-function (client initial-instruction)
   (let* ((*instruction-thunks* (make-hash-table :test #'eq))
+         (*unwind-tag* 'invalid)
          (lexical-environment (make-lexical-environment))
-         (successor
-           (first (hir:successors parse-arguments-instruction)))
          (thunk
-           (ensure-thunk client successor lexical-environment)))
+           (ensure-thunk client initial-instruction lexical-environment)))
     (lambda ()
       (let ((lexical-locations (make-lexical-locations lexical-environment))
             (thunk thunk))
