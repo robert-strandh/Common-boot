@@ -5,13 +5,13 @@
      (instruction hir:funcall-instruction)
      lexical-environment)
   (let* ((inputs (hir:inputs instruction))
-         (function-input (first inputs))
-         (function-lexical-location
-           (ensure-lexical-reference function-input lexical-environment))
-         (dynamic-environment-input (second inputs))
-         (dynamic-environment-location
+         (dynamic-environment-input (first inputs))
+         (dynamic-environment-lexical-location
            (ensure-lexical-reference
             dynamic-environment-input lexical-environment))
+         (function-input (second inputs))
+         (function-lexical-location
+           (ensure-lexical-reference function-input lexical-environment))
          (argument-inputs (rest (rest inputs)))
          (argument-lexical-locations
            (loop for input in argument-inputs
@@ -28,7 +28,7 @@
                (setf (lexical-value
                       lexical-locations output-lexical-location)
                      (let ((*dynamic-environment*
-                             (lv dynamic-environment-location)))
+                             (lv dynamic-environment-lexical-location)))
                        (multiple-value-list
                         (apply (lv function-lexical-location)
                                (loop for lc in argument-lexical-locations
