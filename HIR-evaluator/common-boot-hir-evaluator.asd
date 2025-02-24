@@ -15,6 +15,7 @@
    (:file "utilities")
    (:file "lexical-environment")
    (:file "run-time")
+   (:file "eval")
    (:file "evaluator")
    (:file "make-thunk")
    (:file "parse-arguments-instruction")
