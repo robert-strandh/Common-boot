@@ -57,3 +57,24 @@
 ;;; This variable contains the values transmitted by the UNWIND
 ;;; instruction.
 (defvar *unwind-values*)
+
+(defun symbol-value
+    (name cell &optional (dynamic-environment *dynamic-environment*))
+  (loop for entry in dynamic-environment
+        do (when (and (typep entry 'special-variable-bind-entry)
+                      (eq name (name entry)))
+             (if (slot-boundp entry '%value)
+                 (return (value entry))
+                 (error "unbound variable ~s" name)))
+        finally (if (eq (car cell) (cdr cell))
+                    (error "unbound variable ~s" name)
+                    (return (car cell)))))
+
+(defun (setf symbol-value)
+    (value name cell &optional (dynamic-environment *dynamic-environment*))
+  (loop for entry in dynamic-environment
+        do (when (and (typep entry 'special-variable-bind-entry)
+                      (eq name (name entry)))
+             (setf (value entry) value)
+             (return value))
+        finally (return (setf (car cell) value))))
