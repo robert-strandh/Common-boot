@@ -30,6 +30,7 @@
    (:file "unwind-instruction")
    (:file "receive-instruction")
    (:file "special-variable-binding-instruction")
+   (:file "special-variable-reference-instruction")
    (:file "return-instruction")
    (:file "make-cell-instruction")
    (:file "read-cell-instruction")
