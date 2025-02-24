@@ -52,7 +52,7 @@
     :reader name)
    (%value
     :initarg :value
-    :reader value)))
+    :accessor value)))
 
 ;;; This variable contains the values transmitted by the UNWIND
 ;;; instruction.
