@@ -26,6 +26,7 @@
    (:file "block-with-variable-ast")
    (:file "return-from-with-variable-ast")
    (:file "special-variable-bind-ast")
+   (:file "special-variable-bound-ast")
    (:file "global-function-name-reference-ast")
    (:file "local-function-ast")
    (:file "labels-ast")
