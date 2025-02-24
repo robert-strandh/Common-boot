@@ -28,6 +28,8 @@
    #:special-variable-binding-instruction
    #:global-function-reference-instruction
    #:function-name
+   #:special-variable-reference-instruction
+   #:variable-name
    #:enclose-instruction
    #:datum
    #:register
