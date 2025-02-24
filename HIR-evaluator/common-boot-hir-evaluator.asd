@@ -20,6 +20,7 @@
    (:file "make-thunk")
    (:file "parse-arguments-instruction")
    (:file "global-function-reference-instruction")
+   (:file "funcall-instruction")
    (:file "enclose-instruction")
    (:file "if-instruction")
    (:file "assignment-instruction")
