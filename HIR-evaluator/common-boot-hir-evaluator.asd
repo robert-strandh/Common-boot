@@ -6,6 +6,7 @@
 
 (defsystem "common-boot-hir-evaluator"
   :depends-on ("common-boot-hir"
+               "common-boot-ast-to-hir"
                "closer-mop")
   :serial t
   :components
