@@ -98,7 +98,7 @@
                              in successor-thunk-gensyms
                            collect
                            `(setf ,successor-thunk-gensym
-                                  (instruction-thunk
+                                  (ensure-thunk
                                    ,client ,successor-gensym
                                    ,lexical-environment))
                            collect
