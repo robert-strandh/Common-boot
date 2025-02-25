@@ -38,7 +38,7 @@
                  *next-instruction*
                  (make-instance 'hir:assignment-instruction
                    :inputs (list (make-instance 'hir:literal :value nil))
-                   :outputs *target-register*
+                   :outputs (list *target-register*)
                    :successors (list *next-instruction*))))
            (*target-register* nil)
            (*tagbody-vectors*
