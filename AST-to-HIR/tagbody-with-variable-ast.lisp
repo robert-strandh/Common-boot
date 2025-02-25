@@ -24,6 +24,11 @@
                (+ (length segment-asts)
                   (if (null (ico:tag-ast (first segment-asts))) -1 0))))
          (instruction-vector (make-array tag-count)))
+    (loop for index from 0 below tag-count
+          do (setf (svref instruction-vector index)
+                   ;; We dont set the successor, because it will be
+                   ;; the result of translating each segment.
+                   (make-instance 'hir:nop-instruction)))
     (let* ((current-dynamic-environment-register
              *dynamic-environment-register*)
            (*dynamic-environment-register*
@@ -33,7 +38,8 @@
                  *next-instruction*
                  (make-instance 'hir:assignment-instruction
                    :inputs (list (make-instance 'hir:literal :value nil))
-                   :outputs *target-register*)))
+                   :outputs *target-register*
+                   :successors (list *next-instruction*))))
            (*target-register* nil)
            (*tagbody-vectors*
              (acons variable-definition-ast instruction-vector
@@ -45,16 +51,10 @@
             do (setf *next-instruction*
                      (translate-ast client segment-ast))
                (unless (null (ico:tag-ast segment-ast))
-                 (setf (svref instruction-vector index)
-                       *next-instruction*)))
+                 (setf (hir:successors (svref instruction-vector index))
+                       (list *next-instruction*))))
       (make-instance 'hir:exit-point-instruction
         :inputs (list current-dynamic-environment-register)
         :outputs (list *dynamic-environment-register*
                        identity-register)
         :successors (list *next-instruction*)))))
-          
-      
-    
-                   
-                 
-    
