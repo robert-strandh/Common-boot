@@ -1,6 +1,6 @@
 (cl:in-package #:common-boot-ast-to-hir)
 
-(defmethod translate-ast (client (ast ico:special-variable-bound-ast))
+(defmethod translate-ast (client (ast ico:special-variable-reference-ast))
   (make-instance 'hir:special-variable-reference-instruction
     :variable-name (ico:name ast)
     :inputs (list *dynamic-environment-register*)
