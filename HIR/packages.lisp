@@ -12,6 +12,7 @@
    #:lambda-list
    #:static-environment-register
    #:dynamic-environment-register
+   #:nop-instruction
    #:make-cell-instruction
    #:read-cell-instruction
    #:write-cell-instruction
