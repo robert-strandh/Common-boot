@@ -19,6 +19,7 @@
    (:file "evaluator")
    (:file "make-thunk")
    (:file "parse-arguments-instruction")
+   (:file "nop-instruction")
    (:file "global-function-reference-instruction")
    (:file "funcall-instruction")
    (:file "enclose-instruction")
