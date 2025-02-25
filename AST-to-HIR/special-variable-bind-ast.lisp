@@ -4,10 +4,13 @@
   (let* ((binding-ast (ico:binding-ast ast))
          (form-ast (ico:form-ast binding-ast))
          (variable-name-ast (ico:variable-name-ast binding-ast))
+         (form-asts (ico:form-asts ast))
          (current-dynamic-environment-register
            *dynamic-environment-register*)
          (*dynamic-environment-register*
            (make-instance 'hir:single-value-register))
+         (*next-instruction*
+           (translate-implicit-progn client form-asts))
          (value-register (make-instance 'hir:single-value-register))
          (name-register (make-instance 'hir:single-value-register))
          (*next-instruction*
@@ -17,7 +20,7 @@
                            value-register)
              :outputs (list *dynamic-environment-register*)
              :successors (list *next-instruction*)))
-         (*target-register* name-register)
-         (*next-instruction* (translate-ast client variable-name-ast))
-         (*target-register* value-register))
-    (translate-ast client form-ast)))
+         (*target-register* value-register)
+         (*next-instruction* (translate-ast client form-ast))
+         (*target-register* name-register))
+    (translate-ast client variable-name-ast)))
