@@ -1,23 +1,5 @@
 (cl:in-package #:common-boot-ast-to-hir)
 
-;;; When we translate a GO-WITH-VARIABLE-AST to an UNWIND-INSTRUCTION,
-;;; the target instruction does not necessarily exist yet.  So in the
-;;; SUCCESSORS slot of the UNWIND-INSTRUCTION, we store the contents
-;;; of the INDEX slot of the AST and a vector created when the
-;;; TAGBODY-WITH-VARIABLE-AST is translated.  We must then fix up
-;;; those UNWIND-INSTRUCTIONs by replacing the SUCCESSORS slot by the
-;;; instruction in the vector at the location of the index.  This
-;;; variable holds the list of UNWIND-INSTRUCTIONs to fix up.
-
-(defvar *unwind-instructions-to-fix-up*)
-
-(defun fix-up-unwind-instructions ()
-  (loop for unwind-instruction in *unwind-instructions-to-fix-up*
-        for successors = (hir:successors unwind-instruction)
-        for (index instruction-vector) = successors
-        do (reinitialize-instance unwind-instruction
-             :successors (list (aref instruction-vector index)))))
-
 (defgeneric translate-ast (client ast))
 
 (defun translate (client ast)
@@ -25,12 +7,11 @@
          (*target-register*
            (make-instance 'hir:multiple-value-register))
          (*dynamic-environment-register*
-           (make-instance 'hir:single-value-register))
+           (make-instance 'hir:literal :value '()))
          (*static-environment-register*
            (make-instance 'hir:single-value-register))
          (*next-instruction*
            (make-instance 'hir:return-instruction
              :inputs (list *target-register*)))
          (*unwind-instructions-to-fix-up* '()))
-    (prog1 (translate-ast client ast)
-      (fix-up-unwind-instructions))))
+    (translate-ast client ast)))

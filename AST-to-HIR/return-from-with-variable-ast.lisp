@@ -18,5 +18,3 @@
              :outputs '()
              :successors (list *block-receive-instruction*))))
     (translate-ast client form-ast)))
-                                      
-    

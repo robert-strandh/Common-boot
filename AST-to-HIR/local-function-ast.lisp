@@ -101,10 +101,8 @@
            (*next-instruction*
              (make-instance 'hir:return-instruction
                :inputs (list *target-register*)))
-           (*unwind-instructions-to-fix-up* '())
            (body-instruction
              (translate-implicit-progn client (ico:form-asts ast))))
-      (fix-up-unwind-instructions)
       (make-instance 'hir:parse-arguments-instruction
         :lambda-list
         (register-lambda-list-from-lambda-list-ast lambda-list-ast)
