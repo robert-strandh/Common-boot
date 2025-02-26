@@ -12,6 +12,5 @@
            (make-instance 'hir:single-value-register))
          (*next-instruction*
            (make-instance 'hir:return-instruction
-             :inputs (list *target-register*)))
-         (*unwind-instructions-to-fix-up* '()))
+             :inputs (list *target-register*))))
     (translate-ast client ast)))
