@@ -1,7 +1,11 @@
 (cl:in-package #:common-boot-hir)
 
 (defclass instruction ()
-  ((%predecessors
+  ((%origin
+    :initform nil
+    :initarg :origin
+    :reader origin)
+   (%predecessors
     :initform '()
     :initarg :predecessors
     :accessor predecessors)

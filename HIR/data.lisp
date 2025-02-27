@@ -1,7 +1,11 @@
 (cl:in-package #:common-boot-hir)
 
 (defclass datum ()
-  ((%readers
+  ((%origin
+    :initform nil
+    :initarg :origin
+    :reader origin)
+   (%readers
     :initform '()
     :initarg :readers
     :accessor readers)))
