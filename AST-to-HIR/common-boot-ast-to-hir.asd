@@ -33,6 +33,7 @@
    (:file "global-function-name-reference-ast")
    (:file "local-function-ast")
    (:file "labels-ast")
+   (:file "the-ast")
    (:file "make-cell-ast")
    (:file "read-cell-ast")
    (:file "write-cell-ast")
