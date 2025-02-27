@@ -14,6 +14,7 @@
                               else-ast)))
          (if-instruction
            (make-instance 'hir:if-instruction
+             :origin (ico:origin ast)
              :inputs (list register)
              :outputs '()
              :successors (list then-instruction else-instruction))))
