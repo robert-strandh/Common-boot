@@ -12,6 +12,7 @@
                (make-instance (class-of block-target-register))))
          (*next-instruction*
            (make-instance 'hir:unwind-instruction
+             :origin (ico:origin ast)
              :inputs (list *dynamic-environment-register*
                            identity-register
                            *target-register*)
