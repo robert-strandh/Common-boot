@@ -8,6 +8,7 @@
          (identity-register (find-register definition-ast))
          (tagbody-vector (cdr (assoc definition-ast *tagbody-vectors*))))
     (make-instance 'hir:unwind-instruction
+      :origin (ico:origin ast)
       :inputs (list *dynamic-environment-register* identity-register)
       :outputs '()
       :successors (list (svref tagbody-vector index)))))
