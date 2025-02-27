@@ -5,7 +5,7 @@
          (*next-instruction*
            (make-instance 'hir:read-cell-instruction
              :inputs (list register)
-             :outputs *target-register*
+             :outputs (list *target-register*)
              :successors (list *next-instruction*)))
          (*target-register* register))
     (translate-ast client (ico:cell-ast ast))))
