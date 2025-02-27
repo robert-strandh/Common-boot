@@ -8,6 +8,7 @@
                  collect (make-instance 'hir:single-value-register)))
          (result
            (make-instance 'hir:funcall-instruction
+             :origin (ico:origin ast)
              :inputs (cons *dynamic-environment-register* registers)
              :outputs (list *target-register*)
              :successors (list *next-instruction*))))
