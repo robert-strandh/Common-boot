@@ -20,6 +20,7 @@
    (:file "application-ast")
    (:file "if-ast")
    (:file "let-temporary-ast")
+   (:file "static-environment-ast")
    (:file "set-static-environment-ast")
    (:file "read-static-environment-ast")
    (:file "tagbody-with-variable-ast")
