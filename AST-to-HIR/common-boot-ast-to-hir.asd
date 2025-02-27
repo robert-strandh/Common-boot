@@ -32,4 +32,5 @@
    (:file "global-function-name-reference-ast")
    (:file "local-function-ast")
    (:file "labels-ast")
+   (:file "make-cell-ast")
    (:file "ast-to-hir")))
