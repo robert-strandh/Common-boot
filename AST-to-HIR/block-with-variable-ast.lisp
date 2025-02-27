@@ -32,6 +32,7 @@
            (body-instruction
              (translate-implicit-progn client (ico:form-asts ast))))
       (make-instance 'hir:exit-point-instruction
+        :origin (ico:origin ast)
         :inputs (list current-dynamic-environment-register)
         :outputs (list *dynamic-environment-register*
                        identity-register
