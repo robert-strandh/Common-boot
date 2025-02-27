@@ -4,7 +4,11 @@
   (let* ((variable-reference-ast (ico:variable-reference-ast ast))
          (definition-ast (ico:definition-ast variable-reference-ast))
          (identity-register (find-register definition-ast))
-         (form-ast (ico:form-ast ast))
+         (form-ast (if (null (ico:form-ast ast))
+                       (make-instance 'ico:literal-ast
+                         :origin (ico:origin ast)
+                         :literal nil)
+                       (ico:form-ast ast)))
          (block-target-register *block-target-register*)
          (*target-register*
            (if (null block-target-register)
