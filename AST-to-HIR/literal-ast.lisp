@@ -5,6 +5,8 @@
     (if (null *target-register*)
         *next-instruction*
         (make-instance 'hir:assignment-instruction
-          :inputs (list (make-instance 'hir:literal :value literal))
+          :inputs (list (make-instance 'hir:literal
+                          :origin (ico:origin ast)
+                          :value literal))
           :outputs (list *target-register*)
           :successors (list *next-instruction* )))))
