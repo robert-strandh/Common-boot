@@ -37,7 +37,9 @@
              (if (null *target-register*)
                  *next-instruction*
                  (make-instance 'hir:assignment-instruction
-                   :inputs (list (make-instance 'hir:literal :value nil))
+                   :inputs (list (make-instance 'hir:literal
+                                   :origin (ico:origin ast)
+                                   :value nil))
                    :outputs (list *target-register*)
                    :successors (list *next-instruction*))))
            (*target-register* nil)
@@ -54,6 +56,7 @@
                  (setf (hir:successors (svref instruction-vector index))
                        (list *next-instruction*))))
       (make-instance 'hir:exit-point-instruction
+        :origin (ico:origin ast)
         :inputs (list current-dynamic-environment-register)
         :outputs (list *dynamic-environment-register*
                        identity-register)
