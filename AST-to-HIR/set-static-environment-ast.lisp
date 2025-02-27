@@ -8,6 +8,7 @@
                  collect (make-instance 'hir:single-value-register))))
     (let ((*next-instruction*
             (make-instance 'hir:set-static-environment-instruction
+              :origin (ico:origin ast)
               :inputs registers
               :successors (list *next-instruction*))))
       (loop with asts = (cons function-reference-ast form-asts)
