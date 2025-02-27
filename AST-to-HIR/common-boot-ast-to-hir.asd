@@ -36,4 +36,5 @@
    (:file "make-cell-ast")
    (:file "read-cell-ast")
    (:file "write-cell-ast")
+   (:file "symbol-macrolet-ast")
    (:file "ast-to-hir")))
