@@ -93,7 +93,7 @@
            (thunk (ensure-thunk client successor lexical-environment))
            (argument-parser-expression
              `(lambda ,host-lambda-list
-                (list ,(mapcar #'car pairs))))
+                (list ,@(mapcar #'car pairs))))
            (argument-parser
              (compile nil argument-parser-expression)))
       (lambda (&rest arguments)
