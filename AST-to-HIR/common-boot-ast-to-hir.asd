@@ -34,4 +34,5 @@
    (:file "labels-ast")
    (:file "make-cell-ast")
    (:file "read-cell-ast")
+   (:file "write-cell-ast")
    (:file "ast-to-hir")))
