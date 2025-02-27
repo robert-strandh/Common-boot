@@ -10,6 +10,7 @@
              (make-instance 'hir:single-value-register))
            (*next-instruction*
              (make-instance 'hir:read-static-environment-instruction
+               :origin (ico:origin ast)
                :inputs (list register literal)
                :outputs (list *target-register*)
                :successors (list *next-instruction*))))
