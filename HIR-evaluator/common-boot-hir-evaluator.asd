@@ -22,6 +22,7 @@
    (:file "nop-instruction")
    (:file "global-function-reference-instruction")
    (:file "funcall-instruction")
+   (:file "multiple-value-call-instruction")
    (:file "enclose-instruction")
    (:file "if-instruction")
    (:file "assignment-instruction")
