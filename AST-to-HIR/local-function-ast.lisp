@@ -95,9 +95,11 @@
     (let* ((*target-register*
              (make-instance 'hir:multiple-value-register))
            (*dynamic-environment-register*
-             (make-instance 'hir:single-value-register))
+             (make-instance 'hir:single-value-register
+               :name "dynamic env"))
            (*static-environment-register*
-             (make-instance 'hir:single-value-register))
+             (make-instance 'hir:single-value-register
+               :name "static env"))
            (*next-instruction*
              (make-instance 'hir:return-instruction
                :inputs (list *target-register*)))
