@@ -13,7 +13,8 @@
               :successors (list *next-instruction*))))
       (loop with asts = (cons function-reference-ast form-asts)
             for ast in (reverse asts)
-            for *target-register* in (reverse registers)
-            do (setf *next-instruction*
-                     (translate-ast client ast)))
+            for register in (reverse registers)
+            do (let ((*target-register* register))
+                 (setf *next-instruction*
+                       (translate-ast client ast))))
       *next-instruction*)))
