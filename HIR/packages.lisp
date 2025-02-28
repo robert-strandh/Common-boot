@@ -24,6 +24,7 @@
    #:unwind-instruction
    #:receive-instruction
    #:funcall-instruction
+   #:multiple-value-call-instruction
    #:return-instruction
    #:assignment-instruction
    #:special-variable-binding-instruction
