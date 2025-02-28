@@ -20,6 +20,7 @@
    (:file "unwind-instruction")
    (:file "receive-instruction")
    (:file "funcall-instruction")
+   (:file "multiple-value-call-instruction")
    (:file "return-instruction")
    (:file "assignment-instruction")
    (:file "special-variable-binding-instruction")
