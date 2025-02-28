@@ -10,6 +10,7 @@
   ((:file "packages")
    (:file "context")
    (:file "registers")
+   (:file "register-adapter")
    (:file "translate")
    (:file "literal-ast")
    (:file "quote-ast")
