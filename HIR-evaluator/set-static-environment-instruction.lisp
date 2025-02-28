@@ -22,11 +22,13 @@
              (let ((static-environment (make-array static-environment-size)))
                (loop for lexical-location
                        in static-environment-lexical-locations
-                     do (setf (svref static-environment lexical-location)
+                     for index from 0
+                     do (setf (svref static-environment index)
                               (lexical-value
                                lexical-locations lexical-location)))
-               (setf (lexical-value
-                      lexical-locations closure-object-lexical-location)
+               (setf (static-environment 
+                      (lexical-value
+                       lexical-locations closure-object-lexical-location))
                      static-environment))
              successor-thunk)))
     (setf (gethash instruction *instruction-thunks*) thunk)
