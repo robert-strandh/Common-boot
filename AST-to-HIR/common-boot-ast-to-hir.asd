@@ -20,6 +20,7 @@
    (:file "simple-setq-ast")
    (:file "application-ast")
    (:file "multiple-value-call-ast")
+   (:file "multiple-value-prog1-ast")
    (:file "if-ast")
    (:file "let-temporary-ast")
    (:file "static-environment-ast")
