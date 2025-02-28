@@ -6,12 +6,10 @@
     (check-type index-ast ico:literal-ast)
     (let* ((literal
              (make-instance 'hir:literal :value (ico:literal index-ast)))
-           (register
-             (make-instance 'hir:single-value-register))
            (*next-instruction*
              (make-instance 'hir:read-static-environment-instruction
                :origin (ico:origin ast)
-               :inputs (list register literal)
+               :inputs (list *static-environment-register* literal)
                :outputs (list *target-register*)
                :successors (list *next-instruction*))))
       (translate-ast client static-environment-ast))))
