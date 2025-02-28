@@ -8,7 +8,7 @@
         (t
          (let ((new-register (make-instance register-type)))
            (values (make-instance 'hir:assignment-instruction
-                     :inputs (list register-type)
+                     :inputs (list new-register)
                      :outputs (list *target-register*)
                      :successors (list *next-instruction*))
                    new-register)))))
