@@ -4,9 +4,11 @@
   (let* ((object-ast (ico:object-ast ast))
          (form (ico:form object-ast))
          (object (cst:raw form)))
-    (make-instance 'hir:assignment-instruction
-      :inputs (list (make-instance 'hir:literal
-                      :origin (ico:origin ast)
-                      :value object))
-      :outputs (list *target-register*)
-      :successors (list *next-instruction* ))))
+    (multiple-value-bind (*next-instruction* *target-register*)
+        (adapt-register 'hir:single-value-register)
+      (make-instance 'hir:assignment-instruction
+        :inputs (list (make-instance 'hir:literal
+                        :origin (ico:origin ast)
+                        :value object))
+        :outputs (list *target-register*)
+        :successors (list *next-instruction*)))))
