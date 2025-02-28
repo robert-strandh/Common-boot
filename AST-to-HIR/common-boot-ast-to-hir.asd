@@ -19,6 +19,7 @@
    (:file "locally-ast")
    (:file "simple-setq-ast")
    (:file "application-ast")
+   (:file "multiple-value-call-ast")
    (:file "if-ast")
    (:file "let-temporary-ast")
    (:file "static-environment-ast")
