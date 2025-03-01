@@ -1,9 +1,9 @@
 (cl:in-package #:common-boot-hir-evaluator)
 
 (defmethod ensure-thunk
-  (client
-   (instruction hir:special-variable-setq-instruction)
-   lexical-environment)
+    (client
+     (instruction hir:special-variable-setq-instruction)
+     lexical-environment)
   (let* ((variable-name (hir:variable-name instruction))
          (cell (clostrum:ensure-variable-cell
                 client *environment* variable-name)))
