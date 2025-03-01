@@ -30,6 +30,7 @@
    #:special-variable-binding-instruction
    #:global-function-reference-instruction
    #:function-name
+   #:progv-instruction
    #:special-variable-reference-instruction
    #:special-variable-setq-instruction
    #:variable-name
