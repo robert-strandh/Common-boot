@@ -33,6 +33,7 @@
    (:file "special-variable-bind-ast")
    (:file "special-variable-bound-ast")
    (:file "special-variable-reference-ast")
+   (:file "special-variable-setq-ast")
    (:file "global-function-name-reference-ast")
    (:file "local-function-ast")
    (:file "labels-ast")
