@@ -23,6 +23,7 @@
    (:file "multiple-value-call-instruction")
    (:file "return-instruction")
    (:file "assignment-instruction")
+   (:file "progv-instruction")
    (:file "special-variable-binding-instruction")
    (:file "special-variable-bound-instruction")
    (:file "global-function-reference-instruction")
