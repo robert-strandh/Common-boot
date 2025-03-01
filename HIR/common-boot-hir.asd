@@ -29,4 +29,5 @@
    (:file "global-function-reference-instruction")
    (:file "special-variable-reference-instruction")
    (:file "special-variable-setq-instruction")
-   (:file "enclose-instruction")))
+   (:file "enclose-instruction")
+   (:file "catch-instruction")))
