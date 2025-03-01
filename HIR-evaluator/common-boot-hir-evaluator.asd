@@ -33,6 +33,7 @@
    (:file "receive-instruction")
    (:file "special-variable-binding-instruction")
    (:file "special-variable-reference-instruction")
+   (:file "special-variable-setq-instruction")
    (:file "return-instruction")
    (:file "make-cell-instruction")
    (:file "read-cell-instruction")
