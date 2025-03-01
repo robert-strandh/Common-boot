@@ -31,6 +31,7 @@
    (:file "exit-point-instruction")
    (:file "unwind-instruction")
    (:file "receive-instruction")
+   (:file "progv-instruction")
    (:file "special-variable-binding-instruction")
    (:file "special-variable-reference-instruction")
    (:file "special-variable-setq-instruction")
