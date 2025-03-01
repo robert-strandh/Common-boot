@@ -31,6 +31,7 @@
    #:global-function-reference-instruction
    #:function-name
    #:special-variable-reference-instruction
+   #:special-variable-setq-instruction
    #:variable-name
    #:enclose-instruction
    #:datum
