@@ -35,6 +35,7 @@
    #:special-variable-setq-instruction
    #:variable-name
    #:enclose-instruction
+   #:catch-instruction
    #:datum
    #:register
    #:name
