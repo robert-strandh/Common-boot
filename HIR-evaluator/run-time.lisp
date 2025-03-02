@@ -40,8 +40,11 @@
 
 (defun unwind
     (successor dynamic-environment unique-identity &optional values)
-  (let ((entry (find unique-identity dynamic-environment
-                     :key #'unique-identity :test #'eq)))
+  (let ((entry (find-if (lambda (entry)
+                          (and (typep entry 'exit-point-entry)
+                               (eq unique-identity
+                                   (unique-identity entry))))
+                        dynamic-environment)))
     (assert (not (null entry)))
     (setf *unwind-values* values)
     (throw (unwind-tag entry) successor)))
@@ -89,3 +92,12 @@
    (%successor
     :initarg :successor
     :reader successor)))
+
+(defun throw-unwind (dynamic-environment tag values)
+  (let ((entry (find-if (lambda (entry)
+                          (and (typep entry 'catch-entry)
+                               (eq tag (catch-tag entry))))
+                        dynamic-environment)))
+    (assert (not (null entry)))
+    (setf *unwind-values* values)
+    (throw (unwind-tag entry) (successor entry))))
