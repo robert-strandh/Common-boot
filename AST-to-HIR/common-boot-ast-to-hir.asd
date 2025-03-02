@@ -44,4 +44,5 @@
    (:file "write-cell-ast")
    (:file "symbol-macrolet-ast")
    (:file "catch-ast")
+   (:file "throw-ast")
    (:file "ast-to-hir")))
