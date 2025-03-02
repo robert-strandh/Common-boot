@@ -78,3 +78,14 @@
              (setf (value entry) value)
              (return value))
         finally (return (setf (car cell) value))))
+
+(defclass catch-entry ()
+  ((%unwind-tag
+    :initarg :unwind-tag
+    :reader unwind-tag)
+   (%catch-tag
+    :initarg :catch-tag
+    :reader catch-tag)
+   (%successor
+    :initarg :successor
+    :reader successor)))
