@@ -25,5 +25,6 @@
              :inputs (list existing-dynamic-environment-register
                            tag-register)
              :outputs (list new-dynamic-environment-register)
-             :successors (list body-instruction receive-instruction))))
+             :successors (list body-instruction receive-instruction)))
+         (*target-register* tag-register))
     (translate-ast client (ico:tag-form-ast ast))))
