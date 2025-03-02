@@ -38,4 +38,5 @@
    (:file "return-instruction")
    (:file "make-cell-instruction")
    (:file "read-cell-instruction")
-   (:file "write-cell-instruction")))
+   (:file "write-cell-instruction")
+   (:file "catch-instruction")))
