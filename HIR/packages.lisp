@@ -36,6 +36,7 @@
    #:variable-name
    #:enclose-instruction
    #:catch-instruction
+   #:throw-instruction
    #:datum
    #:register
    #:name
