@@ -5,5 +5,5 @@
      (kind t)
      (ast ico:throw-ast))
   (reinitialize-instance ast
-    :tag-ast (convert-ast builder (ico:tag-ast ast))
+    :tag-form-ast (convert-ast builder (ico:tag-form-ast ast))
     :form-ast (convert-ast builder (ico:form-ast ast))))
