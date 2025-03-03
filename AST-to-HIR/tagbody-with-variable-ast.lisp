@@ -44,8 +44,7 @@
                    :successors (list *next-instruction*))))
            (*target-register* nil)
            (*tagbody-vectors*
-             (acons variable-definition-ast instruction-vector
-                    *tagbody-vectors*))
+             (acons ast instruction-vector *tagbody-vectors*))
            (identity-register (make-instance 'hir:single-value-register)))
       (setf (find-register variable-definition-ast) identity-register)
       (loop for segment-ast in (reverse segment-asts)
