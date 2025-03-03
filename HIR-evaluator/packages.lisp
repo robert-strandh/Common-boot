@@ -9,6 +9,6 @@
   (:shadow #:symbol-value
            #:boundp)
   (:export #:client
-           #:symbo-value
+           #:symbol-value
            #:boundp
            #:closure))
