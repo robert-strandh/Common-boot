@@ -31,17 +31,16 @@
 
 (defun top-level-hir-to-host-function (client initial-instruction)
   (let* ((*instruction-thunks* (make-hash-table :test #'eq))
-         (unwind-tag (list nil))
-         (*unwind-tag* unwind-tag)
          (lexical-environment (make-lexical-environment))
          (thunk
            (ensure-thunk client initial-instruction lexical-environment)))
     (lambda ()
-      (let ((lexical-locations (make-lexical-locations lexical-environment))
+      (let ((*unwind-tag* (list nil))
+            (lexical-locations (make-lexical-locations lexical-environment))
             (thunk thunk))
         (catch 'return
           (loop (setf thunk
-                      (catch unwind-tag
+                      (catch *unwind-tag*
                         (loop (setf thunk
                                     (funcall thunk
                                              lexical-locations)))))))))))
