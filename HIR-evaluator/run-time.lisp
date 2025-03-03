@@ -28,7 +28,7 @@
 
 (defvar *static-environment*)
 
-(defvar *dynamic-environment*)
+(defparameter *dynamic-environment* '())
 
 (defclass exit-point-entry ()
   ((%unique-identity
