@@ -61,6 +61,14 @@
 ;;; instruction.
 (defvar *unwind-values*)
 
+(defun boundp
+    (name cell &optional (dynamic-environment *dynamic-environment*))
+  (loop for entry in dynamic-environment
+        do (when (and (typep entry 'special-variable-bind-entry)
+                      (eq name (name entry)))
+             (return (slot-boundp entry '%value)))
+        finally (return (not (eq (car cell) (cdr cell))))))
+
 (defun symbol-value
     (name cell &optional (dynamic-environment *dynamic-environment*))
   (loop for entry in dynamic-environment
