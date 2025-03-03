@@ -9,6 +9,7 @@
   (:shadow #:symbol-value
            #:boundp)
   (:export #:client
+           #:compile-ast
            #:symbol-value
            #:boundp
            #:closure))
