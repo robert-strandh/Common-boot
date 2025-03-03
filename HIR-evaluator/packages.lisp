@@ -10,4 +10,5 @@
            #:boundp)
   (:export #:client
            #:symbo-value
-           #:boundp))
+           #:boundp
+           #:closure))

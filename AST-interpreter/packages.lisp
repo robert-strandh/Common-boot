@@ -16,4 +16,5 @@
            #:compile-ast
            #:client
            #:boundp
-           #:symbol-value))
+           #:symbol-value
+           #:closure))
