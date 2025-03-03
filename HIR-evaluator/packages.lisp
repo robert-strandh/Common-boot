@@ -5,5 +5,6 @@
   (:shadow #:symbol-value)
   (:local-nicknames (#:hir #:common-boot-hir)
                     (#:cb #:common-boot)
+                    (#:ico #:iconoclast)
                     (#:cbah #:common-boot-ast-to-hir))
   (:export #:client))
