@@ -4,6 +4,11 @@
   (let* ((cell-register (make-instance 'hir:single-value-register))
          (form-register (make-instance 'hir:single-value-register))
          (*next-instruction*
+           (make-instance 'hir:assignment-instruction
+             :inputs (list form-register)
+             :outputs (list *target-register*)
+             :successors (list *next-instruction*)))
+         (*next-instruction*
            (make-instance 'hir:write-cell-instruction
              :inputs (list cell-register form-register)
              :outputs '()
