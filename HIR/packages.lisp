@@ -8,6 +8,7 @@
    #:outputs
    #:predecessors
    #:successors
+   #:map-instructions-arbitrary-order
    #:parse-arguments-instruction
    #:lambda-list
    #:static-environment-register
