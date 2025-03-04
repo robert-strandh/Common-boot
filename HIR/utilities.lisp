@@ -29,3 +29,12 @@
      (loop for output in (outputs instruction)
            do (push instruction (writers output))))
    initial-instruction))
+
+(defun check-hir (initial-instruction)
+  (initialize-predecessors-and-data initial-instruction)
+  (map-instructions-arbitrary-order
+   (lambda (instruction)
+     (loop for input in (inputs instruction)
+           do (assert (not (null (writers input))))))
+   initial-instruction))
+     
