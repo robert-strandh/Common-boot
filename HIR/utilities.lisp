@@ -1,0 +1,12 @@
+(cl:in-package #:common-boot-hir)
+
+(defun map-instructions-arbitrary-order (function first-instruction)
+  (let ((visited (make-hash-table :test #'eq)))
+    (labels ((aux (instruction)
+               (unless (gethash instruction visited)
+                 (setf (gethash instruction visited) t)
+                 (funcall function instruction)
+                 (mapcar #'aux (successors instruction))
+                 (when (typep instruction 'enclose-instruction)
+                   (aux (parse-arguments-instruction instruction))))))
+      (aux first-instruction))))

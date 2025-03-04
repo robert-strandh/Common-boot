@@ -7,6 +7,7 @@
   ((:file "packages")
    (:file "instruction")
    (:file "data")
+   (:file "utilities")
    (:file "parse-arguments-instruction")
    (:file "nop-instruction")
    (:file "make-cell-instruction")
