@@ -17,9 +17,11 @@
          (*next-instruction*
            (make-instance 'hir:unwind-instruction
              :origin (ico:origin ast)
-             :inputs (list *dynamic-environment-register*
-                           identity-register
-                           *target-register*)
+             :inputs (list* *dynamic-environment-register*
+                            identity-register
+                            (if (null *target-register*) 
+                                '()
+                                (list *target-register*)))
              :outputs '()
              :successors (list *block-receive-instruction*))))
     (translate-ast client form-ast)))
