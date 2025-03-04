@@ -47,7 +47,7 @@
 
 (defun find-all-data (initial-instruction)
   (let ((data '()))
-    (map-instructions-arbitrary-order
+    (ir:map-instructions-arbitrary-order
      (lambda (instruction)
        (loop for datum in (append (ir:inputs instruction)
                                   (ir:outputs instruction))

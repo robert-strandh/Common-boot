@@ -98,7 +98,7 @@
                        :align-x :center :align-y :center))))
 
 (defun draw-nodes (initial-instruction pane)
-  (map-instructions-arbitrary-order
+  (ir:map-instructions-arbitrary-order
    (lambda (node)
      (multiple-value-bind (hpos vpos) (instruction-position node)
        (draw-node node hpos vpos pane)))
@@ -125,7 +125,7 @@
 
 (defun layout-data (initial-instruction pane)
   (declare (ignore pane))
-  (map-instructions-arbitrary-order
+  (ir:map-instructions-arbitrary-order
    (lambda (instruction) (layout-inputs-and-outputs instruction))
    initial-instruction))
 
@@ -240,7 +240,7 @@
       (draw-arcs pane (make-arcs pane *instruction-position-table*)))))
 
 (defun initialize-predecessors-and-data (initial-instruction)
-  (map-instructions-arbitrary-order
+  (ir:map-instructions-arbitrary-order
    (lambda (instruction)
      (setf (ir:predecessors instruction) '())
      (loop for input in (ir:inputs instruction)
@@ -248,7 +248,7 @@
      (loop for output in (ir:outputs instruction)
            do (setf (ir:writers output) '())))
    initial-instruction)
-  (map-instructions-arbitrary-order
+  (ir:map-instructions-arbitrary-order
    (lambda (instruction)
      (loop for successor in (ir:successors instruction)
            do (push instruction (ir:predecessors successor)))
