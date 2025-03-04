@@ -170,8 +170,12 @@
     :initarg :value
     :accessor value)))
 
+(defun proper-list-p (object)
+  (numberp (ignore-errors (list-length object))))
+
 (defun boundp
     (name cell &optional (dynamic-environment *dynamic-environment*))
+  (assert (proper-list-p dynamic-environment))
   (loop for entry in dynamic-environment
         do (when (and (typep entry 'special-variable-entry)
                       (eq name (name entry)))
@@ -180,6 +184,7 @@
 
 (defun symbol-value
     (name cell &optional (dynamic-environment *dynamic-environment*))
+  (assert (proper-list-p dynamic-environment))
   (loop for entry in dynamic-environment
         do (when (and (typep entry 'special-variable-entry)
                       (eq name (name entry)))
@@ -192,6 +197,7 @@
 
 (defun (setf symbol-value)
     (value name cell &optional (dynamic-environment *dynamic-environment*))
+  (assert (proper-list-p dynamic-environment))
   (loop for entry in dynamic-environment
         do (when (and (typep entry 'special-variable-entry)
                       (eq name (name entry)))
