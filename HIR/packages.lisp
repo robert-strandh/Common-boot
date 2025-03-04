@@ -10,6 +10,7 @@
    #:successors
    #:map-instructions-arbitrary-order
    #:initialize-predecessors-and-data
+   #:check-hir
    #:parse-arguments-instruction
    #:lambda-list
    #:static-environment-register
