@@ -21,7 +21,9 @@
     (setf (find-register variable-definition-ast) identity-register)
     (let* ((receive-instruction
              (make-instance 'hir:receive-instruction
-               :outputs (list *target-register*)
+               :outputs (if (null *target-register*)
+                            '()
+                            (list *target-register*))
                :successors (list *next-instruction*)))
            (*block-receive-instruction* receive-instruction)
            (*block-target-register* *target-register*)
@@ -35,6 +37,5 @@
         :origin (ico:origin ast)
         :inputs (list current-dynamic-environment-register)
         :outputs (list *dynamic-environment-register*
-                       identity-register
-                       *target-register*)
+                       identity-register)
         :successors (list body-instruction)))))
