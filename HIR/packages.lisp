@@ -9,6 +9,7 @@
    #:predecessors
    #:successors
    #:map-instructions-arbitrary-order
+   #:initialize-predecessors-and-data
    #:parse-arguments-instruction
    #:lambda-list
    #:static-environment-register
