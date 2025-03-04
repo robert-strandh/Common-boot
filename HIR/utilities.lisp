@@ -35,6 +35,7 @@
   (map-instructions-arbitrary-order
    (lambda (instruction)
      (loop for input in (inputs instruction)
-           do (assert (not (null (writers input))))))
+           do (when (typep input 'register)
+                (assert (not (null (writers input)))))))
    initial-instruction))
      
