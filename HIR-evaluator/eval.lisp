@@ -7,6 +7,7 @@
          (hir (cbah:ast-to-hir client ast))
          (*environment* (trucler:global-environment client environment))
          (function (top-level-hir-to-host-function client hir)))
+    (hir:check-hir hir)
     (funcall function)))
 
 (defun compile-ast (client ast environment)
