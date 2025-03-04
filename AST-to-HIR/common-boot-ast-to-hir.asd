@@ -45,4 +45,6 @@
    (:file "symbol-macrolet-ast")
    (:file "catch-ast")
    (:file "throw-ast")
+   (:file "eval-when-ast")
+   (:file "load-time-value-ast")
    (:file "ast-to-hir")))
