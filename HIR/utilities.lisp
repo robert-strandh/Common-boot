@@ -10,3 +10,22 @@
                  (when (typep instruction 'enclose-instruction)
                    (aux (parse-arguments-instruction instruction))))))
       (aux first-instruction))))
+
+(defun initialize-predecessors-and-data (initial-instruction)
+  (map-instructions-arbitrary-order
+   (lambda (instruction)
+     (setf (predecessors instruction) '())
+     (loop for input in (inputs instruction)
+           do (setf (readers input) '()))
+     (loop for output in (outputs instruction)
+           do (setf (writers output) '())))
+   initial-instruction)
+  (map-instructions-arbitrary-order
+   (lambda (instruction)
+     (loop for successor in (successors instruction)
+           do (push instruction (predecessors successor)))
+     (loop for input in (inputs instruction)
+           do (push instruction (readers input)))
+     (loop for output in (outputs instruction)
+           do (push instruction (writers output))))
+   initial-instruction))

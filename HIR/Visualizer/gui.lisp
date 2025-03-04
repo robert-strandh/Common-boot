@@ -239,27 +239,8 @@
       (draw-data pane)
       (draw-arcs pane (make-arcs pane *instruction-position-table*)))))
 
-(defun initialize-predecessors-and-data (initial-instruction)
-  (ir:map-instructions-arbitrary-order
-   (lambda (instruction)
-     (setf (ir:predecessors instruction) '())
-     (loop for input in (ir:inputs instruction)
-           do (setf (ir:readers input) '()))
-     (loop for output in (ir:outputs instruction)
-           do (setf (ir:writers output) '())))
-   initial-instruction)
-  (ir:map-instructions-arbitrary-order
-   (lambda (instruction)
-     (loop for successor in (ir:successors instruction)
-           do (push instruction (ir:predecessors successor)))
-     (loop for input in (ir:inputs instruction)
-           do (push instruction (ir:readers input)))
-     (loop for output in (ir:outputs instruction)
-           do (push instruction (ir:writers output))))
-   initial-instruction))
-
 (defun visualize (initial-instruction &key new-process-p)
-  (initialize-predecessors-and-data initial-instruction)
+  (ir:initialize-predecessors-and-data initial-instruction)
   (let ((frame (clim:make-application-frame
                 'visualizer
                 :initial-instruction initial-instruction)))
