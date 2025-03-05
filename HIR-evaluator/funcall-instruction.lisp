@@ -39,5 +39,3 @@
           (ensure-thunk
            client (first (hir:successors instruction)) lexical-environment))
     thunk))
-            
-                            
