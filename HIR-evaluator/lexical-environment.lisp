@@ -31,12 +31,15 @@
 (defun lexical-value (lexical-locations lexical-reference)
   (declare (simple-vector lexical-locations)
            (fixnum lexical-reference))
-  (svref lexical-locations lexical-reference))
+  (let ((result (svref lexical-locations lexical-reference)))
+    (assert (not (eq result '.unbound.)))
+    result))
 
 (declaim (inline (setf lexical-value)))
 (defun (setf lexical-value) (value lexical-locations lexical-reference)
   (declare (simple-vector lexical-locations)
            (fixnum lexical-reference))
+  (assert (not (eq value '.unbound.)))
   (setf (svref lexical-locations lexical-reference)
         value))
 
