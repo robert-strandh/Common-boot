@@ -1,5 +1,7 @@
 (cl:in-package #:common-boot-hir-evaluator)
 
+(defvar *static-environment*)
+
 (defun enclose (entry-point)
   (let ((closure (make-instance 'closure)))
     (closer-mop:set-funcallable-instance-function
@@ -25,8 +27,6 @@
 (defclass call-stack-entry ()
   ((%origin :initarg :origin :reader origin)
    (%arguments :initarg :arguments :reader arguments)))
-
-(defvar *static-environment*)
 
 (defparameter *dynamic-environment* '())
 
