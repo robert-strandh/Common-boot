@@ -20,7 +20,6 @@
    #:read-cell-instruction
    #:write-cell-instruction
    #:set-static-environment-instruction
-   #:dynamic-environment-instruction
    #:read-static-environment-instruction
    #:if-instruction
    #:exit-point-instruction
