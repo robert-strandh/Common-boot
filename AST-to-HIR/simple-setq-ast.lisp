@@ -6,9 +6,11 @@
          (definition-ast (ico:definition-ast variable-name-ast))
          (register-to-assign-to (find-register definition-ast))
          (*next-instruction*
-           (make-instance 'hir:assignment-instruction
-             :inputs (list register-to-assign-to)
-             :outputs (list *target-register*)
-             :successors (list *next-instruction*)))
+           (if (null *target-register*)
+               *next-instruction*
+               (make-instance 'hir:assignment-instruction
+                 :inputs (list register-to-assign-to)
+                 :outputs (list *target-register*)
+                 :successors (list *next-instruction*))))
          (*target-register* register-to-assign-to))
     (translate-ast client value-ast)))
