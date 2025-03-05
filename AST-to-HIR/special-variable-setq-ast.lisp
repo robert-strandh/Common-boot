@@ -3,10 +3,12 @@
 (defmethod translate-ast (client (ast ico:special-variable-setq-ast))
   (let* ((value-register (make-instance 'hir:single-value-register))
          (*next-instruction*
-           (make-instance 'hir:assignment-instruction
-             :inputs (list value-register)
-             :outputs (list *target-register*)
-             :successors (list *next-instruction*)))
+           (if (null *target-register*)
+               *next-instruction*
+               (make-instance 'hir:assignment-instruction
+                 :inputs (list value-register)
+                 :outputs (list *target-register*)
+                 :successors (list *next-instruction*))))
          (*next-instruction*
               (make-instance 'hir:special-variable-setq-instruction
                 :origin (ico:origin ast)
