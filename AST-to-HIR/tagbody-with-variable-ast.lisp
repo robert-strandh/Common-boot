@@ -59,4 +59,4 @@
         :inputs (list current-dynamic-environment-register)
         :outputs (list *dynamic-environment-register*
                        identity-register)
-        :successors (list *next-instruction*)))))
+        :successors (list *next-instruction* *next-instruction*)))))

@@ -38,4 +38,4 @@
         :inputs (list current-dynamic-environment-register)
         :outputs (list *dynamic-environment-register*
                        identity-register)
-        :successors (list body-instruction)))))
+        :successors (list body-instruction receive-instruction)))))
