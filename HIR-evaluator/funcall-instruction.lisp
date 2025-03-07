@@ -21,6 +21,7 @@
          (output-lexical-location
            (ensure-lexical-reference output lexical-environment))
          (successor-thunk #'dummy-successor)
+         (origin (hir:origin instruction))
          (thunk
            (lambda (lexical-locations)
              (flet ((lv (x)
@@ -35,7 +36,8 @@
                                    collect (lv lc))))
                        (with-new-call-stack-entry
                            (make-instance 'call-stack-entry
-                             :origin nil
+                             :origin origin
+                             :called-function function
                              :arguments arguments)
                          (multiple-value-list
                           (apply function arguments))))))
