@@ -33,8 +33,12 @@
                            (arguments
                              (loop for lc in argument-lexical-locations
                                    collect (lv lc))))
-                       (multiple-value-list
-                        (apply function arguments)))))
+                       (with-new-call-stack-entry
+                           (make-instance 'call-stack-entry
+                             :origin nil
+                             :arguments arguments)
+                         (multiple-value-list
+                          (apply function arguments))))))
              successor-thunk)))
     (setf (gethash instruction *instruction-thunks*) thunk)
     (setf successor-thunk
