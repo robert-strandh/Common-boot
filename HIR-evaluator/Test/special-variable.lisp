@@ -20,3 +20,9 @@
               (declare (special *foo*))
               *foo*)
          (eval-expression client '#1# environment))))
+
+(define-test special-variable-3
+  :parent special-variable
+  (with-default-parameters (client environment global-environment)
+    (iss #1=(let ((*print-base* *print-base*)) nil)
+         (eval-expression client '#1# environment))))
