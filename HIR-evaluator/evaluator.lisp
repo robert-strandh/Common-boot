@@ -29,11 +29,19 @@
 ;;; in with values of LOAD-TIME-VALUE forms and constants created by
 ;;; the reader.
 
+(defvar *yet-to-process*)
+
+(defun add-to-process (function)
+  (setf *yet-to-process* (append *yet-to-process* (list function))))
+
 (defun top-level-hir-to-host-function (client initial-instruction)
   (let* ((*instruction-thunks* (make-hash-table :test #'eq))
          (lexical-environment (make-lexical-environment))
+         (*yet-to-process* '())
          (thunk
            (ensure-thunk client initial-instruction lexical-environment)))
+    (loop until (null *yet-to-process*)
+          do (funcall (pop *yet-to-process*)))
     (lambda ()
       (let ((*unwind-tag* (list nil))
             (lexical-locations (make-lexical-locations lexical-environment))
