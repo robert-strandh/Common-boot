@@ -13,6 +13,8 @@
             (trucler:global-environment
              ,client-variable ,environment-variable)))
      (declare (ignorable ,global-environment-variable))
+     (clostrum:make-variable
+      ,client-variable ,global-environment-variable '*print-base* 10)
      (import-host-function
       ,client-variable 'null ,global-environment-variable)
      (import-host-function
