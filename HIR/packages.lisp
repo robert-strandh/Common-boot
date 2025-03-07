@@ -4,6 +4,7 @@
   (:use #:common-lisp)
   (:export
    #:instruction
+   #:origin
    #:inputs
    #:outputs
    #:predecessors
