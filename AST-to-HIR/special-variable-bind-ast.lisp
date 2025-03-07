@@ -21,6 +21,8 @@
              :outputs (list *dynamic-environment-register*)
              :successors (list *next-instruction*)))
          (*target-register* value-register)
+         (*dynamic-environment-register*
+           current-dynamic-environment-register)
          (*next-instruction* (translate-ast client form-ast))
          (*target-register* name-register))
     (translate-ast client variable-name-ast)))
