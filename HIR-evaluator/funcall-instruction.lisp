@@ -28,11 +28,13 @@
                (setf (lexical-value
                       lexical-locations output-lexical-location)
                      (let ((*dynamic-environment*
-                             (lv dynamic-environment-lexical-location)))
+                             (lv dynamic-environment-lexical-location))
+                           (function (lv function-lexical-location))
+                           (arguments
+                             (loop for lc in argument-lexical-locations
+                                   collect (lv lc))))
                        (multiple-value-list
-                        (apply (lv function-lexical-location)
-                               (loop for lc in argument-lexical-locations
-                                     collect (lv lc)))))))
+                        (apply function arguments)))))
              successor-thunk)))
     (setf (gethash instruction *instruction-thunks*) thunk)
     (setf successor-thunk
