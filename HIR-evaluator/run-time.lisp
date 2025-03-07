@@ -26,6 +26,7 @@
 
 (defclass call-stack-entry ()
   ((%origin :initarg :origin :reader origin)
+   (%called-function :initarg :called-function :reader called-function)
    (%arguments :initarg :arguments :reader arguments)))
 
 (defparameter *dynamic-environment* '())
