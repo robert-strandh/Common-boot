@@ -12,4 +12,9 @@
            #:compile-ast
            #:symbol-value
            #:boundp
-           #:closure))
+           #:closure
+           #:*call-stack*
+           #:call-stack-entry
+           #:origin
+           #:arguments
+           #:called-function))
