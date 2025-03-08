@@ -39,6 +39,10 @@
     :initarg :unwind-tag
     :reader unwind-tag)))
 
+;;; This variable contains the values transmitted by the UNWIND
+;;; instruction.
+(defvar *unwind-values*)
+
 (defun unwind
     (successor dynamic-environment unique-identity &optional values)
   (let ((entry (find-if (lambda (entry)
@@ -57,10 +61,6 @@
    (%value
     :initarg :value
     :accessor value)))
-
-;;; This variable contains the values transmitted by the UNWIND
-;;; instruction.
-(defvar *unwind-values*)
 
 (defun proper-list-p (object)
   (numberp (ignore-errors (list-length object))))
