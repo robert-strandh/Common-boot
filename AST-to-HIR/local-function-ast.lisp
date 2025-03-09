@@ -36,7 +36,9 @@
          (keyword-name
            (if (null keyword-ast)
                (intern (symbol-name (ico:name name-ast)) "KEYWORD")
-               (ico:literal keyword-ast))))
+               (if (typep keyword-ast 'ico:literal-ast)
+                   (ico:literal keyword-ast)
+                   (ico:name keyword-ast)))))
     (list (list keyword-name (find-register name-ast))
           (find-register (ico:supplied-p-parameter-ast ast)))))
 
