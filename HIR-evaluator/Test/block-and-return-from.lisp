@@ -77,3 +77,16 @@
     (iss #1=(block a
               (return-from a (block b (return-from b 234))))
          (eval-expression client '#1# environment))))
+
+(define-test block-with-tagbody
+  :parent block-and-return-from
+  (with-default-parameters (client environment global-environment)
+    (iss #1=(block find-candidate
+              (tagbody
+                 (block nil
+                   (tagbody
+                    again
+                      (return-from find-candidate '27fb)
+                      (go again)
+                      (return-from nil nil)))))
+         (eval-expression client '#1# environment))))
