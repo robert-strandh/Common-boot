@@ -47,4 +47,5 @@
    (:file "throw-ast")
    (:file "eval-when-ast")
    (:file "load-time-value-ast")
+   (:file "unwind-protect-ast")
    (:file "ast-to-hir")))
