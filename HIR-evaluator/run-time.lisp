@@ -11,23 +11,15 @@
          (apply entry-point arguments))))
     closure))
 
-;; A list of call stack entries.
-(defparameter *call-stack* '())
-
 (defparameter *call-stack-depth* 0)
 
 (defmacro with-new-call-stack-entry (entry &body body)
-  `(let ((*call-stack* (cons ,entry *call-stack*)))
+  `(let ((cb:*stack* (cons ,entry cb:*stack*)))
      (when (> *call-stack-depth* 200)
        (error "Call stack exhausted"))
      (incf *call-stack-depth*)
      (unwind-protect (progn ,@body)
        (decf *call-stack-depth*))))
-
-(defclass call-stack-entry ()
-  ((%origin :initarg :origin :reader origin)
-   (%called-function :initarg :called-function :reader called-function)
-   (%arguments :initarg :arguments :reader arguments)))
 
 (defparameter *dynamic-environment* '())
 

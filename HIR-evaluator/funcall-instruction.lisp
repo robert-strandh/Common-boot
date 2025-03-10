@@ -35,7 +35,7 @@
                              (loop for lc in argument-lexical-locations
                                    collect (lv lc))))
                        (with-new-call-stack-entry
-                           (make-instance 'call-stack-entry
+                           (make-instance 'cb:stack-entry
                              :origin origin
                              :called-function function
                              :arguments arguments)
