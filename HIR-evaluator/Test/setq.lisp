@@ -31,3 +31,13 @@
   (with-default-parameters (client environment global-environment)
     (iss #1=(let ((*x* 10)) (declare (special *x*)) (setq *x* 20))
          (eval-expression client '#1# environment))))
+
+(define-test setq-in-nested-function
+  :parent setq
+  (with-default-parameters (client environment global-environment)
+    (iss #1=(labels ((foo (&key (x nil x-p))
+                       (apply (lambda (new)
+                                (setf x new))
+                              '(234))))
+              (foo :x 345))
+         (eval-expression client '#1# environment))))
