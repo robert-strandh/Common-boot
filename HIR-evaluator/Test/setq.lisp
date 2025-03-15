@@ -36,8 +36,6 @@
   :parent setq
   (with-default-parameters (client environment global-environment)
     (iss #1=(labels ((foo (&key (x nil x-p))
-                       (apply (lambda (new)
-                                (setf x new))
-                              '(234))))
+                       (funcall (lambda () (setf x 234)))))
               (foo :x 345))
          (eval-expression client '#1# environment))))
