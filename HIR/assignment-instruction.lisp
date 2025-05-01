@@ -17,4 +17,3 @@
                The result of executing and instruction of this type~@
                is that the register of the output will contain the~@
                object of the literal or the register of the input."))
-
