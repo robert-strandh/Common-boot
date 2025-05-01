@@ -11,7 +11,9 @@
                An instruction of this type has two inputs and no~@
                outputs.  The first input is a register containing~@
                a cell as created by the MAKE-CELL-INSTRUCTION.~@
-               The second input is a register or a literal.
+               The second input is a register or a literal.~@
+               ~@
+               An instruction of this type has a single successor.~@
                ~@
                The result of executing and instruction of this type~@
                is that the cell will contain the object in the second~@
