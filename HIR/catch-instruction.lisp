@@ -29,6 +29,6 @@
                The second successor is chosen when the CATCH form is~@
                entered through the corresponding THROW. 
                ~@
-               The output register should not be used by any the second~@
+               The output register should not be used by the second~@
                successor of an instruction of this type, nor by any of~@
                its successors."))
