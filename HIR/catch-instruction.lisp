@@ -27,8 +27,11 @@
                to the CATCH form.  The first successor is then chosen.~@
                ~@
                The second successor is chosen when the CATCH form is~@
-               entered through the corresponding THROW. 
+               entered through the corresponding THROW.
                ~@
                The output register should not be used by the second~@
                successor of an instruction of this type, nor by any of~@
                its successors."))
+
+;;; FIXME: there is something wrong here.  There ought to be a second
+;;; output holding the values being thrown.
