@@ -1,0 +1,30 @@
+@node Introduction
+@chapter Introduction
+
+@hirundine{} is a library for @hir{} (HIR) of @commonlisp{} programs.
+It defines:
+
+@itemize @bullet
+@item
+a number of classes the instances of which can be combined to create a
+@cfg{} that represents the semantics of an arbitrary
+@commonlisp{} program,
+@item
+algorithms operating on such @cfg{}s for the purpose of
+either computing additional information, or transforming the
+control-flow-graph in various ways.
+@end itemize
+
+@noindent
+A node of the @cfg{} is of one of the following types:
+
+@itemize @bullet
+@item
+A @emph{datum}.  A datum can be either a @emph{literal} representing a
+@commonlisp{} object, or a @emph{register}.
+@item
+An @emph{instruction}.  Such a node represents some action, usually
+performed on one or more input objects each of which is the value of
+some datum, and resulting in one or more objects which become the
+value of one or more registers.
+@end itemize

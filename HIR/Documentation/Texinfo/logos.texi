@@ -1,0 +1,19 @@
+@macro commonlisp{}
+Common Lisp
+@end macro
+
+@macro hir{}
+High-level Intermediate Representation
+@end macro
+
+@macro hirundine{}
+Hirundine
+@end macro
+
+@macro asdf{}
+ASDF
+@end macro
+
+@macro cfg{}
+control-flow graph
+@end macro
