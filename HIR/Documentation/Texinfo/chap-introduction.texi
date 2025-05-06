@@ -21,10 +21,36 @@ A node of the @cfg{} is of one of the following types:
 @itemize @bullet
 @item
 A @emph{datum}.  A datum can be either a @emph{literal} representing a
-@commonlisp{} object, or a @emph{register}.
+@commonlisp{} object, or a @emph{register}.  A register can be either
+a @emph{single-value register} holding a single @commonlisp{} object,
+or a @emph{multiple-value-register} holding any number of
+@commonlisp{} objects.
 @item
 An @emph{instruction}.  Such a node represents some action, usually
 performed on one or more input objects each of which is the value of
 some datum, and resulting in one or more objects which become the
 value of one or more registers.
 @end itemize
+
+@noindent
+An arc o fthe @cfg{} is one of the following types:
+
+@itemize @bullet
+@item
+A @emph{control arc}.  Such an arc goes from one instruction to
+another instruction.  An outgoing arc from an instruction @math{i_1}
+to an instruction @math{i_2} makes @math{i_2} a @emph{successor} of
+@math{i_1}.  An instruction can have @math{0}, @math{1}, or @math{2}
+outgoing arcs, depending on the type of instruction.
+@item
+A @emph{data arc}.  Such an arc goes either from a datum to an
+instruction, or from an instruction to a datum.  In the first case,
+the datum is an @emph{input} of the instruction.  In the second case,
+the datum is an @emph{output} of the instruction.
+@end itemize
+
+@noindent
+@hirundine{} also supplies a number of functions that operate on
+@cfg{}s. These functions are usually implementations of published
+algorithms for control-flow and data-flow analyses.
+
