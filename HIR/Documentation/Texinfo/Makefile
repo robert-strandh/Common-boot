@@ -1,7 +1,18 @@
-TEXINFO=hirundine.texi chap-introduction.texi chap-cfg.texi
+NAME = hirundine
 
-hirundine.pdf: $(TEXINFO)
-	texi2pdf hirundine.texi
+SOURCES = $(wildcard *.texi)
+
+FIGURES = $(wildcard *.svg)
+
+PNGS = $(subst .svg,.png,$(FIGURES))
+
+all: $(NAME).pdf
+
+%.png: %.svg
+	inkscape $< --export-png=$@ --export-area-drawing
+
+$(NAME).pdf: $(SOURCES) $(PNGS)
+	texi2pdf $(NAME).texi
 
 clean:
-	rm -f *.pdf *.toc *.log *.aux *~
+	rm -f *.png *.pdf *.toc *.log *.aux *.cp *.cps *.fn *.fns *~ 
