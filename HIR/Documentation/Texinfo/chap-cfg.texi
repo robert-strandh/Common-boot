@@ -1,2 +1,21 @@
-@node Nodes of a @cfg{}
-@chapter Nodes of a @cfg{}
+@chapter Nodes of a control-flow graph
+
+@section Data nodes
+
+There are two kinds of data nodes in a @cfg{}; @emph{literals} and
+@emph{registers}.  In figures illustrating some part of a @cfg{}, a
+data node is drawn using an oval shape.  A literal can be the input of
+one or more instructions, and it corresponds to a @commonlisp{}
+object.  A register can be the input or the output of one or more
+instructions.
+
+@section Instruction nodes
+
+An instruction node corresponds to some kind of action, typically
+taking one or more inputs and generating one or more outputs.  An
+instruction node can have @math{0}, @math{1}, or @math{2} successors,
+depending on the type of the node.  Node types with @math{0}
+successors correspond to instructions with some non-local control
+transfer such as @code{return} or @code{unwind}.  In figures
+illustrating some parts of a @cfg{}, an instruction node is drawn
+using a rectangular shape.
