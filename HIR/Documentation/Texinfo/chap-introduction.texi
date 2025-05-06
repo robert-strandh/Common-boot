@@ -53,4 +53,3 @@ the datum is an @emph{output} of the instruction.
 @hirundine{} also supplies a number of functions that operate on
 @cfg{}s. These functions are usually implementations of published
 algorithms for control-flow and data-flow analyses.
-

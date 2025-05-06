@@ -19,10 +19,12 @@ graph consisting of @emph{instructions} and @emph{data}.
 
 @menu
 * Introduction:: Introduction
+* Introduction:: Nodes of a @cfg{}
 * Index:: Complete index.
 @end menu
 
 @include chap-introduction.texi
+@include chap-cfg.texi
 
 @node Index
 @unnumbered Index

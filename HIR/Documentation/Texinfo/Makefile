@@ -1,4 +1,4 @@
-TEXINFO=hirundine.texi chap-introduction.texi
+TEXINFO=hirundine.texi chap-introduction.texi chap-cfg.texi
 
 hirundine.pdf: $(TEXINFO)
 	texi2pdf hirundine.texi
