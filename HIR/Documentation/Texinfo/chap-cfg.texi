@@ -1,3 +1,4 @@
+@node Nodes of a control-flow graph
 @chapter Nodes of a control-flow graph
 
 @section Data nodes
@@ -16,6 +17,21 @@ taking one or more inputs and generating one or more outputs.  An
 instruction node can have @math{0}, @math{1}, or @math{2} successors,
 depending on the type of the node.  Node types with @math{0}
 successors correspond to instructions with some non-local control
-transfer such as @code{return} or @code{unwind}.  In figures
-illustrating some parts of a @cfg{}, an instruction node is drawn
-using a rectangular shape.
+transfer such as @code{return} or @code{unwind}.  An instruction node
+can have any number of predecessors.  The order between the
+predecessors is not significant.
+
+In figures illustrating some parts of a @cfg{}, an instruction node is
+drawn using a rectangular shape.
+
+@subsection @code{return-instruction}
+
+An instruction of this type has one input and no outputs.  The input
+is a @code{multiple-value-register}.  An instruction of this type has
+no successors. The result of executing an instruction of this type is
+that control is transferred to the caller of this function, with the
+objects in the input register as the return values.
+
+@noindent
+@center @image{return-instruction}
+
