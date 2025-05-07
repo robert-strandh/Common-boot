@@ -63,6 +63,23 @@ The outputs of an instruction of this type are the static-environment
 register, the dynamic-environment register, and the lambda-list
 parameter registers.
 
+@subsection @code{assignment-instruction}
+
+An instruction of this type has one input and one output.  The input
+is a register or a literal.  The register might be a single-value
+register or a multiple-value register.  The output is a single-value
+register or a multiple-value register.
+
+An instruction of this type has a single successor.
+
+The effect of executing an instruction of this type is that the object
+in the input datum is copied to the output register.  If the input is
+a single-value register or a literal and the output is a
+multiple-value register, the output will contain a single object.  It
+the input is a multiple-value register and the output is a
+single-value register, the first object in the multiple-value register
+is copied to the output register.
+
 @subsection @code{return-instruction}
 
 An instruction of this type has one input and no outputs.  The input
