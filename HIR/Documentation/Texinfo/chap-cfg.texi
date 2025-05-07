@@ -24,6 +24,45 @@ predecessors is not significant.
 In figures illustrating some parts of a @cfg{}, an instruction node is
 drawn using a rectangular shape.
 
+@subsection @code{parse-arguments-instruction}
+
+An instruction of this type has no inputs and two or more outputs.
+It is usually the first instruction of a function, and it has a single
+successor.
+
+A slot in an instruction of this type contains a variation on an
+ordinary lambda list.  It differs from an ordinary lambda list in the
+following ways:
+
+@itemize @bullet
+@item
+There are no @code{&aux} parameters.
+@item
+All parameters introduced by the lambda list are lexical, and they are
+represented by @hirundine{} registers, rather than by @commonlisp{}
+symbols.
+@item
+@code{&optional} and @code{&key} parameters do not have an
+@emph{initform}, but each one has a @emph{supplied-p} parameter.  An
+@code{&optional} parameter is a proper list of two registers, the
+first register represents the parameter itself, and the second one
+represents a @emph{supplied-p} parameter.  A @code{&key} parameter is
+a list of two elements.  The first element is a list of two elements,
+a keyword and a @hirundine{} register for the parameter itself.  The
+second element of the main list is a @hirundine{} register for the
+@emph{supplied-p} parameter.
+@end itemize
+
+@noindent
+Two more slots in an instruction of this type contain @hirundine{}
+registers, one for the register holding the static-environment object
+for this function, and the other one for the register holding the
+dynamic-environment object upon function entry.
+
+The outputs of an instruction of this type are the static-environment
+register, the dynamic-environment register, and the lambda-list
+parameter registers.
+
 @subsection @code{return-instruction}
 
 An instruction of this type has one input and no outputs.  The input
