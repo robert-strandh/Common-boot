@@ -4,4 +4,10 @@
 Many of the functions documented in this chapter have not yet been
 implemented.
 
+@section Computing predecessors
+
+Instructions are not linked to their predecessors.  This function
+computes a hash table that maps each instruction to a list of its
+predecessors.
+
 @section Finding basic blocks.
