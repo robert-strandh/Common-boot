@@ -20,7 +20,7 @@ graph consisting of @emph{instructions} and @emph{data}.
 @menu
 * Introduction:: Introduction
 * Nodes:: Nodes of a @cfg{}
-* Information:: Control-flow analyses
+* Control:: Control-flow analyses
 * Index:: Complete index.
 @end menu
 
