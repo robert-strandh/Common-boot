@@ -1,5 +1,5 @@
-@node Information-gathering functions
-@chapter Information-gathering functions
+@node Control-flow analyses
+@chapter Control-flow analyses
 
 Many of the functions documented in this chapter have not yet been
 implemented.
