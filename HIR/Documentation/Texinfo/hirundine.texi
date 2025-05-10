@@ -21,12 +21,14 @@ graph consisting of @emph{instructions} and @emph{data}.
 * Introduction:: Introduction
 * Nodes:: Nodes of a @cfg{}
 * Control:: Control-flow analyses
+* Data:: Data-flow analyses
 * Index:: Complete index.
 @end menu
 
 @include chap-introduction.texi
 @include chap-cfg.texi
 @include chap-control-flow-analyses.texi
+@include chap-data-flow-analyses.texi
 
 @node Index
 @unnumbered Index
