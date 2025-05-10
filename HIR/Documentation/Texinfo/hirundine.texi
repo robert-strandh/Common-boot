@@ -26,7 +26,7 @@ graph consisting of @emph{instructions} and @emph{data}.
 
 @include chap-introduction.texi
 @include chap-cfg.texi
-@include chap-information.texi
+@include chap-control-flow-analyses.texi
 
 @node Index
 @unnumbered Index
