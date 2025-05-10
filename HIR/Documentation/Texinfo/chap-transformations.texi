@@ -4,7 +4,7 @@
 Many of the functions documented in this chapter have not yet been
 implemented.
 
-@section SSH conversion
+@section SSA conversion
 
 @section Path replication
 
